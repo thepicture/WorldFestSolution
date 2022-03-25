@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="be2cca37dc764cb89921de850bc4fe49" Name="Diagram1">
+        <EntityTypeShape EntityType="WorldFestBaseModel.Festival" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalProgram" Width="1.5" PointX="3" PointY="14.25" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalRating" Width="1.5" PointX="5.25" PointY="5.625" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.ParticipantInvite" Width="1.5" PointX="5.25" PointY="9.25" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.User" Width="1.5" PointX="3" PointY="4.75" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.UserRating" Width="1.5" PointX="5.25" PointY="2.25" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.UserType" Width="1.5" PointX="0.75" PointY="3" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalProgram_Festival" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_Festival" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_User" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User1" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_User_UserType" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User1" />
+        <AssociationConnector Association="WorldFestBaseModel.UserOfFestival" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
