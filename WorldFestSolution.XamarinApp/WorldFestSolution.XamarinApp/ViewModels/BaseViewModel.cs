@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Forms;
 
@@ -10,20 +9,30 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IAlertService AlertService =>
+            DependencyService.Get<IAlertService>();
+        public IAuthenticationService AuthenticationService =>
+            DependencyService.Get<IAuthenticationService>();
 
-        bool isBusy = false;
+        private bool isRefreshing = false;
+        private bool isBusy = false;
         public bool IsBusy
         {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            get => isBusy;
+            set => SetProperty(ref isBusy, value);
         }
 
-        string title = string.Empty;
+        private string title = string.Empty;
         public string Title
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            get => title;
+            set => SetProperty(ref title, value);
+        }
+
+        public bool IsRefreshing
+        {
+            get => isRefreshing;
+            set => SetProperty(ref isRefreshing, value);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
@@ -31,7 +40,9 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
+            {
                 return false;
+            }
 
             backingStore = value;
             onChanged?.Invoke();

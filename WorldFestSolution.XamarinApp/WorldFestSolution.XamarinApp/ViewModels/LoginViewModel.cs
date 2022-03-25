@@ -1,24 +1,129 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-using WorldFestSolution.XamarinApp.Views;
+using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Services;
+using WorldFestSolution.XamarinApp.ViewModels;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace WorldFestSolution.XamarinApp.ViewModels
+namespace WorldFestSolution.XamarinApp
 {
     public class LoginViewModel : BaseViewModel
     {
-        public Command LoginCommand { get; }
+        private string login;
 
-        public LoginViewModel()
+        public string Login
         {
-            LoginCommand = new Command(OnLoginClicked);
+            get => login;
+            set => SetProperty(ref login, value);
         }
 
-        private async void OnLoginClicked(object obj)
+        private string password;
+
+        public string Password
         {
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
-            await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+            get => password;
+            set => SetProperty(ref password, value);
+        }
+
+        private bool isRememberMe;
+
+        public bool IsRememberMe
+        {
+            get => isRememberMe;
+            set => SetProperty(ref isRememberMe, value);
+        }
+
+        private Command authenticateCommand;
+
+        public ICommand AuthenticateCommand
+        {
+            get
+            {
+                if (authenticateCommand == null)
+                {
+                    authenticateCommand = new Command(AuthenticateAsync);
+                }
+
+                return authenticateCommand;
+            }
+        }
+
+        private async void AuthenticateAsync()
+        {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(Login))
+            {
+                _ = errors.AppendLine("Введите логин");
+            }
+            if (string.IsNullOrWhiteSpace(Password))
+            {
+                _ = errors.AppendLine("Введите пароль");
+            }
+
+            if (errors.Length > 0)
+            {
+                await AlertService.InformError(
+                    errors.ToString());
+                return;
+            }
+
+            bool isAuthenticated;
+            isAuthenticated = await AuthenticationService
+            .AuthenticateAsync(Login, Password);
+            if (isAuthenticated)
+            {
+                string encodedLoginAndPassword =
+                    CredentialsToBasicConverter
+                    .Encode(Login, Password);
+                if (IsRememberMe)
+                {
+                    await SecureStorage
+                        .SetAsync("Identity",
+                                  encodedLoginAndPassword);
+                    await SecureStorage
+                       .SetAsync("Role",
+                                 AuthenticationService.Message);
+                }
+                else
+                {
+                    (App.Current as App).Role = AuthenticationService.Message;
+                    (App.Current as App).Identity = encodedLoginAndPassword;
+                }
+                await AlertService.Inform("Вы авторизованы " +
+                    $"с ролью {AuthenticationService.Message}");
+                (AppShell.Current as AppShell).SetShellStacksDependingOnRole();
+            }
+            else
+            {
+                await AlertService.InformError("Вы ввели " +
+                    "неверный логин или пароль. " +
+                    "Попробуйте ещё раз");
+            }
+            IsBusy = false;
+        }
+
+        private Command exitCommand;
+
+        public ICommand ExitCommand
+        {
+            get
+            {
+                if (exitCommand == null)
+                {
+                    exitCommand = new Command(ExitAsync);
+                }
+
+                return exitCommand;
+            }
+        }
+
+        private async void ExitAsync()
+        {
+            if (await AlertService.Ask("Выключить приложение?"))
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

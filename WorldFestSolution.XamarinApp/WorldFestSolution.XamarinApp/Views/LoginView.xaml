@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xamarinapp="clr-namespace:WorldFestSolution.XamarinApp"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:DataType="xamarinapp:LoginViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.LoginView"
+             Title="Авторизация">
+    <ContentPage.BindingContext>
+        <xamarinapp:LoginViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Padding="10"
+                 VerticalOptions="Fill">
+        <StackLayout Orientation="Horizontal"
+                     HorizontalOptions="Center">
+            <Image Source="icon_circle"
+                   WidthRequest="110" />
+            <StackLayout VerticalOptions="Center">
+                <Label Text="WorldFest"
+                       Grid.Column="1"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="Black" />
+            </StackLayout>
+        </StackLayout>
+        <material:MaterialTextField Text="{Binding Login}"
+                                    Placeholder="Введите логин"
+                                    InputType="Text"
+                                    MaxLength="50"
+                                    LeadingIcon="login"
+                                    AlwaysShowUnderline="True" />
+        <material:MaterialTextField Text="{Binding Password}"
+                                    Placeholder="Введите пароль"
+                                    InputType="Password"
+                                    MaxLength="50"
+                                    LeadingIcon="password"
+                                    AlwaysShowUnderline="True" />
+        <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
+                                   Text="Запомнить" />
+        <Grid ColumnDefinitions="*,*"
+              VerticalOptions="EndAndExpand">
+            <material:MaterialButton Command="{Binding AuthenticateCommand}"
+                                     Text="Войти"
+                                     Style="{StaticResource BaseButton}">
+                <material:MaterialButton.Triggers>
+                    <DataTrigger TargetType="material:MaterialButton"
+                                 Binding="{Binding IsBusy}"
+                                 Value="True">
+                        <Setter Property="IsEnabled"
+                                Value="False" />
+                    </DataTrigger>
+                </material:MaterialButton.Triggers>
+            </material:MaterialButton>
+            <material:MaterialButton Command="{Binding ExitCommand}"
+                                     Text="Выключить"
+                                     Style="{StaticResource BackgroundButton}"
+                                     Grid.Column="1" />
+        </Grid>
+    </StackLayout>
+</ContentPage>

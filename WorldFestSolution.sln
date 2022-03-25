@@ -9,7 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.WebAPI", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.XamarinApp.Android", "WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp.Android\WorldFestSolution.XamarinApp.Android.csproj", "{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.XamarinApp", "WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp.csproj", "{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldFestSolution.XamarinApp", "WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp.csproj", "{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9003949A-D2AC-492B-AA22-F3D650261FC5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

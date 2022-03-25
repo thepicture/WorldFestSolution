@@ -1,19 +1,27 @@
-﻿using System;
-using WorldFestSolution.XamarinApp.Services;
-using WorldFestSolution.XamarinApp.Views;
+﻿using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace WorldFestSolution.XamarinApp
 {
     public partial class App : Application
     {
+        public string Role { get; set; }
+        public string Identity { get; set; }
 
         public App()
         {
             InitializeComponent();
+            XF.Material.Forms.Material.Init(this, 
+                (XF
+                .Material
+                .Forms
+                .Resources
+                .MaterialConfiguration)Resources["CommonMaterial"]);
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<AndroidAlertService>();
+            DependencyService.Register<HttpClientAuthenticationService>();
+
+
             MainPage = new AppShell();
         }
 
