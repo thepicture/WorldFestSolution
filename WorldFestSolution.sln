@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.ImportApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.WebAPI", "WorldFestSolution.WebAPI\WorldFestSolution.WebAPI.csproj", "{A0B67306-A809-4181-9B14-1C2EA9CA551A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.XamarinApp.Android", "WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp.Android\WorldFestSolution.XamarinApp.Android.csproj", "{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldFestSolution.XamarinApp", "WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp\WorldFestSolution.XamarinApp.csproj", "{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,16 @@ Global
 		{A0B67306-A809-4181-9B14-1C2EA9CA551A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B67306-A809-4181-9B14-1C2EA9CA551A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B67306-A809-4181-9B14-1C2EA9CA551A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B93543-A753-4CF1-A6C3-0AB1E00E93D7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F216A06-96E1-4BD1-A45E-F3AEE2C95919}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
