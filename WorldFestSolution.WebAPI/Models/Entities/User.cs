@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WorldFestSolution.ImportApp
+namespace WorldFestSolution.WebAPI.Models.Entities
 {
     using System;
     using System.Collections.Generic;

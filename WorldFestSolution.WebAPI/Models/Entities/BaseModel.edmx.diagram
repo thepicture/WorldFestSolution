@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="be2cca37dc764cb89921de850bc4fe49" Name="Diagram1">
+      <Diagram DiagramId="5ed9ad4b6b78446e95d786cecce2d603" Name="Diagram1">
         <EntityTypeShape EntityType="WorldFestBaseModel.Festival" Width="1.5" PointX="0.75" PointY="5.5" />
         <EntityTypeShape EntityType="WorldFestBaseModel.FestivalProgram" Width="1.5" PointX="3" PointY="14.25" />
         <EntityTypeShape EntityType="WorldFestBaseModel.FestivalRating" Width="1.5" PointX="3" PointY="5.625" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.ParticipantInvite" Width="1.5" PointX="8.25" PointY="4.25" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.ParticipantInvite" Width="1.5" PointX="8.25" PointY="7.25" />
         <EntityTypeShape EntityType="WorldFestBaseModel.User" Width="1.5" PointX="6" PointY="4.75" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.UserRating" Width="1.5" PointX="8.25" PointY="7" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.UserRating" Width="1.5" PointX="8.25" PointY="4.25" />
         <EntityTypeShape EntityType="WorldFestBaseModel.UserType" Width="1.5" PointX="3.75" PointY="3" />
         <AssociationConnector Association="WorldFestBaseModel.FK_FestivalProgram_Festival" />
         <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_Festival" />

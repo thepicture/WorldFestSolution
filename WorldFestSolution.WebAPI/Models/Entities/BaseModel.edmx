@@ -484,7 +484,7 @@
           <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="*" />
           <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="*" />
         </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>

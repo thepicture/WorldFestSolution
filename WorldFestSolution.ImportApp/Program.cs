@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace WorldFestSolution.ImportApp
@@ -107,9 +108,15 @@ namespace WorldFestSolution.ImportApp
                         i < random.Next(minCount, maxCount + 1);
                         i++)
                     {
-                        festival.User.Add(
-                            participants.ElementAt(
-                                random.Next(0, participants.Count)));
+                        try
+                        {
+                            festival.User.Add(
+                                participants.ElementAt(
+                                    random.Next(0, participants.Count)));
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                 }
                 entities.SaveChanges();
@@ -170,16 +177,26 @@ namespace WorldFestSolution.ImportApp
             {
                 for (int i = 0; i < count; i++)
                 {
+                    byte[] salt = Guid.NewGuid()
+                        .ToByteArray();
+                    string password = Guid.NewGuid()
+                        .ToString()
+                        .Substring(30);
+                    List<byte> passwordBytesAndHash = Encoding.UTF8
+                        .GetBytes(password)
+                        .ToList();
+                    passwordBytesAndHash.AddRange(salt);
+                    byte[] passwordHash = SHA256.Create()
+                        .ComputeHash(
+                        passwordBytesAndHash.ToArray());
                     User user = new User
                     {
                         Login = Guid
                             .NewGuid()
                             .ToString()
-                            .Substring(26),
-                        Password = Encoding.UTF8.GetBytes(
-                            Guid.NewGuid()
-                                .ToString()
-                                .Substring(30)),
+                            .Substring(30),
+                        PasswordHash = passwordHash,
+                        Salt = salt,
                         FirstName = firstNames[random.Next(0, firstNames.Length)],
                         LastName = lastNames[random.Next(0, lastNames.Length)],
                         UserTypeId = random.Next(1, 3),
@@ -188,7 +205,7 @@ namespace WorldFestSolution.ImportApp
                     };
                     Console.WriteLine(user.Login
                         + " : "
-                        + Encoding.UTF8.GetString(user.Password));
+                        + password);
                     entities.User.Add(user);
                 }
                 entities.SaveChanges();
