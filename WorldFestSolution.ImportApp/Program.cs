@@ -86,7 +86,7 @@ namespace WorldFestSolution.ImportApp
            Path.Combine(
                Path.GetFullPath("../.."), "FestivalImages"));
 
-        static void Main(string[] args)
+        static void Main()
         {
             ImportUsers(10);
             ImportFestivals(10);
@@ -157,7 +157,7 @@ namespace WorldFestSolution.ImportApp
                         Description = festivalDescriptions[random.Next(0, festivalDescriptions.Length)],
                         FromDateTime = DateTime.Now.AddDays(random.Next(2, 8)),
                         Image = File.ReadAllBytes(
-                            UserImages[random.Next(0, UserImages.Length)])
+                            FestivalImages[random.Next(0, FestivalImages.Length)])
                     };
                     List<User> organizers = entities.User
                         .Where(u => u.UserType.Title == "Организатор")
