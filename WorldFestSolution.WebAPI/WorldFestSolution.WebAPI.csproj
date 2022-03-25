@@ -206,6 +206,7 @@
     </Compile>
     <Compile Include="Models\Security\Authenticator.cs" />
     <Compile Include="Models\Security\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Models\Serialized\SerializedUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,18 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WorldFestSolution.WebAPI.Models.Entities;
+using WorldFestSolution.WebAPI.Models.Serialized;
 
 namespace WorldFestSolution.WebAPI.Controllers
 {
@@ -125,6 +130,55 @@ namespace WorldFestSolution.WebAPI.Controllers
                             HttpContext.Current.User.Identity)
                                 .FindFirst(ClaimTypes.Role).Value;
             return Ok(role);
+        }
+
+        // GET: api/Users/Register
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("api/users/register")]
+        [ResponseType(typeof(int))]
+        public async Task<IHttpActionResult> Register(SerializedUser serializedUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            bool isUserExisting = await db.User
+                .AnyAsync(u =>
+                serializedUser.Login.Equals(u.Login,
+                              StringComparison.OrdinalIgnoreCase));
+            if (isUserExisting)
+            {
+                return Conflict();
+            }
+
+            byte[] salt = Guid.NewGuid()
+                    .ToByteArray();
+            List<byte> passwordBytesAndHash = Encoding.UTF8
+                .GetBytes(serializedUser.Password)
+                .ToList();
+            passwordBytesAndHash.AddRange(salt);
+            byte[] passwordHash = SHA256.Create()
+                .ComputeHash(
+                passwordBytesAndHash.ToArray());
+
+            User user = new User
+            {
+                Login = serializedUser.Login,
+                PasswordHash = passwordHash,
+                Salt = salt,
+                FirstName = serializedUser.FirstName,
+                LastName = serializedUser.LastName,
+                Patronymic = serializedUser.Patronymic,
+                UserTypeId = serializedUser.UserTypeId,
+                Image = serializedUser.Image
+            };
+
+            db.User.Add(user);
+
+            await db.SaveChangesAsync();
+
+            return Content(HttpStatusCode.Created, user.Id);
         }
     }
 }
