@@ -26,6 +26,7 @@ namespace WorldFestSolution.ImportApp
         }
     
         public virtual DbSet<Festival> Festival { get; set; }
+        public virtual DbSet<FestivalComment> FestivalComment { get; set; }
         public virtual DbSet<FestivalProgram> FestivalProgram { get; set; }
         public virtual DbSet<FestivalRating> FestivalRating { get; set; }
         public virtual DbSet<ParticipantInvite> ParticipantInvite { get; set; }

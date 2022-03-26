@@ -7,7 +7,7 @@ using System.Text;
 
 namespace WorldFestSolution.ImportApp
 {
-    class Program
+    internal class Program
     {
         private readonly static string[] firstNames = new string[]
         {
@@ -79,6 +79,16 @@ namespace WorldFestSolution.ImportApp
             "Зовите всех!",
         };
 
+        private static readonly string[] festivalComments = new string[]
+        {
+            "Прикольно",
+            "Ну ничего так!",
+            "Вполне сойдёт",
+            "Мюзикл был класс",
+            "Ещё будет?",
+            "Суперский фестиваль",
+        };
+
         private static string[] UserImages => Directory.GetFiles(
             Path.Combine(
                 Path.GetFullPath("../.."), "UserImages"));
@@ -92,7 +102,34 @@ namespace WorldFestSolution.ImportApp
             ImportFestivals(10);
             ImportFestivalsPrograms(4, 6);
             ImportParticipants(2, 4);
+            ImportFestivalsComments(3, 5);
             Console.ReadKey();
+        }
+
+        private static void ImportFestivalsComments(int minCount, int maxCount)
+        {
+            using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
+            {
+                foreach (Festival festival in entities.Festival)
+                {
+                    for (int i = 0;
+                        i < random.Next(minCount, maxCount + 1);
+                        i++)
+                    {
+                        festival.FestivalComment.Add(new FestivalComment
+                        {
+                            UserId = festival.User
+                                .ToList()
+                                .ElementAt(
+                                    random.Next(0, festival.User.Count())).Id,
+                            Text = festivalComments[random.Next(0, festivalComments.Length)],
+                            CreationDateTime = festival.FromDateTime
+                                               + TimeSpan.FromHours(random.Next(6, 12))
+                        });
+                    }
+                }
+                entities.SaveChanges();
+            }
         }
 
         private static void ImportParticipants(int minCount, int maxCount)
@@ -205,7 +242,9 @@ namespace WorldFestSolution.ImportApp
                     };
                     Console.WriteLine(user.Login
                         + " : "
-                        + password);
+                        + password
+                        + ", роль: "
+                        + (user.UserTypeId == 1 ? "участник" : "организатор"));
                     entities.User.Add(user);
                 }
                 entities.SaveChanges();
