@@ -1,7 +1,20 @@
-﻿namespace WorldFestSolution.WebAPI.Models.Serialized
+﻿using WorldFestSolution.WebAPI.Models.Entities;
+
+namespace WorldFestSolution.WebAPI.Models.Serialized
 {
     public class SerializedUser
     {
+        public SerializedUser(User user)
+        {
+            Id = user.Id;
+            Login = user.Login;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Patronymic = user.Patronymic;
+            UserTypeId = user.UserTypeId;
+            Image = user.Image;
+        }
+
         public int Id { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }

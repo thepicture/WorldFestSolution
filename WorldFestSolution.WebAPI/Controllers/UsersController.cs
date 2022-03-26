@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -120,16 +119,17 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // GET: api/Users/Authenticate
-        [ResponseType(typeof(string))]
+        [ResponseType(typeof(SerializedUser))]
         [Route("api/users/authenticate")]
         [Authorize(Roles = "Организатор, Участник")]
         [HttpGet]
-        public IHttpActionResult Authenticate()
+        public async Task<IHttpActionResult> Authenticate()
         {
-            var role = ((ClaimsIdentity)
-                            HttpContext.Current.User.Identity)
-                                .FindFirst(ClaimTypes.Role).Value;
-            return Ok(role);
+            string login = HttpContext.Current.User.Identity.Name;
+            User user = await db.User.FirstAsync(u =>
+                u.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
+            return Ok(
+                new SerializedUser(user));
         }
 
         // GET: api/Users/Register

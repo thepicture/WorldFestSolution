@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Models;
+using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
 using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Essentials;
@@ -68,9 +71,8 @@ namespace WorldFestSolution.XamarinApp
                 return;
             }
 
-            bool isAuthenticated;
-            isAuthenticated = await AuthenticationService
-            .AuthenticateAsync(Login, Password);
+            bool isAuthenticated = await AuthenticationService
+                .AuthenticateAsync(Login, Password);
             if (isAuthenticated)
             {
                 string encodedLoginAndPassword =
@@ -78,27 +80,28 @@ namespace WorldFestSolution.XamarinApp
                     .Encode(Login, Password);
                 if (IsRememberMe)
                 {
+                    Identity.User = JsonConvert
+                        .DeserializeObject<User>
+                        (AuthenticationService.Message);
                     await SecureStorage
                         .SetAsync("Identity",
                                   encodedLoginAndPassword);
-                    await SecureStorage
-                       .SetAsync("Role",
-                                 AuthenticationService.Message);
                 }
                 else
                 {
+                    (App.Current as App).User = JsonConvert
+                        .DeserializeObject<User>
+                        (AuthenticationService.Message);
                     (App.Current as App).Role = AuthenticationService.Message;
                     (App.Current as App).Identity = encodedLoginAndPassword;
                 }
                 await AlertService.Inform("Вы авторизованы " +
-                    $"с ролью {AuthenticationService.Message}");
+                    $"с ролью {Identity.Role}");
                 (AppShell.Current as AppShell).SetShellStacksDependingOnRole();
             }
             else
             {
-                await AlertService.InformError("Вы ввели " +
-                    "неверный логин или пароль. " +
-                    "Попробуйте ещё раз");
+                await AlertService.InformError(AuthenticationService.Message);
             }
             IsBusy = false;
         }

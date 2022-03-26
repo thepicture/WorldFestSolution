@@ -1,4 +1,5 @@
-﻿using WorldFestSolution.XamarinApp.Services;
+﻿using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp
@@ -7,6 +8,7 @@ namespace WorldFestSolution.XamarinApp
     {
         public string Role { get; set; }
         public string Identity { get; set; }
+        public User User { get; set; }
 
         public App()
         {

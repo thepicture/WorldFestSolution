@@ -31,8 +31,13 @@ namespace WorldFestSolution.XamarinApp.Services
                     {
                         string content = await response.Content
                             .ReadAsStringAsync();
-                        Message = content.Replace("\"", "");
+                        Message = content;
                         return true;
+                    } else
+                    {
+                        Message = "Вы ввели "
+                            + "неверный логин или пароль. "
+                            + "Попробуйте ещё раз";
                     }
                 }
                 catch (HttpRequestException ex)

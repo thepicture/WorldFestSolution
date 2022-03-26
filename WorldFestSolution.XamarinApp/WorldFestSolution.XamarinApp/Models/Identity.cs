@@ -1,35 +1,42 @@
-﻿using Xamarin.Essentials;
+﻿using Newtonsoft.Json;
+using WorldFestSolution.XamarinApp.Models.Serialized;
+using Xamarin.Essentials;
 
 namespace WorldFestSolution.XamarinApp.Models
 {
     public class Identity
     {
-        public static string Role
+        public static User User
         {
             get
             {
-                if ((App.Current as App).Role != null)
+                if ((App.Current as App).User != null)
                 {
-                    return (App.Current as App).Role;
+                    return (App.Current as App).User;
                 }
                 else
                 {
-                    return SecureStorage.GetAsync("Role").Result;
+                    return JsonConvert.DeserializeObject<User>(
+                        SecureStorage.GetAsync("User").Result);
                 }
             }
             set
             {
-                (App.Current as App).Role = value;
+                (App.Current as App).User = value;
                 if (value == null)
                 {
-                    _ = SecureStorage.Remove("Role");
+                    _ = SecureStorage.Remove("User");
                 }
                 else
                 {
-                    _ = SecureStorage.SetAsync("Role", value);
+                    _ = SecureStorage.SetAsync(
+                        "User", JsonConvert.SerializeObject(value));
                 }
             }
         }
+        public static string Role => User.UserTypeId == 1
+            ? "Участник"
+            : "Организатор";
         public static string AuthorizationValue
         {
             get
