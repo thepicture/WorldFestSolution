@@ -70,9 +70,12 @@ namespace WorldFestSolution.XamarinApp
                     errors.ToString());
                 return;
             }
-
+            IsBusy = true;
+            IsRefreshing = true;
             bool isAuthenticated = await AuthenticationService
                 .AuthenticateAsync(Login, Password);
+            IsRefreshing = false;
+            IsBusy = false;
             if (isAuthenticated)
             {
                 string encodedLoginAndPassword =
