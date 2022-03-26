@@ -22,7 +22,7 @@ namespace WorldFestSolution.XamarinApp
             }
         }
 
-        private void LoadLoginAndRegisterShell()
+        public void LoadLoginAndRegisterShell()
         {
             ShellContentTabBar.Items.Clear();
             ShellContentTabBar

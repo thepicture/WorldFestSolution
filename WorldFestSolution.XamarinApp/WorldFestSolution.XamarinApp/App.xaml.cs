@@ -20,7 +20,7 @@ namespace WorldFestSolution.XamarinApp
 
             DependencyService.Register<AndroidAlertService>();
             DependencyService.Register<HttpClientAuthenticationService>();
-
+            DependencyService.Register<HttpClientRegistrationService>();
 
             MainPage = new AppShell();
         }

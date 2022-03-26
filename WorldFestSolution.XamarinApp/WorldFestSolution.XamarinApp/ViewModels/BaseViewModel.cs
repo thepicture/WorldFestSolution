@@ -13,6 +13,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             DependencyService.Get<IAlertService>();
         public IAuthenticationService AuthenticationService =>
             DependencyService.Get<IAuthenticationService>();
+        public IRegistrationService RegistrationService =>
+         DependencyService.Get<IRegistrationService>();
 
         private bool isRefreshing = false;
         private bool isBusy = false;
@@ -21,6 +23,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get => isBusy;
             set => SetProperty(ref isBusy, value);
         }
+
+        public bool IsNotBusy => !IsBusy;
 
         private string title = string.Empty;
         public string Title
