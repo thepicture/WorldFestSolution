@@ -5,11 +5,10 @@ using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
-using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace WorldFestSolution.XamarinApp
+namespace WorldFestSolution.XamarinApp.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {

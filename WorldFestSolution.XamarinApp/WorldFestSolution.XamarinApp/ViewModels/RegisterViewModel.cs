@@ -2,11 +2,10 @@
 using System.Text;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-namespace WorldFestSolution.XamarinApp
+namespace WorldFestSolution.XamarinApp.ViewModels
 {
     public class RegisterViewModel : BaseViewModel
     {
@@ -128,7 +127,7 @@ namespace WorldFestSolution.XamarinApp
 
         private void RefreshAsync()
         {
-            if (!IsBusy)
+            if (IsNotBusy)
             {
                 IsRefreshing = false;
             }

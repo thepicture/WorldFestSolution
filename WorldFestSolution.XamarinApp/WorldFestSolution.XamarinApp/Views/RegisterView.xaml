@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xamarinapp="clr-namespace:WorldFestSolution.XamarinApp"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             x:DataType="xamarinapp:RegisterViewModel"
+             x:DataType="viewmodels:RegisterViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.RegisterView"
              Title="Регистрация">
     <ContentPage.BindingContext>
-        <xamarinapp:RegisterViewModel />
+        <viewmodels:RegisterViewModel />
     </ContentPage.BindingContext>
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
