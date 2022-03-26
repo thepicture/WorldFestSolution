@@ -52,7 +52,7 @@
                 </material:MaterialButton.Triggers>
             </material:MaterialButton>
             <material:MaterialButton Command="{Binding ExitCommand}"
-                                     Text="Выключить"
+                                     Text="Выйти"
                                      Style="{StaticResource BackgroundButton}"
                                      Grid.Column="1" />
         </Grid>
