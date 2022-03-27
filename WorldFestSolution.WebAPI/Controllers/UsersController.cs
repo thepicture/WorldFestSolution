@@ -132,7 +132,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                 new SerializedUser(user));
         }
 
-        // GET: api/Users/Register
+        // POST: api/Users/Register
         [AllowAnonymous]
         [HttpPost]
         [Route("api/users/register")]
