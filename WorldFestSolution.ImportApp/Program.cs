@@ -99,14 +99,14 @@ namespace WorldFestSolution.ImportApp
         private static void Main()
         {
             ImportUsers(10);
-            ImportFestivals(10);
-            ImportFestivalsPrograms(4, 6);
-            ImportParticipants(2, 4);
-            ImportFestivalsComments(3, 5);
+            ImportFestivalsForEachUser(3);
+            ImportProgramsForEachFestival(4, 6);
+            ImportParticipantsForEachFestival(2, 4);
+            ImportFestivalsCommentsForEachFestival(3, 5);
             Console.ReadKey();
         }
 
-        private static void ImportFestivalsComments(int minCount, int maxCount)
+        private static void ImportFestivalsCommentsForEachFestival(int minCount, int maxCount)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
@@ -132,7 +132,7 @@ namespace WorldFestSolution.ImportApp
             }
         }
 
-        private static void ImportParticipants(int minCount, int maxCount)
+        private static void ImportParticipantsForEachFestival(int minCount, int maxCount)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
@@ -160,7 +160,7 @@ namespace WorldFestSolution.ImportApp
             }
         }
 
-        private static void ImportFestivalsPrograms(int minCount, int maxCount)
+        private static void ImportProgramsForEachFestival(int minCount, int maxCount)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
@@ -182,27 +182,26 @@ namespace WorldFestSolution.ImportApp
             }
         }
 
-        private static void ImportFestivals(int count)
+        private static void ImportFestivalsForEachUser(int count)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
-                for (int i = 0; i < count; i++)
+                foreach (User user in entities.User
+                    .Where(u => u.UserType.Title == "Организатор"))
                 {
-                    Festival festival = new Festival
+                    for (int i = 0; i < count; i++)
                     {
-                        Title = festivalTitles[random.Next(0, festivalTitles.Length)],
-                        Description = festivalDescriptions[random.Next(0, festivalDescriptions.Length)],
-                        FromDateTime = DateTime.Now.AddDays(random.Next(2, 8)),
-                        Image = File.ReadAllBytes(
-                            FestivalImages[random.Next(0, FestivalImages.Length)])
-                    };
-                    List<User> organizers = entities.User
-                        .Where(u => u.UserType.Title == "Организатор")
-                        .ToList();
-                    festival.User.Add(
-                        organizers.ElementAt(
-                            random.Next(0, organizers.Count)));
-                    entities.Festival.Add(festival);
+                        Festival festival = new Festival
+                        {
+                            Title = festivalTitles[random.Next(0, festivalTitles.Length)],
+                            Description = festivalDescriptions[random.Next(0, festivalDescriptions.Length)],
+                            FromDateTime = DateTime.Now.AddDays(random.Next(2, 8)),
+                            Image = File.ReadAllBytes(
+                                FestivalImages[random.Next(0, FestivalImages.Length)]),
+                        };
+                        festival.User.Add(user);
+                        entities.Festival.Add(festival);
+                    }
                 }
                 entities.SaveChanges();
             }
