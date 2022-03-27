@@ -41,7 +41,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FestivalId" Type="int" Nullable="false" />
-          <Property Name="CountOfStarts" Type="int" Nullable="false" />
+          <Property Name="CountOfStars" Type="int" Nullable="false" />
           <Property Name="RaterId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ParticipantInvite">
@@ -80,8 +80,8 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="RaterId" Type="int" Nullable="false" />
-          <Property Name="CountOfStarts" Type="int" Nullable="false" />
+          <Property Name="RaterId" Type="int" />
+          <Property Name="CountOfStars" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -91,7 +91,9 @@
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_FestivalComment_Festival">
-          <End Role="Festival" Type="Self.Festival" Multiplicity="1" />
+          <End Role="Festival" Type="Self.Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FestivalComment" Type="Self.FestivalComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -115,7 +117,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FestivalProgram_Festival">
-          <End Role="Festival" Type="Self.Festival" Multiplicity="1" />
+          <End Role="Festival" Type="Self.Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FestivalProgram" Type="Self.FestivalProgram" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -127,7 +131,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FestivalRating_Festival">
-          <End Role="Festival" Type="Self.Festival" Multiplicity="1" />
+          <End Role="Festival" Type="Self.Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FestivalRating" Type="Self.FestivalRating" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -187,7 +193,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserOfFestival_Festival">
-          <End Role="Festival" Type="Self.Festival" Multiplicity="1" />
+          <End Role="Festival" Type="Self.Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserOfFestival" Type="Self.UserOfFestival" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -223,7 +231,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserRating_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="UserRating" Type="Self.UserRating" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -394,7 +402,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FestivalId" Type="Int32" Nullable="false" />
-          <Property Name="CountOfStarts" Type="Int32" Nullable="false" />
+          <Property Name="CountOfStars" Type="Int32" Nullable="false" />
           <Property Name="RaterId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Festival" Relationship="WorldFestBaseModel.FK_FestivalRating_Festival" FromRole="FestivalRating" ToRole="Festival" />
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_FestivalRating_User" FromRole="FestivalRating" ToRole="User" />
@@ -437,8 +445,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="RaterId" Type="Int32" Nullable="false" />
-          <Property Name="CountOfStarts" Type="Int32" Nullable="false" />
+          <Property Name="RaterId" Type="Int32" />
+          <Property Name="CountOfStars" Type="Int32" Nullable="false" />
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_UserRating_User" FromRole="UserRating" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WorldFestBaseModel.FK_UserRating_User1" FromRole="UserRating" ToRole="User" />
         </EntityType>
@@ -451,7 +459,9 @@
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_User_UserType" FromRole="UserType" ToRole="User" />
         </EntityType>
         <Association Name="FK_FestivalComment_Festival">
-          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="WorldFestBaseModel.FestivalComment" Role="FestivalComment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -463,7 +473,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FestivalProgram_Festival">
-          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="WorldFestBaseModel.FestivalProgram" Role="FestivalProgram" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -475,7 +487,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FestivalRating_Festival">
-          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="WorldFestBaseModel.FestivalRating" Role="FestivalRating" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Festival">
@@ -559,7 +573,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserRating_User1">
-          <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="0..1" />
           <End Type="WorldFestBaseModel.UserRating" Role="UserRating" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -617,7 +631,7 @@
             <EntityTypeMapping TypeName="WorldFestBaseModel.FestivalRating">
               <MappingFragment StoreEntitySet="FestivalRating">
                 <ScalarProperty Name="RaterId" ColumnName="RaterId" />
-                <ScalarProperty Name="CountOfStarts" ColumnName="CountOfStarts" />
+                <ScalarProperty Name="CountOfStars" ColumnName="CountOfStars" />
                 <ScalarProperty Name="FestivalId" ColumnName="FestivalId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -650,7 +664,7 @@
           <EntitySetMapping Name="UserRating">
             <EntityTypeMapping TypeName="WorldFestBaseModel.UserRating">
               <MappingFragment StoreEntitySet="UserRating">
-                <ScalarProperty Name="CountOfStarts" ColumnName="CountOfStarts" />
+                <ScalarProperty Name="CountOfStars" ColumnName="CountOfStars" />
                 <ScalarProperty Name="RaterId" ColumnName="RaterId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

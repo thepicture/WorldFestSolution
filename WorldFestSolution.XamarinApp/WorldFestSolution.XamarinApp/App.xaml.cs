@@ -13,7 +13,7 @@ namespace WorldFestSolution.XamarinApp
         public App()
         {
             InitializeComponent();
-            XF.Material.Forms.Material.Init(this, 
+            XF.Material.Forms.Material.Init(this,
                 (XF
                 .Material
                 .Forms
@@ -23,6 +23,7 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<AndroidAlertService>();
             DependencyService.Register<HttpClientAuthenticationService>();
             DependencyService.Register<HttpClientRegistrationService>();
+            DependencyService.Register<FestivalDataStore>();
 
             MainPage = new AppShell();
         }

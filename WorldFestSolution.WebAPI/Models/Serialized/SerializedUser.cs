@@ -1,4 +1,5 @@
-﻿using WorldFestSolution.WebAPI.Models.Entities;
+﻿using System.Linq;
+using WorldFestSolution.WebAPI.Models.Entities;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized
 {
@@ -13,6 +14,14 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             Patronymic = user.Patronymic;
             UserTypeId = user.UserTypeId;
             Image = user.Image;
+            if (user.UserRating.Count > 0)
+            {
+                Rating = user.UserRating.Average(ur => ur.CountOfStars);
+            }
+            else
+            {
+                Rating = 0;
+            }
         }
 
         public int Id { get; set; }
@@ -23,5 +32,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
+        public double Rating { get; set; }
     }
 }

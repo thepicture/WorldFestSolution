@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
+             xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             x:DataType="viewmodels:FestivalsViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.FestivalsView"
+             Title="Фестивали"
+             x:Name="Page">
+    <ContentPage.ToolbarItems>
+        <controls:BindableToolbarItem Text="Добавить"
+                                      Command="{Binding GoToAddFestivalViewCommand}"
+                                      IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
+
+    </ContentPage.ToolbarItems>
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding Source={Static models:Identity.Role}}"
+                     Value="Организатор">
+            <Setter Property="Title"
+                    Value="Мои фестивали" />
+        </DataTrigger>
+    </ContentPage.Triggers>
+    <ContentPage.BindingContext>
+        <viewmodels:FestivalsViewModel />
+    </ContentPage.BindingContext>
+    <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                 Command="{Binding RefreshCommand}">
+        <Grid RowDefinitions="auto, *">
+            <SearchBar Text="{Binding SearchText}"
+                       Placeholder="Поиск по названию" />
+            <ScrollView Grid.Row="1">
+                <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
+                    <BindableLayout.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label HorizontalOptions="Center"
+                                   VerticalOptions="CenterAndExpand"
+                                   FontSize="Large"
+                                   Text="Фестивалей не найдено">
+                                <Label.IsVisible>
+                                    <Binding Path="BindingContext.IsRefreshing"
+                                             Source="{Reference Page}">
+                                        <Binding.Converter>
+                                            <converters:BooleanInvertValueConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Label.IsVisible>
+                            </Label>
+                        </DataTemplate>
+                    </BindableLayout.EmptyViewTemplate>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="serialized:Festival">
+                            <material:MaterialCard Elevation="5"
+                                                   Margin="10"
+                                                   CornerRadius="25"
+                                                   IsClickable="True">
+                                <Grid ColumnDefinitions="auto, *"
+                                      RowDefinitions="auto,auto,auto">
+                                    <Image Source="{Binding ImageSource}"
+                                           HeightRequest="60"
+                                           VerticalOptions="Start" />
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="{Binding Title}"
+                                               FontAttributes="Bold"
+                                               FontSize="Medium" />
+                                        <BoxView Color="WhiteSmoke"
+                                                 HeightRequest="1" />
+                                        <Label Text="{Binding Path=Description, 
+                                                              StringFormat='{}Описание: {0}'}"
+                                               Grid.Row="1" />
+                                        <BoxView Color="WhiteSmoke"
+                                                 HeightRequest="1" />
+                                        <Label Text="{Binding Path=FromDateTime, 
+                                                              StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
+                                               Grid.Row="2" />
+                                        <Grid ColumnDefinitions="*,*,*">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="participants"
+                                                       HeightRequest="30" />
+                                                <Label Text="{Binding CountOfUsers}"
+                                                       VerticalOptions="Center" />
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal"
+                                                         Grid.Column="1">
+                                                <Image Source="programs"
+                                                       HeightRequest="30" />
+                                                <Label Text="{Binding CountOfPrograms}"
+                                                       VerticalOptions="Center" />
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal"
+                                                         Grid.Column="2">
+                                                <Image Source="comments"
+                                                       HeightRequest="30" />
+                                                <Label Text="{Binding CountOfComments}"
+                                                       VerticalOptions="Center" />
+                                            </StackLayout>
+                                        </Grid>
+                                    </StackLayout>
+                                    <material:MaterialButton Command="{Binding Source={x:Reference Page}, 
+                                                                                   Path=BindingContext.GoToEditFestivalViewCommand}"
+                                                             Text="Подробнее"
+                                                             Style="{StaticResource BaseButton}"
+                                                             IsVisible="False"
+                                                             Grid.Row="1"
+                                                             Grid.ColumnSpan="2">
+                                        <material:MaterialButton.Triggers>
+                                            <DataTrigger TargetType="material:MaterialButton"
+                                                         Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                                                         Value="True">
+                                                <Setter Property="IsVisible"
+                                                        Value="True" />
+                                            </DataTrigger>
+                                        </material:MaterialButton.Triggers>
+                                    </material:MaterialButton>
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
+                                                                                            Path=BindingContext}"
+                                                             Command="{Binding Source={x:Reference Page}, 
+                                                                                   Path=BindingContext.DeleteFestivalCommand}"
+                                                             Text="Удалить"
+                                                             Style="{StaticResource BackgroundButton}"
+                                                             IsVisible="False"
+                                                             Grid.Row="2"
+                                                             Grid.ColumnSpan="2">
+                                        <material:MaterialButton.Triggers>
+                                            <DataTrigger TargetType="material:MaterialButton"
+                                                         Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                                                         Value="True">
+                                                <Setter Property="IsVisible"
+                                                        Value="True" />
+                                            </DataTrigger>
+                                        </material:MaterialButton.Triggers>
+                                    </material:MaterialButton>
+                                </Grid>
+                            </material:MaterialCard>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </RefreshView>
+</ContentPage>

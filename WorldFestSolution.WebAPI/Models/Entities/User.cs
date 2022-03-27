@@ -17,6 +17,7 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.FestivalComment = new HashSet<FestivalComment>();
             this.FestivalRating = new HashSet<FestivalRating>();
             this.ParticipantInvite = new HashSet<ParticipantInvite>();
             this.ParticipantInvite1 = new HashSet<ParticipantInvite>();
@@ -35,6 +36,8 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FestivalComment> FestivalComment { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FestivalRating> FestivalRating { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

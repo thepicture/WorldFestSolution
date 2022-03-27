@@ -10,5 +10,6 @@
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
+        public double Rating { get; set; }
     }
 }

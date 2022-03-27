@@ -55,6 +55,13 @@ namespace WorldFestSolution.XamarinApp
             switch (Identity.Role)
             {
                 case "Организатор":
+                     ShellContentTabBar.Items.Add(new ShellContent
+                      {
+                          Route = nameof(FestivalsView),
+                          Icon = "logo",
+                          Title = "Мои фестивали",
+                          ContentTemplate = new DataTemplate(typeof(FestivalsView))
+                      });
                     break;
                 case "Участник":
                     break;

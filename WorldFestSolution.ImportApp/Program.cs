@@ -9,7 +9,7 @@ namespace WorldFestSolution.ImportApp
 {
     internal class Program
     {
-        private readonly static string[] firstNames = new string[]
+        private static readonly string[] firstNames = new string[]
         {
             "Иван",
             "Александр",
@@ -21,7 +21,7 @@ namespace WorldFestSolution.ImportApp
             "Светлана",
             "Макс"
         };
-        private readonly static string[] lastNames = new string[]
+        private static readonly string[] lastNames = new string[]
         {
             "Иванова",
             "Александрова",
@@ -96,7 +96,7 @@ namespace WorldFestSolution.ImportApp
            Path.Combine(
                Path.GetFullPath("../.."), "FestivalImages"));
 
-        static void Main()
+        private static void Main()
         {
             ImportUsers(10);
             ImportFestivals(10);

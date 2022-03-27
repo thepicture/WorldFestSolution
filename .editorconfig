@@ -5,3 +5,9 @@ dotnet_diagnostic.IDE0002.severity = none
 
 # IDE0046: Convert to conditional expression
 dotnet_style_prefer_conditional_expression_over_return = false
+
+# IDE0045: Convert to conditional expression
+dotnet_style_prefer_conditional_expression_over_assignment = false
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = none

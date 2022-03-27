@@ -16,7 +16,7 @@ namespace WorldFestSolution.WebAPI.Models.Entities
     {
         public int Id { get; set; }
         public int FestivalId { get; set; }
-        public int CountOfStarts { get; set; }
+        public int CountOfStars { get; set; }
         public int RaterId { get; set; }
     
         public virtual Festival Festival { get; set; }
