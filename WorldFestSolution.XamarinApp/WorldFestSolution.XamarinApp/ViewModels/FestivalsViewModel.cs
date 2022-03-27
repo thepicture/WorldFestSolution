@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -71,7 +72,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     Festivals.Clear();
                 });
                 if (!string.IsNullOrWhiteSpace(SearchText))
-               {
+                {
                     items = items.Where(i =>
                     {
                         return i.Title.IndexOf(SearchText,
@@ -98,34 +99,37 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToAddFestivalViewCommand == null)
                 {
-                    goToAddFestivalViewCommand = new Command(GoToAddFestivalView);
+                    goToAddFestivalViewCommand = new Command(GoToAddFestivalViewAsync);
                 }
 
                 return goToAddFestivalViewCommand;
             }
         }
 
-        private void GoToAddFestivalView()
+        private async void GoToAddFestivalViewAsync()
         {
+
         }
 
-        private Command<Festival> goToEditFestivalViewCommand;
+        private Command<Festival> goToFestivalViewCommand;
 
-        public Command<Festival> GoToEditFestivalViewCommand
+        public Command<Festival> GoToFestivalViewCommand
         {
             get
             {
-                if (goToEditFestivalViewCommand == null)
+                if (goToFestivalViewCommand == null)
                 {
-                    goToEditFestivalViewCommand = new Command<Festival>(GoToEditFestivalView);
+                    goToFestivalViewCommand = new Command<Festival>(GoToFestivalViewAsync);
                 }
 
-                return goToEditFestivalViewCommand;
+                return goToFestivalViewCommand;
             }
         }
 
-        private void GoToEditFestivalView(Festival festival)
+        private async void GoToFestivalViewAsync(Festival festival)
         {
+            await Shell.Current.Navigation.PushAsync(
+                new FestivalView(new FestivalViewModel(festival.Id)));
         }
 
         private Command<Festival> deleteFestivalCommand;

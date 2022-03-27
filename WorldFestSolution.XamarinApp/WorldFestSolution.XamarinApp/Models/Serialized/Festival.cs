@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models.Serialized
@@ -30,5 +31,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 });
             }
         }
+        public bool IsMeParticipating => Users.Any(u => u.Id == Identity.User.Id);
     }
 }

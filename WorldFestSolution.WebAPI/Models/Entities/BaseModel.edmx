@@ -51,6 +51,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrganizerId" Type="int" Nullable="false" />
           <Property Name="ParticipantId" Type="int" Nullable="false" />
+          <Property Name="FestivalId" Type="int" Nullable="false" />
+          <Property Name="IsAccepted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -153,6 +155,18 @@
             </Principal>
             <Dependent Role="FestivalRating">
               <PropertyRef Name="RaterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantInvite_Festival">
+          <End Role="Festival" Type="Self.Festival" Multiplicity="1" />
+          <End Role="ParticipantInvite" Type="Self.ParticipantInvite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Festival">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipantInvite">
+              <PropertyRef Name="FestivalId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -272,6 +286,10 @@
             <End Role="User" EntitySet="User" />
             <End Role="FestivalRating" EntitySet="FestivalRating" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParticipantInvite_Festival" Association="Self.FK_ParticipantInvite_Festival">
+            <End Role="Festival" EntitySet="Festival" />
+            <End Role="ParticipantInvite" EntitySet="ParticipantInvite" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParticipantInvite_User" Association="Self.FK_ParticipantInvite_User">
             <End Role="User" EntitySet="User" />
             <End Role="ParticipantInvite" EntitySet="ParticipantInvite" />
@@ -326,6 +344,10 @@
             <End Role="Festival" EntitySet="Festival" />
             <End Role="FestivalRating" EntitySet="FestivalRating" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParticipantInvite_Festival" Association="WorldFestBaseModel.FK_ParticipantInvite_Festival">
+            <End Role="Festival" EntitySet="Festival" />
+            <End Role="ParticipantInvite" EntitySet="ParticipantInvite" />
+          </AssociationSet>
           <AssociationSet Name="FK_FestivalComment_User" Association="WorldFestBaseModel.FK_FestivalComment_User">
             <End Role="User" EntitySet="User" />
             <End Role="FestivalComment" EntitySet="FestivalComment" />
@@ -371,6 +393,7 @@
           <NavigationProperty Name="FestivalComment" Relationship="WorldFestBaseModel.FK_FestivalComment_Festival" FromRole="Festival" ToRole="FestivalComment" />
           <NavigationProperty Name="FestivalProgram" Relationship="WorldFestBaseModel.FK_FestivalProgram_Festival" FromRole="Festival" ToRole="FestivalProgram" />
           <NavigationProperty Name="FestivalRating" Relationship="WorldFestBaseModel.FK_FestivalRating_Festival" FromRole="Festival" ToRole="FestivalRating" />
+          <NavigationProperty Name="ParticipantInvite" Relationship="WorldFestBaseModel.FK_ParticipantInvite_Festival" FromRole="Festival" ToRole="ParticipantInvite" />
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.UserOfFestival" FromRole="Festival" ToRole="User" />
         </EntityType>
         <EntityType Name="FestivalComment">
@@ -414,6 +437,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrganizerId" Type="Int32" Nullable="false" />
           <Property Name="ParticipantId" Type="Int32" Nullable="false" />
+          <Property Name="FestivalId" Type="Int32" Nullable="false" />
+          <Property Name="IsAccepted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Festival" Relationship="WorldFestBaseModel.FK_ParticipantInvite_Festival" FromRole="ParticipantInvite" ToRole="Festival" />
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User" FromRole="ParticipantInvite" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User1" FromRole="ParticipantInvite" ToRole="User" />
         </EntityType>
@@ -496,6 +522,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="FestivalRating">
+              <PropertyRef Name="FestivalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParticipantInvite_Festival">
+          <End Type="WorldFestBaseModel.Festival" Role="Festival" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.ParticipantInvite" Role="ParticipantInvite" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Festival">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipantInvite">
               <PropertyRef Name="FestivalId" />
             </Dependent>
           </ReferentialConstraint>
@@ -640,6 +678,8 @@
           <EntitySetMapping Name="ParticipantInvite">
             <EntityTypeMapping TypeName="WorldFestBaseModel.ParticipantInvite">
               <MappingFragment StoreEntitySet="ParticipantInvite">
+                <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
+                <ScalarProperty Name="FestivalId" ColumnName="FestivalId" />
                 <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
                 <ScalarProperty Name="OrganizerId" ColumnName="OrganizerId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

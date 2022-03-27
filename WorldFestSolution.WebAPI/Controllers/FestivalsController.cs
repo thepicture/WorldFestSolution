@@ -35,7 +35,7 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // GET: api/Festivals/5
-        [ResponseType(typeof(Festival))]
+        [ResponseType(typeof(SerializedFestival))]
         public async Task<IHttpActionResult> GetFestival(int id)
         {
             Festival festival = await db.Festival.FindAsync(id);
@@ -44,7 +44,8 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(festival);
+            return Ok(
+                new SerializedFestival(festival));
         }
 
         // PUT: api/Festivals/5
@@ -118,6 +119,35 @@ namespace WorldFestSolution.WebAPI.Controllers
             await db.SaveChangesAsync();
 
             return Ok(festival.Id);
+        }
+
+        // GET: api/Festivals/toggleParticipateState?festivalId=5
+        [HttpGet]
+        [ResponseType(typeof(bool))]
+        [Authorize(Roles = "Участник")]
+        [Route("api/festivals/toggleparticipatestate")]
+        public async Task<IHttpActionResult> ToggleParticipateState(int festivalId)
+        {
+            Festival festival = await db.Festival.FindAsync(festivalId);
+            if (festival == null)
+            {
+                return NotFound();
+            }
+            User user = await db.User
+                .FirstAsync(u =>
+                    u.Login == HttpContext.Current.User.Identity.Name);
+            if (festival.User.Any(u => u.Id == user.Id))
+            {
+                festival.User.Remove(user);
+                await db.SaveChangesAsync();
+                return Ok(false);
+            }
+            else
+            {
+                festival.User.Add(user);
+                await db.SaveChangesAsync();
+                return Ok(true);
+            }
         }
 
         protected override void Dispose(bool disposing)

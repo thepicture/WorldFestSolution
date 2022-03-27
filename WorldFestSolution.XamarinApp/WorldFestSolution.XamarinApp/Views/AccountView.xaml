@@ -53,8 +53,8 @@
                    HorizontalTextAlignment="Center" />
             <Label Text="{Binding Path=User.Rating,
                                   StringFormat='{}Ваш рейтинг: {0}'}"
-                                  FontSize="Medium"
-                                  HorizontalTextAlignment="Center">
+                   FontSize="Medium"
+                   HorizontalTextAlignment="Center">
                 <Label.Triggers>
                     <DataTrigger TargetType="Label"
                                  Binding="{Binding User.Rating}"

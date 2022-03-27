@@ -19,6 +19,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
          DependencyService.Get<IRegistrationService>();
         public IDataStore<Festival> FestivalDataStore =>
              DependencyService.Get<IDataStore<Festival>>();
+        public InviteOfFestivalDataStore InviteOfFestivalDataStore =>
+           DependencyService.Get<InviteOfFestivalDataStore>();
         public User User => Identity.User;
 
         private bool isRefreshing = false;

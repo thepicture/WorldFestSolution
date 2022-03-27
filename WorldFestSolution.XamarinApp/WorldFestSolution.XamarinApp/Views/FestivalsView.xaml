@@ -15,7 +15,6 @@
         <controls:BindableToolbarItem Text="Добавить"
                                       Command="{Binding GoToAddFestivalViewCommand}"
                                       IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
-
     </ContentPage.ToolbarItems>
     <ContentPage.Triggers>
         <DataTrigger TargetType="ContentPage"
@@ -100,16 +99,18 @@
                                             </StackLayout>
                                         </Grid>
                                     </StackLayout>
-                                    <material:MaterialButton Command="{Binding Source={x:Reference Page}, 
-                                                                                   Path=BindingContext.GoToEditFestivalViewCommand}"
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={x:Reference Page}, 
+                                                                               Path=BindingContext.GoToFestivalViewCommand}"
                                                              Text="Подробнее"
                                                              Style="{StaticResource BaseButton}"
                                                              Grid.Row="1"
                                                              Grid.ColumnSpan="2" />
                                     <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
-                                                                                            Path=BindingContext}"
+                                                                                        Path=BindingContext}"
                                                              Command="{Binding Source={x:Reference Page}, 
-                                                                                   Path=BindingContext.DeleteFestivalCommand}"
+                                                                               Path=BindingContext.DeleteFestivalCommand}"
                                                              Text="Удалить"
                                                              Style="{StaticResource BackgroundButton}"
                                                              IsVisible="False"

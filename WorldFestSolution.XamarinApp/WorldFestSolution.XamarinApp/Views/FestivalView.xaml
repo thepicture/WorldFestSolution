@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             x:DataType="viewmodels:FestivalViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.FestivalView"
+             Title="О фестивале">
+    <ContentView>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <Grid RowDefinitions="*,*">
+                    <Frame Padding="0">
+                        <Image Source="{Binding Festival.ImageSource}"
+                               Aspect="AspectFill" />
+                    </Frame>
+                    <Grid Opacity=".8">
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Offset="0" />
+                                <GradientStop Offset="1"
+                                              Color="Black" />
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                    </Grid>
+                    <Label Text="{Binding Festival.Title}"
+                           VerticalOptions="End"
+                           HorizontalOptions="Center"
+                           TextColor="White"
+                           FontSize="50"
+                           Margin="10" />
+                    <StackLayout Grid.Row="1"
+                                 VerticalOptions="Center"
+                                 Margin="0,0,0,40">
+                        <Label Text="{Binding Path=Festival.FromDateTime, 
+                                  StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
+                               FontSize="Large"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Path=Festival.Rating,
+                                  StringFormat='{}Рейтинг фестиваля: {0}'}"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding User.Rating}"
+                                             Value="0">
+                                    <Setter Property="Text"
+                                            Value="Фестиваль пока не оценивали" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                    <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
+                                             VerticalOptions="EndAndExpand"
+                                             Grid.Row="1"
+                                             IsEnabled="{Binding IsNotBusy}"
+                                             Style="{StaticResource BackgroundButton}">
+                        <material:MaterialButton.Triggers>
+                            <DataTrigger TargetType="material:MaterialButton"
+                                         Binding="{Binding Festival.IsMeParticipating}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="Покинуть" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="material:MaterialButton"
+                                         Binding="{Binding Festival.IsMeParticipating}"
+                                         Value="False">
+                                <Setter Property="Text"
+                                        Value="Вступить" />
+                            </DataTrigger>
+                        </material:MaterialButton.Triggers>
+                    </material:MaterialButton>
+                </Grid>
+            </ScrollView>
+        </RefreshView>
+    </ContentView>
+</ContentPage>
