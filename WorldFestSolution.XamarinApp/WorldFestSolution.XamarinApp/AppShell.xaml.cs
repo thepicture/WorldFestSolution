@@ -63,6 +63,13 @@ namespace WorldFestSolution.XamarinApp
                     });
                     break;
                 case "Участник":
+                    ShellContentTabBar.Items.Add(new ShellContent
+                    {
+                        Route = nameof(FestivalsView),
+                        Icon = "logo",
+                        Title = "Фестивали",
+                        ContentTemplate = new DataTemplate(typeof(FestivalsView))
+                    });
                     break;
                 default:
                     break;
