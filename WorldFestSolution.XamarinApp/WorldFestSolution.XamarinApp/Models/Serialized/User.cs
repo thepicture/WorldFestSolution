@@ -1,4 +1,8 @@
-﻿namespace WorldFestSolution.XamarinApp.Models.Serialized
+﻿using Newtonsoft.Json;
+using System.IO;
+using Xamarin.Forms;
+
+namespace WorldFestSolution.XamarinApp.Models.Serialized
 {
     public class User
     {
@@ -10,6 +14,18 @@
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
+        [JsonIgnore]
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(Image);
+                });
+            }
+        }
+
         public double Rating { get; set; }
     }
 }

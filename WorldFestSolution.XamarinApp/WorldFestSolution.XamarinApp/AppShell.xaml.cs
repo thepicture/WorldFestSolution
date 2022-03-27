@@ -1,5 +1,4 @@
-﻿using System;
-using WorldFestSolution.XamarinApp.Models;
+﻿using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -55,19 +54,26 @@ namespace WorldFestSolution.XamarinApp
             switch (Identity.Role)
             {
                 case "Организатор":
-                     ShellContentTabBar.Items.Add(new ShellContent
-                      {
-                          Route = nameof(FestivalsView),
-                          Icon = "logo",
-                          Title = "Мои фестивали",
-                          ContentTemplate = new DataTemplate(typeof(FestivalsView))
-                      });
+                    ShellContentTabBar.Items.Add(new ShellContent
+                    {
+                        Route = nameof(FestivalsView),
+                        Icon = "logo",
+                        Title = "Мои фестивали",
+                        ContentTemplate = new DataTemplate(typeof(FestivalsView))
+                    });
                     break;
                 case "Участник":
                     break;
                 default:
                     break;
             }
+            ShellContentTabBar.Items.Add(new ShellContent
+            {
+                Route = nameof(AccountView),
+                Icon = "login",
+                Title = "Аккаунт",
+                ContentTemplate = new DataTemplate(typeof(AccountView))
+            });
         }
     }
 }

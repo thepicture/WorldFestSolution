@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Forms;
@@ -18,6 +19,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
          DependencyService.Get<IRegistrationService>();
         public IDataStore<Festival> FestivalDataStore =>
              DependencyService.Get<IDataStore<Festival>>();
+        public User User => Identity.User;
 
         private bool isRefreshing = false;
         private bool isBusy = false;

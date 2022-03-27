@@ -5,6 +5,10 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
 {
     public class SerializedUser
     {
+        public SerializedUser()
+        {
+        }
+
         public SerializedUser(User user)
         {
             Id = user.Id;

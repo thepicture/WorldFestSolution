@@ -23,17 +23,17 @@ namespace WorldFestSolution.XamarinApp.Models
             set
             {
                 (App.Current as App).User = value;
-                if (value == null)
-                {
-                    _ = SecureStorage.Remove("User");
-                }
-                else
-                {
-                    _ = SecureStorage.SetAsync(
-                        "User", JsonConvert.SerializeObject(value));
-                }
+                _ = SecureStorage.SetAsync(
+                    "User", JsonConvert.SerializeObject(value));
             }
         }
+
+        internal static void Logout()
+        {
+            (App.Current as App).User = null;
+            SecureStorage.RemoveAll();
+        }
+
         public static string Role => User.UserTypeId == 1
             ? "Участник"
             : "Организатор";

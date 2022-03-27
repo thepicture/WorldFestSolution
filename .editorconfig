@@ -11,3 +11,6 @@ dotnet_style_prefer_conditional_expression_over_assignment = false
 
 # IDE0058: Expression value is never used
 dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0025: Use expression body for properties
+dotnet_diagnostic.IDE0025.severity = none
