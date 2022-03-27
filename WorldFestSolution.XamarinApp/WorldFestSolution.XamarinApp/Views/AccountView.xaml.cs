@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using WorldFestSolution.XamarinApp.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace WorldFestSolution.XamarinApp.Views
@@ -9,6 +10,12 @@ namespace WorldFestSolution.XamarinApp.Views
         public AccountView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            (BindingContext as AccountViewModel).OnAppearing();
         }
     }
 }

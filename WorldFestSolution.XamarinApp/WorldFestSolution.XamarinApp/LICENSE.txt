@@ -6,4 +6,5 @@ Name icons created by Pixel perfect - Flaticon
 Comment icons created by Freepik - Flaticon
 Festival icons created by Freepik - Flaticon
 People icons created by SBTS2018 - Flaticon
+Star icons created by Pixel perfect - Flaticon
 BindableToolbarItem source: https://forums.xamarin.com/discussion/comment/168974/#Comment_168974

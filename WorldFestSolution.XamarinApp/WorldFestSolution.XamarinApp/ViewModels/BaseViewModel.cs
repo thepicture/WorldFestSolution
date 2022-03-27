@@ -21,7 +21,15 @@ namespace WorldFestSolution.XamarinApp.ViewModels
              DependencyService.Get<IDataStore<Festival>>();
         public InviteOfFestivalDataStore InviteOfFestivalDataStore =>
            DependencyService.Get<InviteOfFestivalDataStore>();
-        public User User => Identity.User;
+        public User User
+        {
+            get => Identity.User;
+            set
+            {
+                Identity.User = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool isRefreshing = false;
         private bool isBusy = false;
