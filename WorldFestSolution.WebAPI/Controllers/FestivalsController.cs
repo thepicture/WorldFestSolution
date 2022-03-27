@@ -16,18 +16,30 @@ namespace WorldFestSolution.WebAPI.Controllers
     {
         private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
 
-        // GET: api/Festivals
+        // GET: api/Festivals?isRelatedToMe=false
         [Authorize(Roles = "Участник, Организатор")]
         [ResponseType(typeof(IEnumerable<SerializedFestival>))]
-        public IEnumerable<SerializedFestival> GetFestival()
+        public IEnumerable<SerializedFestival> GetFestival(bool isRelatedToMe = false)
         {
-            if (HttpContext.Current.User.IsInRole("Организатор"))
+            if (isRelatedToMe)
             {
-                return db.User
-                    .First(u => u.Login == HttpContext.Current.User.Identity.Name)
-                    .Festival
-                    .ToList()
-                    .ConvertAll(f => new SerializedFestival(f));
+                if (HttpContext.Current.User.IsInRole("Организатор"))
+                {
+                    return db.User
+                        .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                        .Festival
+                        .Where(f => f.User.First().Login == HttpContext.Current.User.Identity.Name)
+                        .ToList()
+                        .ConvertAll(f => new SerializedFestival(f));
+                }
+                else
+                {
+                    return db.User
+                     .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                     .Festival
+                     .ToList()
+                     .ConvertAll(f => new SerializedFestival(f));
+                }
             }
             return db.Festival
                 .ToList()

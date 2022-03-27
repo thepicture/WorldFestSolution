@@ -51,24 +51,24 @@ namespace WorldFestSolution.XamarinApp
         internal void SetShellStacksDependingOnRole()
         {
             ShellContentTabBar.Items.Clear();
+            ShellContentTabBar.Items.Add(new ShellContent
+            {
+                Route = nameof(FestivalsView),
+                Icon = "programs",
+                Title = "Мои фестивали",
+                ContentTemplate = new DataTemplate(typeof(FestivalsView)),
+            });
             switch (Identity.Role)
             {
                 case "Организатор":
-                    ShellContentTabBar.Items.Add(new ShellContent
-                    {
-                        Route = nameof(FestivalsView),
-                        Icon = "logo",
-                        Title = "Мои фестивали",
-                        ContentTemplate = new DataTemplate(typeof(FestivalsView))
-                    });
                     break;
                 case "Участник":
                     ShellContentTabBar.Items.Add(new ShellContent
                     {
                         Route = nameof(FestivalsView),
                         Icon = "logo",
-                        Title = "Фестивали",
-                        ContentTemplate = new DataTemplate(typeof(FestivalsView))
+                        Title = "Поиск фестивалей",
+                        ContentTemplate = new DataTemplate(typeof(FestivalsView)),
                     });
                     break;
                 default:

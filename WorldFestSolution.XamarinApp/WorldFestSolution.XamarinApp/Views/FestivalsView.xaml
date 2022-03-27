@@ -7,9 +7,11 @@
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             xmlns:app="clr-namespace:WorldFestSolution.XamarinApp"
              x:DataType="viewmodels:FestivalsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsView"
-             Title="Фестивали"
+             Title="{Binding Source={Static app:AppShell.Current},
+                             Path=CurrentItem.CurrentItem.Title}"
              x:Name="Page">
     <ContentPage.ToolbarItems>
         <controls:BindableToolbarItem Text="Добавить"

@@ -147,7 +147,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                        .GetAsync("festivals");
+                        .GetAsync($"festivals?isRelatedToMe={AppShell.Current.CurrentItem.CurrentItem.Title == "Мои фестивали"}");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         string content = await response.Content
