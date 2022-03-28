@@ -93,9 +93,70 @@ namespace WorldFestSolution.XamarinApp.Services
             return false;
         }
 
-        public Task<bool> DeleteItemAsync(string id)
+        public async Task<bool> DeleteItemAsync(string id)
         {
-            throw new NotImplementedException();
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Basic",
+                                                  Identity.AuthorizationValue);
+                client.BaseAddress = new Uri(Api.BaseUrl);
+                try
+                {
+                    HttpResponseMessage response = await client
+                     .DeleteAsync($"festivalcomments/{id}");
+                    string content = JsonConvert
+                        .DeserializeObject<string>(
+                            await response.Content.ReadAsStringAsync());
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService
+                            .Get<IAlertService>()
+                            .Inform(content);
+                    });
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return true;
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Ошибка запроса: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (TaskCanceledException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Запрос отменён: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Операция некорректна: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (Exception ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Неизвестная ошибка: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+            }
+            return false;
         }
 
         public async Task<Comment> GetItemAsync(string id)

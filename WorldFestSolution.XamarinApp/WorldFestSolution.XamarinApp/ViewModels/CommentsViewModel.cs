@@ -112,5 +112,32 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 IsRefreshing = true;
             }
         }
+
+        private Command<Comment> deleteCommentCommand;
+
+        public Command<Comment> DeleteCommentCommand
+        {
+            get
+            {
+                if (deleteCommentCommand == null)
+                {
+                    deleteCommentCommand = new Command<Comment>(DeleteCommentAsync);
+                }
+
+                return deleteCommentCommand;
+            }
+        }
+
+        private async void DeleteCommentAsync(Comment comment)
+        {
+            if (await AlertService.Ask("Удалить комментарий?"))
+            {
+                if (await CommentDataStore.DeleteItemAsync(
+                    comment.Id.ToString()))
+                {
+                    IsRefreshing = true;
+                }
+            }
+        }
     }
 }

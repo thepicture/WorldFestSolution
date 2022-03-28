@@ -93,7 +93,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 
             festivalComment.CreationDateTime = System.DateTime.Now;
             festivalComment.UserId = db.User
-                        .First(u => 
+                        .First(u =>
                             u.Login == HttpContext.Current.User.Identity.Name)
                         .Id;
 
@@ -106,7 +106,8 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // DELETE: api/FestivalComments/5
-        [ResponseType(typeof(FestivalComment))]
+        [ResponseType(typeof(string))]
+        [Authorize(Roles = "Участник, Организатор")]
         public async Task<IHttpActionResult> DeleteFestivalComment(int id)
         {
             FestivalComment festivalComment = await db.FestivalComment.FindAsync(id);
@@ -115,10 +116,26 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return NotFound();
             }
 
-            db.FestivalComment.Remove(festivalComment);
-            await db.SaveChangesAsync();
+            bool isUserIsOwnerOfComment = festivalComment.User.Login
+                                          == HttpContext.Current.User.Identity.Name;
+            bool isUserOwnerOfFestivalCommentRelatedTo =
+                festivalComment
+                    .Festival
+                    .User
+                    .First(u => u.UserType.Title == "Организатор")
+                    .Login == HttpContext.Current.User.Identity.Name;
+            if (isUserIsOwnerOfComment || isUserOwnerOfFestivalCommentRelatedTo)
+            {
+                db.FestivalComment.Remove(festivalComment);
+                await db.SaveChangesAsync();
 
-            return Ok(festivalComment);
+                return Ok("Комментарий удалён");
+            }
+            else
+            {
+                return Content(HttpStatusCode.Forbidden,
+                               "У вас недостаточно привилегий для удаления");
+            }
         }
 
         protected override void Dispose(bool disposing)

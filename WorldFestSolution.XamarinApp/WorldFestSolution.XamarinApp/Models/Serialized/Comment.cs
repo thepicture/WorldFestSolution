@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models.Serialized
@@ -31,6 +32,25 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                     });
                 }
             }
+        }
+
+        private Command deleteCommentCommand;
+
+        public ICommand DeleteCommentCommand
+        {
+            get
+            {
+                if (deleteCommentCommand == null)
+                {
+                    deleteCommentCommand = new Command(DeleteComment);
+                }
+
+                return deleteCommentCommand;
+            }
+        }
+
+        private void DeleteComment()
+        {
         }
     }
 }

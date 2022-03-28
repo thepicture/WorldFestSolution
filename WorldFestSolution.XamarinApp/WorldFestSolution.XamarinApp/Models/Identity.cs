@@ -39,6 +39,7 @@ namespace WorldFestSolution.XamarinApp.Models
             : "Организатор";
         public static bool IsOrganizer => Role == "Организатор";
         public static bool IsParticipant => Role == "Участник";
+        public static int Id => User.Id;
         public static string AuthorizationValue
         {
             get
