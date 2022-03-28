@@ -91,5 +91,24 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 FestivalId.ToString());
             IsRefreshing = false;
         }
+
+        private Command goToCommentsViewCommand;
+
+        public ICommand GoToCommentsViewCommand
+        {
+            get
+            {
+                if (goToCommentsViewCommand == null)
+                {
+                    goToCommentsViewCommand = new Command(GoToCommentsView);
+                }
+
+                return goToCommentsViewCommand;
+            }
+        }
+
+        private void GoToCommentsView()
+        {
+        }
     }
 }

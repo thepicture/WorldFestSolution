@@ -4,6 +4,7 @@
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              x:DataType="viewmodels:FestivalViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalView"
              Title="О фестивале">
@@ -33,8 +34,7 @@
                            FontSize="50"
                            Margin="10" />
                     <StackLayout Grid.Row="1"
-                                 VerticalOptions="Center"
-                                 Margin="0,0,0,40">
+                                 Margin="0,30,0,0">
                         <Label Text="{Binding Path=Festival.FromDateTime, 
                                   StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
                                FontSize="Large"
@@ -69,26 +69,34 @@
                             </rating:RatingBar.Triggers>
                         </rating:RatingBar>
                     </StackLayout>
-                    <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
-                                             VerticalOptions="EndAndExpand"
-                                             Grid.Row="1"
-                                             IsEnabled="{Binding IsNotBusy}"
-                                             Style="{StaticResource BackgroundButton}">
-                        <material:MaterialButton.Triggers>
-                            <DataTrigger TargetType="material:MaterialButton"
-                                         Binding="{Binding Festival.IsMeParticipating}"
-                                         Value="True">
-                                <Setter Property="Text"
-                                        Value="Покинуть" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="material:MaterialButton"
-                                         Binding="{Binding Festival.IsMeParticipating}"
-                                         Value="False">
-                                <Setter Property="Text"
-                                        Value="Вступить" />
-                            </DataTrigger>
-                        </material:MaterialButton.Triggers>
-                    </material:MaterialButton>
+                    <StackLayout Grid.Row="1"
+                                 VerticalOptions="End">
+                        <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
+                                                 Grid.Row="1"
+                                                 IsEnabled="{Binding IsNotBusy}"
+                                                 Style="{StaticResource BackgroundButton}"
+                                                 IsVisible="{Binding Source={Static models:Identity.IsParticipant}}">
+                            <material:MaterialButton.Triggers>
+                                <DataTrigger TargetType="material:MaterialButton"
+                                             Binding="{Binding Festival.IsMeParticipating}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="Покинуть" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="material:MaterialButton"
+                                             Binding="{Binding Festival.IsMeParticipating}"
+                                             Value="False">
+                                    <Setter Property="Text"
+                                            Value="Вступить" />
+                                </DataTrigger>
+                            </material:MaterialButton.Triggers>
+                        </material:MaterialButton>
+                        <material:MaterialButton Command="{Binding GoToCommentsViewCommand}"
+                                                 Text="{Binding Path=Festival.CountOfComments,
+                                                                StringFormat='{}Комментарии ({0})'}"
+                                                 Grid.Row="1"
+                                                 Style="{StaticResource BaseButton}" />
+                    </StackLayout>
                 </Grid>
             </ScrollView>
         </RefreshView>
