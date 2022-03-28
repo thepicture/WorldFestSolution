@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -100,15 +101,18 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToCommentsViewCommand == null)
                 {
-                    goToCommentsViewCommand = new Command(GoToCommentsView);
+                    goToCommentsViewCommand = new Command(GoToCommentsViewAsync);
                 }
 
                 return goToCommentsViewCommand;
             }
         }
 
-        private void GoToCommentsView()
+        private async void GoToCommentsViewAsync()
         {
+            await Shell.Current.Navigation.PushAsync(
+                new CommentsView(
+                    new CommentsViewModel(FestivalId)));
         }
     }
 }

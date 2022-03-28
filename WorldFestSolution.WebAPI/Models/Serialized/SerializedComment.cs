@@ -16,7 +16,10 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             CreationDateTime = festivalComment.CreationDateTime;
             FestivalId = festivalComment.Id;
             UserFullName = festivalComment.User.LastName
+                + " "
                 + festivalComment.User.FirstName;
+            UserImage = festivalComment.User.Image;
+            UserLogin = festivalComment.User.Login;
         }
 
         public int Id { get; set; }
@@ -25,5 +28,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public System.DateTime CreationDateTime { get; set; }
         public int FestivalId { get; set; }
         public string UserFullName { get; set; }
+        public byte[] UserImage { get; set; }
+        public string UserLogin { get; set; }
     }
 }
