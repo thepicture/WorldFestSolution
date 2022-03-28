@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
              xmlns:app="clr-namespace:WorldFestSolution.XamarinApp"
+             xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              x:DataType="viewmodels:FestivalsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsView"
              Title="{Binding Source={Static app:AppShell.Current},
@@ -64,6 +65,40 @@
                                     <Image Source="{Binding ImageSource}"
                                            HeightRequest="60"
                                            VerticalOptions="Start" />
+                                        <StackLayout Grid.Column="1">
+                                            <Label Text="{Binding Path=Rating,
+                                  StringFormat='{}Рейтинг фестиваля: {0}'}"
+                                                   FontSize="Medium"
+                                                   HorizontalTextAlignment="End"
+                                                   IsVisible="False">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding Rating}"
+                                                                 Value="0">
+                                                        <Setter Property="Text"
+                                                                Value="Без рейтинга" />
+                                                        <Setter Property="IsVisible"
+                                                                Value="True" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <rating:RatingBar SelectedStarValue="{Binding Rating}"
+                                                              EmptyStarImage="empty_star"
+                                                              FillStarImage="filled_star"
+                                                              StarHeightRequest="16"
+                                                              InputTransparent="True"
+                                                              HorizontalOptions="End"
+                                                              Margin="5">
+                                                <rating:RatingBar.Triggers>
+                                                    <DataTrigger TargetType="rating:RatingBar"
+                                                                 Binding="{Binding Rating}"
+                                                                 Value="0">
+                                                        <Setter Property="IsVisible"
+                                                                Value="False" />
+                                                    </DataTrigger>
+                                                </rating:RatingBar.Triggers>
+                                            </rating:RatingBar>
+                                        </StackLayout>
                                     <StackLayout Grid.Column="1">
                                         <Label Text="{Binding Title}"
                                                FontAttributes="Bold"

@@ -4,6 +4,7 @@
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              x:DataType="viewmodels:FestivalViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalView"
              Title="О фестивале">
@@ -41,7 +42,7 @@
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
                         <Label Text="{Binding Path=Festival.Rating,
-                                  StringFormat='{}Рейтинг фестиваля: {0}'}"
+                                  StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
@@ -53,6 +54,21 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
+                        <rating:RatingBar SelectedStarValue="{Binding Festival.Rating}"
+                                          EmptyStarImage="empty_star"
+                                          FillStarImage="filled_star"
+                                          StarHeightRequest="32"
+                                          InputTransparent="True"
+                                          HorizontalOptions="Center">
+                            <rating:RatingBar.Triggers>
+                                <DataTrigger TargetType="rating:RatingBar"
+                                             Binding="{Binding User.Rating}"
+                                             Value="0">
+                                    <Setter Property="IsVisible"
+                                            Value="False" />
+                                </DataTrigger>
+                            </rating:RatingBar.Triggers>
+                        </rating:RatingBar>
                     </StackLayout>
                     <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
                                              VerticalOptions="EndAndExpand"
