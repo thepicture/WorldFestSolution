@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              x:DataType="viewmodels:FestivalViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalView"

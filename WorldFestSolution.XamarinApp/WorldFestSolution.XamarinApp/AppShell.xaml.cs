@@ -53,7 +53,7 @@ namespace WorldFestSolution.XamarinApp
             ShellContentTabBar.Items.Clear();
             ShellContentTabBar.Items.Add(new ShellContent
             {
-                Route = nameof(FestivalsView),
+                Route = $"My{nameof(FestivalsView)}",
                 Icon = "programs",
                 Title = "Мои фестивали",
                 ContentTemplate = new DataTemplate(typeof(FestivalsView)),
