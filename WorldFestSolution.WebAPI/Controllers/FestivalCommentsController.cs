@@ -3,9 +3,11 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WorldFestSolution.WebAPI.Models.Entities;
+using WorldFestSolution.WebAPI.Models.Filters;
 using WorldFestSolution.WebAPI.Models.Serialized;
 
 namespace WorldFestSolution.WebAPI.Controllers
@@ -13,6 +15,7 @@ namespace WorldFestSolution.WebAPI.Controllers
     public class FestivalCommentsController : ApiController
     {
         private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
+        private readonly SwearingFilter swearingFilter = new SwearingFilter();
 
         // GET: api/FestivalComments
         public IQueryable<FestivalComment> GetFestivalComment()
@@ -73,7 +76,8 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // POST: api/FestivalComments
-        [ResponseType(typeof(FestivalComment))]
+        [ResponseType(typeof(SerializedComment))]
+        [Authorize(Roles = "Участник, Организатор")]
         public async Task<IHttpActionResult> PostFestivalComment(FestivalComment festivalComment)
         {
             if (!ModelState.IsValid)
@@ -81,10 +85,24 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (swearingFilter.IsTextContainsSwearing(festivalComment.Text))
+            {
+                return Content(HttpStatusCode.Forbidden,
+                               "Текст содержит нецензурную брань");
+            }
+
+            festivalComment.CreationDateTime = System.DateTime.Now;
+            festivalComment.UserId = db.User
+                        .First(u => 
+                            u.Login == HttpContext.Current.User.Identity.Name)
+                        .Id;
+
             db.FestivalComment.Add(festivalComment);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = festivalComment.Id }, festivalComment);
+            return CreatedAtRoute("DefaultApi",
+                                  new { id = festivalComment.Id },
+                                  new SerializedComment(festivalComment));
         }
 
         // DELETE: api/FestivalComments/5
