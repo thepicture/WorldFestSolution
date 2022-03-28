@@ -8,61 +8,80 @@
              x:DataType="viewmodels:CommentsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.CommentsView"
              x:Name="Page"
-             Title="{Binding Comments.Count, StringFormat='{}Комментарии ({0})'}">
+             Title="{Binding Path=Comments.Count, 
+                             StringFormat='{}Комментарии ({0})'}">
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
-            <ScrollView>
-                <StackLayout BindableLayout.ItemsSource="{Binding Comments}">
-                    <BindableLayout.EmptyViewTemplate>
-                        <DataTemplate>
-                            <Label HorizontalOptions="Center"
-                                   VerticalOptions="CenterAndExpand"
-                                   FontSize="Large"
-                                   Text="Комментариев не найдено">
-                                <Label.IsVisible>
-                                    <Binding Path="BindingContext.IsRefreshing"
-                                             Source="{Reference Page}">
-                                        <Binding.Converter>
-                                            <converters:BooleanInvertValueConverter />
-                                        </Binding.Converter>
-                                    </Binding>
-                                </Label.IsVisible>
-                            </Label>
-                        </DataTemplate>
-                    </BindableLayout.EmptyViewTemplate>
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="serialized:Comment">
-                            <material:MaterialCard Elevation="5"
-                                                   Margin="10"
-                                                   CornerRadius="25"
-                                                   IsClickable="True">
-                                <Grid ColumnDefinitions="auto,*">
-                                    <Image HeightRequest="60">
-                                        <Image.Source>
-                                            <Binding Path="UserImageSource">
-                                                <Binding.TargetNullValue>
-                                                    login
-                                                </Binding.TargetNullValue>
-                                            </Binding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Grid RowDefinitions="auto,*"
-                                          Grid.Column="1">
-                                        <Label Text="{Binding UserFullName}"
-                                               FontAttributes="Bold" />
-                                        <Label Text="{Binding Path=CreationDateTime, 
-                                                              StringFormat='{0:dd/MM/yyyy hh:mm}'}" 
-                                               HorizontalTextAlignment="End"/>
-                                        <Label Text="{Binding Text}"
-                                               Grid.Row="1" />
+            <Grid RowDefinitions="*, auto">
+                <ScrollView>
+                    <StackLayout BindableLayout.ItemsSource="{Binding Comments}">
+                        <BindableLayout.EmptyViewTemplate>
+                            <DataTemplate>
+                                <Label HorizontalOptions="Center"
+                                       VerticalOptions="CenterAndExpand"
+                                       FontSize="Large"
+                                       Text="Комментариев не найдено">
+                                    <Label.IsVisible>
+                                        <Binding Path="BindingContext.IsRefreshing"
+                                                 Source="{Reference Page}">
+                                            <Binding.Converter>
+                                                <converters:BooleanInvertValueConverter />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </Label.IsVisible>
+                                </Label>
+                            </DataTemplate>
+                        </BindableLayout.EmptyViewTemplate>
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="serialized:Comment">
+                                <material:MaterialCard Elevation="5"
+                                                       Margin="10"
+                                                       CornerRadius="25"
+                                                       IsClickable="True">
+                                    <Grid ColumnDefinitions="auto,*">
+                                        <Frame CornerRadius="60"
+                                               VerticalOptions="Start"
+                                               Padding="0"
+                                               WidthRequest="60"
+                                               HeightRequest="60"
+                                               HasShadow="False">
+                                            <Image Aspect="AspectFill">
+                                                <Image.Source>
+                                                    <Binding Path="UserImageSource">
+                                                        <Binding.TargetNullValue>
+                                                            login
+                                                        </Binding.TargetNullValue>
+                                                    </Binding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Frame>
+                                        <Grid RowDefinitions="auto,*"
+                                              Grid.Column="1">
+                                            <Label Text="{Binding UserFullName}"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding Path=CreationDateTime, 
+                                                              StringFormat='{0:dd/MM/yyyy hh:mm}'}"
+                                                   HorizontalTextAlignment="End" />
+                                            <Label Text="{Binding Text}"
+                                                   Grid.Row="1" />
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </material:MaterialCard>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
+                                </material:MaterialCard>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+                <StackLayout Grid.Row="1">
+                    <Editor Text="{Binding CommentText}"
+                            HeightRequest="120"
+                            Placeholder="Введите комментарий..."
+                            MaxLength="1024" />
+                    <material:MaterialButton Command="{Binding PostCommentCommand}"
+                                             Text="Отправить"
+                                             Style="{StaticResource BaseButton}" />
                 </StackLayout>
-            </ScrollView>
+            </Grid>
         </RefreshView>
     </ContentView>
 </ContentPage>

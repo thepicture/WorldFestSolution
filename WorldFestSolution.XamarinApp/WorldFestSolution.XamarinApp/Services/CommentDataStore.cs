@@ -1,22 +1,96 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
-using Newtonsoft.Json;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
     public class CommentDataStore : IDataStore<Comment>
     {
-        public Task<bool> AddItemAsync(Comment item)
+        public async Task<bool> AddItemAsync(Comment item)
         {
-            throw new NotImplementedException();
+            string jsonComment = JsonConvert.SerializeObject(item);
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Basic",
+                                                  Identity.AuthorizationValue);
+                client.BaseAddress = new Uri(Api.BaseUrl);
+                try
+                {
+                    HttpResponseMessage response = await client
+                     .PostAsync(new Uri(client.BaseAddress + "festivalcomments"),
+                                new StringContent(jsonComment,
+                                                  Encoding.UTF8,
+                                                  "application/json"));
+                    if (response.StatusCode == HttpStatusCode.Created)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            DependencyService
+                                .Get<IAlertService>()
+                                .Inform("Комментарий опубликован");
+                        });
+                        return true;
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            DependencyService
+                                .Get<IAlertService>()
+                                .Inform("Комментарий не отправлен, " +
+                                "так как он содержит " +
+                                "нецензурную брань");
+                        });
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Ошибка запроса: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (TaskCanceledException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Запрос отменён: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Операция некорректна: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+                catch (Exception ex)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Неизвестная ошибка: " + ex.StackTrace);
+                    });
+                    Debug.WriteLine(ex.StackTrace);
+                }
+            }
+            return false;
         }
 
         public Task<bool> DeleteItemAsync(string id)

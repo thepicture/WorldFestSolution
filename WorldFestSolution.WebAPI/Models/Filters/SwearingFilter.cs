@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -17,14 +16,15 @@ namespace WorldFestSolution.WebAPI.Models.Filters
         {
             get
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory
-                        + "/SwearingAsBase64.txt";
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                           "SwearingAsBase64.txt");
                 if (!File.Exists(path))
                 {
                     return null;
                 }
                 return Encoding.UTF8.GetString(
-                    Convert.FromBase64String(path))
+                    Convert.FromBase64String(
+                        File.ReadAllText(path)))
                     .Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             }
         }

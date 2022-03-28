@@ -55,6 +55,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     FestivalId.ToString());
             if (festival != null)
             {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Comments.Clear();
+                });
                 foreach (Comment comment in festival.Comments)
                 {
                     Device.BeginInvokeOnMainThread(() =>
@@ -65,6 +69,48 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 }
             }
             IsRefreshing = false;
+        }
+
+        private string commentText;
+
+        public string CommentText
+        {
+            get => commentText;
+            set => SetProperty(ref commentText, value);
+        }
+
+        private Command postCommentCommand;
+
+        public ICommand PostCommentCommand
+        {
+            get
+            {
+                if (postCommentCommand == null)
+                {
+                    postCommentCommand = new Command(PostCommentAsync);
+                }
+
+                return postCommentCommand;
+            }
+        }
+
+        private async void PostCommentAsync()
+        {
+            if (string.IsNullOrWhiteSpace(CommentText))
+            {
+                await AlertService.InformError("Введите комментарий");
+                return;
+            }
+            Comment newComment = new Comment
+            {
+                Text = CommentText,
+                FestivalId = FestivalId
+            };
+            if (await CommentDataStore.AddItemAsync(newComment))
+            {
+                CommentText = string.Empty;
+                IsRefreshing = true;
+            }
         }
     }
 }
