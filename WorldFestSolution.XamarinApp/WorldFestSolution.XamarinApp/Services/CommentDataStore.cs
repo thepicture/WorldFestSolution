@@ -31,15 +31,28 @@ namespace WorldFestSolution.XamarinApp.Services
                                 new StringContent(jsonComment,
                                                   Encoding.UTF8,
                                                   "application/json"));
+                    string content = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .Inform("Комментарий опубликован");
+                                .Inform("Комментарий отправлен");
                         });
                         return true;
+                    }
+                    else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            DependencyService
+                                .Get<IAlertService>()
+                                .Inform(
+                                    "Ошибка запроса: "
+                                    + JsonConvert.DeserializeObject
+                                    <HttpError>(content).ExceptionMessage);
+                        });
                     }
                     else
                     {
@@ -47,9 +60,8 @@ namespace WorldFestSolution.XamarinApp.Services
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .Inform("Комментарий не отправлен, " +
-                                "так как он содержит " +
-                                "нецензурную брань");
+                                .InformError(
+                                    JsonConvert.DeserializeObject<string>(content));
                         });
                     }
                 }

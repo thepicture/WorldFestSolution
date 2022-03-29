@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace WorldFestSolution.WebAPI.Controllers
     {
         private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
         private readonly SwearingFilter swearingFilter = new SwearingFilter();
+        private readonly TimeSpan TimeoutBeforeNextComment = TimeSpan.FromSeconds(30);
 
         // GET: api/FestivalComments
         public IQueryable<FestivalComment> GetFestivalComment()
@@ -89,6 +91,23 @@ namespace WorldFestSolution.WebAPI.Controllers
             {
                 return Content(HttpStatusCode.Forbidden,
                                "Текст содержит нецензурную брань");
+            }
+
+            var lastComment = db
+                .FestivalComment
+                .OrderByDescending(fc => fc.CreationDateTime)
+                .FirstOrDefault(fc => fc.User.Login == HttpContext.Current.User.Identity.Name);
+            if (lastComment != null)
+            {
+                bool isUserIsSendingCommentsTooOften =
+                    DateTime.Now - lastComment.CreationDateTime
+                    < TimeoutBeforeNextComment;
+                if (isUserIsSendingCommentsTooOften)
+                {
+                    return Content(HttpStatusCode.Forbidden,
+                        "Вы не можете комментировать "
+                        + "слишком часто");
+                }
             }
 
             festivalComment.CreationDateTime = System.DateTime.Now;

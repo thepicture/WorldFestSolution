@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models
 {
@@ -16,8 +18,19 @@ namespace WorldFestSolution.XamarinApp.Models
                 }
                 else
                 {
-                    return JsonConvert.DeserializeObject<User>(
-                        SecureStorage.GetAsync("User").Result);
+                    try
+                    {
+                        return JsonConvert.DeserializeObject<User>(
+                            SecureStorage.GetAsync("User").Result);
+                    }
+                    catch (JsonReaderException ex)
+                    {
+                        DependencyService.Get<IAlertService>()
+                            .InformError("Не удалось сохранить данные в системе. "
+                            + "Ошибка: "
+                            + ex.StackTrace);
+                        return null;
+                    }
                 }
             }
             set
