@@ -19,23 +19,18 @@
                                       Command="{Binding GoToAddFestivalViewCommand}"
                                       IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
     </ContentPage.ToolbarItems>
-    <ContentPage.Triggers>
-        <DataTrigger TargetType="ContentPage"
-                     Binding="{Binding Source={Static models:Identity.Role}}"
-                     Value="Организатор">
-            <Setter Property="Title"
-                    Value="Мои фестивали" />
-        </DataTrigger>
-    </ContentPage.Triggers>
     <ContentPage.BindingContext>
         <viewmodels:FestivalsViewModel />
     </ContentPage.BindingContext>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
-        <Grid RowDefinitions="auto, *">
+        <Grid RowDefinitions="auto,auto,*">
             <SearchBar Text="{Binding SearchText}"
                        Placeholder="Поиск по названию" />
-            <ScrollView Grid.Row="1">
+            <material:MaterialCheckbox Text="Показывать только актуальные"
+                                       IsSelected="{Binding IsActualOnly}"
+                                       Grid.Row="1"/>
+            <ScrollView Grid.Row="2">
                 <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>

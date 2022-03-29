@@ -79,6 +79,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                                               StringComparison.OrdinalIgnoreCase) != -1;
                     });
                 }
+                if (IsActualOnly)
+                {
+                    items = items.Where(i => i.IsActual);
+                }
+                items = items.OrderBy(i => i.FromDateTime);
                 foreach (Festival festival in items)
                 {
                     Device.BeginInvokeOnMainThread(() =>
@@ -157,6 +162,20 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 {
                     await AlertService.Inform($"Фестиваль {festival.Title} удалён. " +
                         "Ваш рейтинг уменьшился");
+                    IsRefreshing = true;
+                }
+            }
+        }
+
+        private bool isActualOnly = true;
+
+        public bool IsActualOnly
+        {
+            get => isActualOnly;
+            set
+            {
+                if(SetProperty(ref isActualOnly, value))
+                {
                     IsRefreshing = true;
                 }
             }

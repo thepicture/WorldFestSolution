@@ -31,15 +31,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             }
             Organizer = new SerializedUser(
                 festival.User.First());
-            Comments = festival.FestivalComment
-                .ToList()
-                .ConvertAll(fc => new SerializedComment(fc));
-            Programs = festival.FestivalProgram
-                .ToList()
-                .ConvertAll(fp => new SerializedFestivalProgram(fp));
-            Users = festival.User
-                .ToList()
-                .ConvertAll(u => new SerializedUser(u));
             IsActual = System.DateTime.Now < FromDateTime;
         }
 
@@ -53,9 +44,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public int CountOfUsers { get; set; }
         public double Rating { get; set; }
         public SerializedUser Organizer { get; set; }
-        public ICollection<SerializedComment> Comments { get; set; }
-        public ICollection<SerializedFestivalProgram> Programs { get; set; }
-        public ICollection<SerializedUser> Users { get; set; }
         public bool IsActual { get; set; }
 
     }
