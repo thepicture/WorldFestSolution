@@ -90,7 +90,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     {
                         Festivals.Add(festival);
                     });
-                    await Task.Delay(500);
+                    await Task.Delay(50);
                 }
             }
             IsRefreshing = false;

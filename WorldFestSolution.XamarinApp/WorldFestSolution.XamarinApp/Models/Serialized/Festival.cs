@@ -16,10 +16,10 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public int CountOfPrograms { get; set; }
         public int CountOfUsers { get; set; }
         public double Rating { get; set; }
-        public User Organizer { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<FestivalProgram> Programs { get; set; }
-        public ICollection<User> Users { get; set; }
+        public int OrganizerId { get; set; }
+        public string OrganizerFullName { get; set; }
+        public IEnumerable<int> UsersId { get; set; }
+        public IEnumerable<int> CommentsId { get; set; }
         public bool IsActual { get; set; }
         public ImageSource ImageSource
         {
@@ -31,6 +31,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 });
             }
         }
-        public bool IsMeParticipating => Users.Any(u => u.Id == Identity.User.Id);
+        public bool IsMeParticipating => UsersId.Any(ui => ui == Identity.User.Id);
     }
 }

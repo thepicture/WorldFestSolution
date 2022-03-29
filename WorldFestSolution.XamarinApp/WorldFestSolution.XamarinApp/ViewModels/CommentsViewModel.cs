@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
@@ -55,17 +56,19 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     FestivalId.ToString());
             if (festival != null)
             {
+                IEnumerable<int> responseComments = festival.CommentsId;
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Comments.Clear();
                 });
-                foreach (Comment comment in festival.Comments)
+                foreach (int commentId in responseComments)
                 {
+                    Comment comment = await CommentDataStore.GetItemAsync(
+                        commentId.ToString());
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Comments.Add(comment);
                     });
-                    await Task.Delay(500);
                 }
             }
             IsRefreshing = false;

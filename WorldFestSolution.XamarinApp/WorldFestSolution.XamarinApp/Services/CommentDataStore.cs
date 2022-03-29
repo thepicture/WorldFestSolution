@@ -182,7 +182,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                        .DeleteAsync($"festivalcomments/{id}");
+                        .GetAsync($"festivalcomments/{id}");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         string content = await response.Content.ReadAsStringAsync();
