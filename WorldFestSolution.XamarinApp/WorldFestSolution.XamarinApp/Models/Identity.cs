@@ -41,6 +41,20 @@ namespace WorldFestSolution.XamarinApp.Models
             }
         }
 
+        internal static void ChangeLocalPassword(string newPassword)
+        {
+            string newAuthorizationValue = CredentialsToBasicConverter
+                                .Encode(User.Login, newPassword);
+            if ((App.Current as App).Identity != null)
+            {
+                (App.Current as App).Identity = newAuthorizationValue;
+            }
+            else
+            {
+                _ = SecureStorage.SetAsync("Identity", newAuthorizationValue);
+            }
+        }
+
         internal static void Logout()
         {
             (App.Current as App).User = null;

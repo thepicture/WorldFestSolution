@@ -14,7 +14,7 @@
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
         <ScrollView>
-            <Grid RowDefinitions="*,1*">
+            <Grid RowDefinitions="*,1.2*">
                 <Frame Padding="0">
                     <Image Source="{Binding User.ImageSource}"
                            Aspect="AspectFill" />
@@ -30,8 +30,7 @@
                     </Grid.Background>
                 </Grid>
                 <StackLayout Grid.Row="1"
-                             VerticalOptions="Center"
-                             Margin="0,0,0,40">
+                             VerticalOptions="Start">
                     <Label Text="{Binding Path=User.Login,
                                   StringFormat='{}Логин: {0}'}"
                            FontSize="Large"
@@ -84,11 +83,15 @@
                         </rating:RatingBar.Triggers>
                     </rating:RatingBar>
                 </StackLayout>
-                <material:MaterialButton Text="Разлогиниться"
-                                         Command="{Binding LogoutCommand}"
-                                         Style="{StaticResource BackgroundButton}"
-                                         VerticalOptions="EndAndExpand"
-                                         Grid.Row="1" />
+                <StackLayout VerticalOptions="End"
+                             Grid.Row="1">
+                    <material:MaterialButton Text="Изменить пароль"
+                                             Command="{Binding GoToChangePasswordViewCommand}"
+                                             Style="{StaticResource BaseButton}" />
+                    <material:MaterialButton Text="Разлогиниться"
+                                             Command="{Binding LogoutCommand}"
+                                             Style="{StaticResource BackgroundButton}" />
+                </StackLayout>
             </Grid>
         </ScrollView>
     </RefreshView>

@@ -11,7 +11,9 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WorldFestSolution.WebAPI.Models.Entities;
+using WorldFestSolution.WebAPI.Models.Security;
 using WorldFestSolution.WebAPI.Models.Serialized;
+using WorldFestSolution.XamarinApp.Models.Serialized;
 
 namespace WorldFestSolution.WebAPI.Controllers
 {
@@ -179,6 +181,50 @@ namespace WorldFestSolution.WebAPI.Controllers
             await db.SaveChangesAsync();
 
             return Content(HttpStatusCode.Created, user.Id);
+        }
+
+        // POST: api/Users/changepassword
+        [HttpPost]
+        [Route("api/users/changepassword")]
+        [ResponseType(typeof(string))]
+        [AllowAnonymous]
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordCredentials credentials)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            string login = credentials.Login;
+            User user = await db.User.FirstAsync(u =>
+                u.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
+            PasswordHashGenerator passwordHashGenerator = new PasswordHashGenerator();
+
+            byte[] oldPasswordHash = passwordHashGenerator.Encrypt(
+                credentials.OldPassword,
+                user.Salt);
+            if (!Enumerable.SequenceEqual(oldPasswordHash, user.PasswordHash))
+            {
+                return Content(
+                    HttpStatusCode.Forbidden,
+                    "Вы ввели неверный старый пароль");
+            }
+
+            byte[] salt = Guid.NewGuid()
+                  .ToByteArray();
+            List<byte> passwordBytesAndHash = Encoding.UTF8
+                .GetBytes(credentials.NewPassword)
+                .ToList();
+            passwordBytesAndHash.AddRange(salt);
+            byte[] passwordHash = SHA256.Create()
+                .ComputeHash(
+                passwordBytesAndHash.ToArray());
+
+            user.PasswordHash = passwordHash;
+            user.Salt = salt;
+
+            await db.SaveChangesAsync();
+
+            return Content(HttpStatusCode.Created, "Пароль изменён");
         }
     }
 }

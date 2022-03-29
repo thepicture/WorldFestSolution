@@ -212,6 +212,8 @@
     <Compile Include="Models\Filters\SwearingFilter.cs" />
     <Compile Include="Models\Security\Authenticator.cs" />
     <Compile Include="Models\Security\BasicAuthenticationAttribute.cs" />
+    <Compile Include="Models\Security\PasswordHashGenerator.cs" />
+    <Compile Include="Models\Serialized\ChangePasswordCredentials.cs" />
     <Compile Include="Models\Serialized\SerializedComment.cs" />
     <Compile Include="Models\Serialized\SerializedFestival.cs" />
     <Compile Include="Models\Serialized\SerializedFestivalProgram.cs" />

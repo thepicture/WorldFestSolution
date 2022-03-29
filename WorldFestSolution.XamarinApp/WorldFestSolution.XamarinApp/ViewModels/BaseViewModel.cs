@@ -23,6 +23,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
           DependencyService.Get<IDataStore<Comment>>();
         public InviteOfFestivalDataStore InviteOfFestivalDataStore =>
            DependencyService.Get<InviteOfFestivalDataStore>();
+        public IDataStore<ChangePasswordCredentials> ChangePasswordDataStore =>
+          DependencyService.Get<IDataStore<ChangePasswordCredentials>>();
         public User User
         {
             get => Identity.User;

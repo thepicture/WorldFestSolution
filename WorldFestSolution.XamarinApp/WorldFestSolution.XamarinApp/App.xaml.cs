@@ -26,6 +26,7 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<FestivalDataStore>();
             DependencyService.Register<CommentDataStore>();
             DependencyService.Register<InviteOfFestivalDataStore>();
+            DependencyService.Register<ChangePasswordDataStore>();
 
             MainPage = new AppShell();
         }

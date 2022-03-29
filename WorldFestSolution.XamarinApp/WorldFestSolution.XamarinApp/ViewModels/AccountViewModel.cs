@@ -3,6 +3,7 @@ using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -67,6 +68,27 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     .DeserializeObject<User>(AuthenticationService.Message);
             }
             IsRefreshing = false;
+        }
+
+        private Command goToChangePasswordViewCommand;
+
+        public ICommand GoToChangePasswordViewCommand
+        {
+            get
+            {
+                if (goToChangePasswordViewCommand == null)
+                {
+                    goToChangePasswordViewCommand = new Command(GoToChangePasswordView);
+                }
+
+                return goToChangePasswordViewCommand;
+            }
+        }
+
+        private async void GoToChangePasswordView()
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new ChangePasswordView());
         }
     }
 }
