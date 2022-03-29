@@ -11,13 +11,15 @@
     <ContentPage.BindingContext>
         <viewmodels:AccountViewModel />
     </ContentPage.BindingContext>
+    <ContentView>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
         <ScrollView>
             <Grid RowDefinitions="*,1.2*">
                 <Frame Padding="0">
                     <Image Source="{Binding User.ImageSource}"
-                           Aspect="AspectFill" />
+                           Aspect="AspectFill" 
+                           HeightRequest="1"/>
                 </Frame>
                 <Grid Opacity=".5">
                     <Grid.Background>
@@ -95,4 +97,5 @@
             </Grid>
         </ScrollView>
     </RefreshView>
+    </ContentView>
 </ContentPage>
