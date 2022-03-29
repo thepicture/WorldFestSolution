@@ -16,6 +16,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         public AddEditFestivalViewModel(Festival festival)
         {
             Festival = festival;
+            if (Festival.Id != 0)
+            {
+                ImageSource = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(Festival.Image);
+                });
+            }
         }
 
         public Festival Festival
@@ -172,7 +179,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             if (await AlertService.Ask($"Удалить программу {program.Title}?"))
             {
-                Festival.FestivalProgram.Remove(program);
+                program.IsDeletedLocally = true;
                 await AlertService.Inform($"Программа {program.Title} " +
                     $"будет удалена после подтверждения " +
                     $"изменений фестиваля");

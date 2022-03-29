@@ -114,5 +114,32 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 new CommentsView(
                     new CommentsViewModel(FestivalId)));
         }
+
+        private Command goToEditFestivalViewCommand;
+
+        public ICommand GoToEditFestivalViewCommand
+        {
+            get
+            {
+                if (goToEditFestivalViewCommand == null)
+                {
+                    goToEditFestivalViewCommand = new Command(GoToEditFestivalViewAsync);
+                }
+
+                return goToEditFestivalViewCommand;
+            }
+        }
+
+        private async void GoToEditFestivalViewAsync()
+        {
+            if (Festival == null)
+            {
+                await AlertService.Warn("Фестиваль ещё не загрузился");
+                return;
+            }
+            await Shell.Current.Navigation.PushAsync(
+                new AddEditFestivalView(
+                    new AddEditFestivalViewModel(Festival)));
+        }
     }
 }

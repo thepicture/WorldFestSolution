@@ -72,19 +72,27 @@
                                              Style="{StaticResource BaseButton}" />
                 </StackLayout>
                 <StackLayout BindableLayout.ItemsSource="{Binding Festival.FestivalProgram}">
-                    <BindableLayout.EmptyView>
+                    <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
                             <Label HorizontalOptions="Center"
                                    VerticalOptions="CenterAndExpand"
                                    FontSize="Large"
                                    Text="Программ нет" />
                         </DataTemplate>
-                    </BindableLayout.EmptyView>
+                    </BindableLayout.EmptyViewTemplate>
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="{x:Type serialized:FestivalProgram}">
                             <material:MaterialCard Elevation="5"
                                                    Margin="10"
                                                    IsClickable="True">
+                                <material:MaterialCard.Triggers>
+                                    <DataTrigger TargetType="material:MaterialCard"
+                                                 Binding="{Binding IsDeletedLocally}"
+                                                 Value="True">
+                                        <Setter Property="IsVisible"
+                                                Value="False" />
+                                    </DataTrigger>
+                                </material:MaterialCard.Triggers>
                                 <StackLayout>
                                     <Label Text="{Binding Title}"
                                            FontAttributes="Bold"

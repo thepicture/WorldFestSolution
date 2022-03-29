@@ -5,9 +5,15 @@
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
              x:DataType="viewmodels:FestivalViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalView"
              Title="О фестивале">
+    <ContentPage.ToolbarItems>
+        <controls:BindableToolbarItem Text="Изменить"
+                                      Command="{Binding GoToEditFestivalViewCommand}"
+                                      IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
+    </ContentPage.ToolbarItems>
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">

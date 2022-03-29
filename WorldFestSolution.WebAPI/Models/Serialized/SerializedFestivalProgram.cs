@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using WorldFestSolution.WebAPI.Models.Entities;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized

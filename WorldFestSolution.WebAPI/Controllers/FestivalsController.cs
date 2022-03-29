@@ -108,14 +108,50 @@ namespace WorldFestSolution.WebAPI.Controllers
             User organizer = db.User.First(u =>
                 u.Login == HttpContext.Current.User.Identity.Name);
             festival.User.Add(organizer);
-            db.Festival.Add(festival);
+            if (festival.Id == 0)
+            {
+                db.Festival.Add(festival);
+            }
+            else
+            {
+                DbEntityEntry<Festival> festivalFromDb = db
+                    .Entry(
+                        db.Festival.Find(festival.Id));
+                festivalFromDb
+                    .CurrentValues
+                    .SetValues(festival);
+                foreach (FestivalProgram postedProgram
+                    in festival.FestivalProgram)
+                {
+                    FestivalProgram program = festivalFromDb
+                        .Entity
+                        .FestivalProgram
+                        .FirstOrDefault(p => p.Id == postedProgram.Id);
+                    if (program == null)
+                    {
+                        festivalFromDb.Entity.FestivalProgram.Add(postedProgram);
+                    }
+                    else
+                    {
+                        if (postedProgram.IsDeletedLocally)
+                        {
+                            db.FestivalProgram.Remove(program);
+                        }
+                        else
+                        {
+                            db.Entry(program).CurrentValues.SetValues(postedProgram);
+                        }
+                    }
+                }
+            }
 
             await db.SaveChangesAsync();
 
             return CreatedAtRoute(
                 "DefaultApi",
                 new { id = festival.Id },
-                new SerializedFestival(festival));
+                new SerializedFestival(
+                    db.Festival.Find(festival.Id)));
         }
 
         // DELETE: api/Festivals/5

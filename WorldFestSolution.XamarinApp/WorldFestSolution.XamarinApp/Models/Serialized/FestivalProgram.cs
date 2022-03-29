@@ -11,6 +11,8 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         private string title;
         private string description;
         private int durationInMinutes;
+        private bool isAddedLocally;
+        private bool isDeletedLocally = false;
 
         public int Id { get; set; }
         public int FestivalId { get; set; }
@@ -31,11 +33,28 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         }
         public DateTime StartDateTime { get; set; }
         [JsonIgnore]
-        public bool IsAddedLocally { get; set; }
+        public bool IsAddedLocally
+        {
+            get
+            {
+                if (Id != 0)
+                {
+                    return true;
+                }
+                return isAddedLocally;
+            }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-           [CallerMemberName] string propertyName = "",
-           Action onChanged = null)
+            set => isAddedLocally = value;
+        }
+        public bool IsDeletedLocally
+        {
+            get => isDeletedLocally;
+            set => SetProperty(ref isDeletedLocally, value);
+        }
+        protected bool SetProperty<T>(ref T backingStore,
+                                      T value,
+                                      [CallerMemberName] string propertyName = "",
+                                      Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
             {
