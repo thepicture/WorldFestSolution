@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             x:DataType="viewmodels:AddEditFestivalViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.AddEditFestivalView"
+             x:Name="Page"
+             Title="Редактировать фестиваль">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding Festival.Id}"
+                     Value="0">
+            <Setter Property="Title"
+                    Value="Создать фестиваль" />
+        </DataTrigger>
+    </ContentPage.Triggers>
+    <ContentView Margin="5">
+        <ScrollView>
+            <StackLayout>
+                <material:MaterialTextField Text="{Binding Festival.Title}"
+                                            Placeholder="Введите название"
+                                            InputType="Text"
+                                            MaxLength="255"
+                                            LeadingIcon="logo"
+                                            AlwaysShowUnderline="True" />
+                <material:MaterialTextField Text="{Binding Festival.Description}"
+                                            Placeholder="Введите описание"
+                                            InputType="Text"
+                                            MaxLength="1024"
+                                            LeadingIcon="icon_about"
+                                            AlwaysShowUnderline="True" />
+                <Label Text="Укажите дату и время начала" />
+                <controls:DateTimePicker DateTime="{Binding Festival.FromDateTime}">
+                    <controls:DateTimePicker.Triggers>
+                        <DataTrigger TargetType="controls:DateTimePicker"
+                                     Binding="{Binding Festival.FromDateTime}"
+                                     Value="{Static system:DateTime.MinValue}">
+                            <Setter Property="DateTime"
+                                    Value="{Static system:DateTime.Now}" />
+                        </DataTrigger>
+                    </controls:DateTimePicker.Triggers>
+                </controls:DateTimePicker>
+                <Label Text="Выберите главное фото (можно оставить пустым)" />
+                <Frame CornerRadius="200"
+                       Padding="0"
+                       WidthRequest="300"
+                       HeightRequest="300"
+                       HasShadow="False"
+                       HorizontalOptions="Center">
+                    <Image Source="{Binding Path=ImageSource, 
+                                            TargetNullValue='icon_circle'}"
+                           Aspect="AspectFill" />
+                </Frame>
+                <material:MaterialButton Command="{Binding GetImageCommand}"
+                                         Text="Выбрать фото"
+                                         VerticalOptions="EndAndExpand"
+                                         Style="{StaticResource BackgroundButton}" />
+
+                <BoxView Color="WhiteSmoke"
+                         HeightRequest="1"
+                         Margin="0,20,0,20" />
+                <Label Text="Программы"
+                       FontAttributes="Bold"
+                       FontSize="Medium" />
+                <StackLayout>
+                    <material:MaterialButton Command="{Binding GoToAddProgramViewCommand}"
+                                             Text="Добавить программу"
+                                             Style="{StaticResource BaseButton}" />
+                </StackLayout>
+                <StackLayout BindableLayout.ItemsSource="{Binding Festival.FestivalProgram}">
+                    <BindableLayout.EmptyView>
+                        <DataTemplate>
+                            <Label HorizontalOptions="Center"
+                                   VerticalOptions="CenterAndExpand"
+                                   FontSize="Large"
+                                   Text="Программ нет" />
+                        </DataTemplate>
+                    </BindableLayout.EmptyView>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="{x:Type serialized:FestivalProgram}">
+                            <material:MaterialCard Elevation="5"
+                                                   Margin="10"
+                                                   IsClickable="True">
+                                <StackLayout>
+                                    <Label Text="{Binding Title}"
+                                           FontAttributes="Bold"
+                                           FontSize="Large"
+                                           HorizontalTextAlignment="Center" />
+                                    <BoxView Color="WhiteSmoke"
+                                             HeightRequest="1" />
+                                    <Label Text="{Binding Path=Description,
+                                                          StringFormat='Описание: {0}',
+                                                          TargetNullValue='Описания программы нет'}"
+                                           FontSize="Medium"
+                                           HorizontalTextAlignment="Center" />
+                                    <BoxView Color="WhiteSmoke"
+                                             HeightRequest="1" />
+                                    <Label Text="{Binding Path=DurationInMinutes,
+                                                          StringFormat='Длится {0} мин.'}"
+                                           FontSize="Medium"
+                                           HorizontalTextAlignment="Center" />
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.GoToEditProgramViewCommand}"
+                                                             Text="Редактировать"
+                                                             Style="{StaticResource BackgroundButton}" />
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.DeleteProgramCommand}"
+                                                             Text="Удалить"
+                                                             Style="{StaticResource BaseButton}"
+                                                             BackgroundColor="Red" />
+                                </StackLayout>
+                            </material:MaterialCard>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+
+                <material:MaterialButton Command="{Binding SaveChangesCommand}"
+                                         Text="Сохранить"
+                                         VerticalOptions="EndAndExpand"
+                                         Style="{StaticResource BaseButton}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentView>
+</ContentPage>

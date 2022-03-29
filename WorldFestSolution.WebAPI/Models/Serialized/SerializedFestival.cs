@@ -39,6 +39,9 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
                 .Select(u => u.Id);
             CommentsId = festival.FestivalComment
                .Select(u => u.Id);
+            Programs = festival.FestivalProgram
+                .ToList()
+                .ConvertAll(fp => new SerializedFestivalProgram(fp));
             IsActual = System.DateTime.Now < FromDateTime;
         }
 
@@ -55,6 +58,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public string OrganizerFullName { get; set; }
         public IEnumerable<int> UsersId { get; set; }
         public IEnumerable<int> CommentsId { get; set; }
+        public List<SerializedFestivalProgram> Programs { get; set; }
         public bool IsActual { get; set; }
 
     }

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:DataType="viewmodels:AddEditProgramViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.AddProgramView"
+             Title="Редактировать программу">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding Program.IsAddedLocally}"
+                     Value="False">
+            <Setter Property="Title"
+                    Value="Добавить программу" />
+        </DataTrigger>
+    </ContentPage.Triggers>
+    <ContentView Margin="5">
+        <ScrollView>
+            <StackLayout>
+                <material:MaterialTextField Text="{Binding Program.Title}"
+                                            Placeholder="Введите название"
+                                            HelperText="* обязательно"
+                                            InputType="Text"
+                                            MaxLength="255"
+                                            LeadingIcon="icon_feed"
+                                            AlwaysShowUnderline="True" />
+                <material:MaterialTextField Text="{Binding Program.Description}"
+                                            Placeholder="Введите описание"
+                                            InputType="Text"
+                                            MaxLength="1024"
+                                            LeadingIcon="icon_about"
+                                            AlwaysShowUnderline="True" />
+                <Label Text="Укажите длительность в минутах" />
+                <material:MaterialTextField Text="{Binding Program.DurationInMinutes}"
+                                            Placeholder="Введите длительность"
+                                            HelperText="* обязательно, в минутах"
+                                            InputType="Numeric"
+                                            MaxLength="4"
+                                            LeadingIcon="clock"
+                                            AlwaysShowUnderline="True" />
+                <material:MaterialButton Command="{Binding AddProgramCommand}"
+                                         Text="Добавить"
+                                         VerticalOptions="EndAndExpand"
+                                         Style="{StaticResource BaseButton}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentView>
+</ContentPage>

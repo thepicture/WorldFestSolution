@@ -97,6 +97,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 
         // POST: api/Festivals
         [ResponseType(typeof(Festival))]
+        [Authorize(Roles = "Организатор")]
         public async Task<IHttpActionResult> PostFestival(Festival festival)
         {
             if (!ModelState.IsValid)
@@ -104,10 +105,17 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            User organizer = db.User.First(u =>
+                u.Login == HttpContext.Current.User.Identity.Name);
+            festival.User.Add(organizer);
             db.Festival.Add(festival);
+
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = festival.Id }, festival);
+            return CreatedAtRoute(
+                "DefaultApi",
+                new { id = festival.Id },
+                new SerializedFestival(festival));
         }
 
         // DELETE: api/Festivals/5
