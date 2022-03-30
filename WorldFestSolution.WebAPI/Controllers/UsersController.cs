@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -19,7 +16,8 @@ namespace WorldFestSolution.WebAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
+        private readonly WorldFestBaseEntities db = 
+            new WorldFestBaseEntities();
 
         // GET: api/Users
         public IQueryable<User> GetUser()
@@ -139,7 +137,8 @@ namespace WorldFestSolution.WebAPI.Controllers
         [HttpPost]
         [Route("api/users/register")]
         [ResponseType(typeof(int))]
-        public async Task<IHttpActionResult> Register(SerializedUser serializedUser)
+        public async Task<IHttpActionResult> Register
+            (SerializedUser serializedUser)
         {
             if (!ModelState.IsValid)
             {
@@ -154,16 +153,12 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return Conflict();
             }
 
+            PasswordHashGenerator passwordHashGenerator =
+                new PasswordHashGenerator();
             byte[] salt = Guid.NewGuid()
                     .ToByteArray();
-            List<byte> passwordBytesAndHash = Encoding.UTF8
-                .GetBytes(serializedUser.Password)
-                .ToList();
-            passwordBytesAndHash.AddRange(salt);
-            byte[] passwordHash = SHA256.Create()
-                .ComputeHash(
-                passwordBytesAndHash.ToArray());
-
+            byte[] passwordHash = passwordHashGenerator
+                .Encrypt(serializedUser.Password, salt);
             User user = new User
             {
                 Login = serializedUser.Login,
@@ -188,7 +183,8 @@ namespace WorldFestSolution.WebAPI.Controllers
         [Route("api/users/changepassword")]
         [ResponseType(typeof(string))]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordCredentials credentials)
+        public async Task<IHttpActionResult> ChangePassword
+            (ChangePasswordCredentials credentials)
         {
             if (!ModelState.IsValid)
             {
@@ -197,7 +193,8 @@ namespace WorldFestSolution.WebAPI.Controllers
             string login = credentials.Login;
             User user = await db.User.FirstAsync(u =>
                 u.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
-            PasswordHashGenerator passwordHashGenerator = new PasswordHashGenerator();
+            PasswordHashGenerator passwordHashGenerator =
+                new PasswordHashGenerator();
 
             byte[] oldPasswordHash = passwordHashGenerator.Encrypt(
                 credentials.OldPassword,
@@ -211,13 +208,8 @@ namespace WorldFestSolution.WebAPI.Controllers
 
             byte[] salt = Guid.NewGuid()
                   .ToByteArray();
-            List<byte> passwordBytesAndHash = Encoding.UTF8
-                .GetBytes(credentials.NewPassword)
-                .ToList();
-            passwordBytesAndHash.AddRange(salt);
-            byte[] passwordHash = SHA256.Create()
-                .ComputeHash(
-                passwordBytesAndHash.ToArray());
+            byte[] passwordHash = passwordHashGenerator
+               .Encrypt(credentials.NewPassword, salt);
 
             user.PasswordHash = passwordHash;
             user.Salt = salt;

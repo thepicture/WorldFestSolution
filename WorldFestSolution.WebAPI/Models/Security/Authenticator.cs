@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using WorldFestSolution.WebAPI.Models.Entities;
 
@@ -27,10 +26,10 @@ namespace WorldFestSolution.WebAPI.Models.Security
                 {
                     return false;
                 }
-                byte[] passwordHash = SHA256.Create()
-                    .ComputeHash(
-                    passwordBytes.Concat(user.Salt)
-                        .ToArray());
+                PasswordHashGenerator passwordHashGenerator =
+                    new PasswordHashGenerator();
+                byte[] passwordHash = passwordHashGenerator
+                    .Encrypt(password, user.Salt);
                 return Enumerable.SequenceEqual(user.PasswordHash, passwordHash);
             }
         }
