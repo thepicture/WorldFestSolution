@@ -31,6 +31,10 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         {
             get
             {
+                if (Image == null)
+                {
+                    return null;
+                }
                 return ImageSource.FromStream(() =>
                 {
                     return new MemoryStream(Image);

@@ -57,10 +57,23 @@
                                                    IsClickable="True">
                                 <Grid ColumnDefinitions="auto, *"
                                       RowDefinitions="auto,auto,auto">
-                                    <Image Source="{Binding ImageSource}"
+                                    <Frame CornerRadius="60"
+                                           VerticalOptions="Start"
+                                           Padding="0"
+                                           WidthRequest="60"
                                            HeightRequest="60"
-                                           VerticalOptions="Start" />
-                                        <StackLayout Grid.Column="1">
+                                           HasShadow="False">
+                                        <Image Aspect="AspectFill">
+                                            <Image.Source>
+                                                <Binding Path="ImageSource">
+                                                    <Binding.TargetNullValue>
+                                                        icon_circle
+                                                    </Binding.TargetNullValue>
+                                                </Binding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Frame>
+                                    <StackLayout Grid.Column="1">
                                             <Label Text="{Binding Path=Rating,
                                   StringFormat='{}Рейтинг фестиваля: {0}'}"
                                                    FontSize="Medium"
