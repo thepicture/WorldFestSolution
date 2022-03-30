@@ -14,6 +14,17 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime FromDateTime { get; set; }
+        public DateTime ToDateTime
+        {
+            get
+            {
+                int totalMinutes = FestivalProgram.Sum(fp =>
+                {
+                    return fp.DurationInMinutes;
+                });
+                return FromDateTime + TimeSpan.FromMinutes(totalMinutes);
+            }
+        }
         public byte[] Image { get; set; }
         public int CountOfComments { get; set; }
         public int CountOfPrograms { get; set; }
@@ -43,5 +54,27 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         }
         [JsonIgnore]
         public bool IsMeParticipating => UsersId.Any(ui => ui == Identity.User.Id);
+        public bool IsFinished
+        {
+            get
+            {
+                return DateTime.Now > ToDateTime;
+            }
+        }
+        public bool IsStarting
+        {
+            get
+            {
+                return DateTime.Now < FromDateTime;
+            }
+        }
+
+        public bool IsLive
+        {
+            get
+            {
+                return !IsStarting && !IsFinished;
+            }
+        }
     }
 }

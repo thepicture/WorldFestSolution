@@ -81,7 +81,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 }
                 if (IsActualOnly)
                 {
-                    items = items.Where(i => i.IsActual);
+                    items = items.Where(i => i.IsStarting || i.IsLive);
                 }
                 items = items.OrderBy(i => i.FromDateTime);
                 foreach (Festival festival in items)

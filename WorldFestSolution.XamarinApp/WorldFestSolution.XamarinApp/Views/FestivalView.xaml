@@ -42,10 +42,31 @@
                     <StackLayout Grid.Row="1"
                                  Margin="0,20,0,0">
                         <Label Text="{Binding Path=Festival.FromDateTime, 
-                                  StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
+                                              StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
                                FontSize="Large"
                                FontAttributes="Bold"
-                               HorizontalTextAlignment="Center" />
+                               HorizontalTextAlignment="Center"
+                               Grid.Row="2">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Festival.IsLive}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="Идет прямо сейчас" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Festival.IsFinished}"
+                                             Value="True">
+                                    <Setter Property="Text">
+                                        <Setter.Value>
+                                            <MultiBinding StringFormat="{}Закончился в {0:dd-MM-yyyy hh:mm}">
+                                                <Binding  Path="Festival.ToDateTime" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
                         <Label Text="{Binding Path=Festival.OrganizerFullName, 
                                   StringFormat='{}Создан организатором {0}'}"
                                FontSize="Medium"
