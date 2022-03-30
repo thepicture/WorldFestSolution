@@ -76,5 +76,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 return !IsStarting && !IsFinished;
             }
         }
+        public bool IsRated { get; set; }
     }
 }

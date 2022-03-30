@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
@@ -8,5 +9,6 @@ namespace WorldFestSolution.XamarinApp.Services
         Task<bool> Ask(string question);
         Task Warn(string warning);
         Task InformError(string error);
+        Task<string> Prompt(string message, int maxLength, Keyboard keyboard);
     }
 }

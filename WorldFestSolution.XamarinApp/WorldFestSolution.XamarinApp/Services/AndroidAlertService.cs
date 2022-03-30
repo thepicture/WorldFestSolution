@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
@@ -26,6 +27,21 @@ namespace WorldFestSolution.XamarinApp.Services
            .Current
            .MainPage
            .DisplayAlert("Ошибка", error, "ОК");
+        }
+
+        public async Task<string> Prompt(string message, int maxLength, Keyboard keyboard)
+        {
+            return await App
+                .Current
+                .MainPage
+                .DisplayPromptAsync("Форма заполнения",
+                                    message,
+                                    accept: "Подтвердить",
+                                    cancel: "Отмена",
+                                    placeholder: message,
+                                    maxLength: maxLength,
+                                    keyboard: keyboard,
+                                    initialValue: "");
         }
 
         public async Task Warn(string warning)

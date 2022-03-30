@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using WorldFestSolution.WebAPI.Models.Entities;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized
@@ -43,6 +44,10 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
                 .ToList()
                 .ConvertAll(fp => new SerializedFestivalProgram(fp));
             IsActual = System.DateTime.Now < FromDateTime;
+            IsRated = festival.FestivalRating.Any(fr =>
+            {
+                return fr.User.Login == HttpContext.Current.User.Identity.Name;
+            });
         }
 
         public int Id { get; set; }
@@ -60,5 +65,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public IEnumerable<int> CommentsId { get; set; }
         public List<SerializedFestivalProgram> FestivalProgram { get; set; }
         public bool IsActual { get; set; }
+        public bool IsRated { get; set; }
     }
 }

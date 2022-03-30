@@ -177,7 +177,56 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get => isActualOnly;
             set
             {
-                if(SetProperty(ref isActualOnly, value))
+                if (SetProperty(ref isActualOnly, value))
+                {
+                    IsRefreshing = true;
+                }
+            }
+        }
+
+        private Command<Festival> rateFestivalCommand;
+
+        public Command<Festival> RateFestivalCommand
+        {
+            get
+            {
+                if (rateFestivalCommand == null)
+                {
+                    rateFestivalCommand = new Command<Festival>(RateFestivalAsync);
+                }
+
+                return rateFestivalCommand;
+            }
+        }
+
+        private async void RateFestivalAsync(Festival festival)
+        {
+            string result = await AlertService.Prompt("Введите количество звёзд от 1 до 5",
+                                                      maxLength: 1,
+                                                      Keyboard.Numeric);
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                await AlertService.InformError("Вы ничего не ввели. " +
+                    "Оценка отменена");
+                return;
+            }
+            if (!int.TryParse(result, out int starsCount)
+                || starsCount < 1
+                || starsCount > 5)
+            {
+                await AlertService.InformError("Количество звёзд - " +
+                    "это положительное число от 1 до 5");
+                RateFestivalAsync(festival);
+                return;
+            }
+            else
+            {
+                FestivalRating festivalRating = new FestivalRating
+                {
+                    CountOfStars = starsCount,
+                    FestivalId = festival.Id
+                };
+                if (await FestivalRatingDataStore.AddItemAsync(festivalRating))
                 {
                     IsRefreshing = true;
                 }
