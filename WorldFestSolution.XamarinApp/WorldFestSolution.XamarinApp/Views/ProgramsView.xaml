@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             x:DataType="viewmodels:ProgramsViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.ProgramsView"
+             Title="Программы фестиваля">
+    <ContentView>
+        <ScrollView>
+            <StackLayout BindableLayout.ItemsSource="{Binding Festival.FestivalProgram}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="{x:Type serialized:FestivalProgram}">
+                        <material:MaterialCard Elevation="5"
+                                               Margin="10"
+                                               IsClickable="True">
+                            <StackLayout>
+                                <Label Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="Large"
+                                       HorizontalTextAlignment="Center" />
+                                <BoxView Color="WhiteSmoke"
+                                         HeightRequest="1" />
+                                <Label Text="{Binding Path=Description,
+                                                          StringFormat='Описание: {0}',
+                                                          TargetNullValue='Описания программы нет'}"
+                                       FontSize="Medium"
+                                       HorizontalTextAlignment="Center" />
+                                <BoxView Color="WhiteSmoke"
+                                         HeightRequest="1" />
+                                <Label Text="{Binding Path=DurationInMinutes,
+                                                          StringFormat='Длится {0} мин.'}"
+                                       FontSize="Medium"
+                                       HorizontalTextAlignment="Center" />
+                            </StackLayout>
+                        </material:MaterialCard>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </ScrollView>
+    </ContentView>
+</ContentPage>

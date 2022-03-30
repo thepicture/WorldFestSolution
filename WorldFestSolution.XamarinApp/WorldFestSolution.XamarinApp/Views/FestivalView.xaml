@@ -18,7 +18,7 @@
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
             <ScrollView>
-                <Grid RowDefinitions="*,*">
+                <Grid RowDefinitions="*,auto">
                     <Frame Padding="0">
                         <Image Source="{Binding Festival.ImageSource}"
                                Aspect="AspectFill" />
@@ -99,9 +99,6 @@
                                 </DataTrigger>
                             </rating:RatingBar.Triggers>
                         </rating:RatingBar>
-                    </StackLayout>
-                    <StackLayout Grid.Row="1"
-                                 VerticalOptions="End">
                         <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
                                                  Grid.Row="1"
                                                  IsEnabled="{Binding IsNotBusy}"
@@ -125,6 +122,11 @@
                         <material:MaterialButton Command="{Binding GoToCommentsViewCommand}"
                                                  Text="{Binding Path=Festival.CountOfComments,
                                                                 StringFormat='{}Комментарии ({0})'}"
+                                                 Grid.Row="1"
+                                                 Style="{StaticResource BaseButton}" />
+                        <material:MaterialButton Command="{Binding GoToProgramsViewCommand}"
+                                                 Text="{Binding Path=Festival.CountOfPrograms,
+                                                                StringFormat='{}Программы ({0})'}"
                                                  Grid.Row="1"
                                                  Style="{StaticResource BaseButton}" />
                     </StackLayout>

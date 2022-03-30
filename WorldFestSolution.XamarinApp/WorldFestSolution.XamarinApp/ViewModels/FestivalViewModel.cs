@@ -141,5 +141,27 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 new AddEditFestivalView(
                     new AddEditFestivalViewModel(Festival)));
         }
+
+        private Command goToProgramsViewCommand;
+
+        public ICommand GoToProgramsViewCommand
+        {
+            get
+            {
+                if (goToProgramsViewCommand == null)
+                {
+                    goToProgramsViewCommand = new Command(GoToProgramsViewAsync);
+                }
+
+                return goToProgramsViewCommand;
+            }
+        }
+
+        private async void GoToProgramsViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new ProgramsView(
+                    new ProgramsViewModel(Festival)));
+        }
     }
 }
