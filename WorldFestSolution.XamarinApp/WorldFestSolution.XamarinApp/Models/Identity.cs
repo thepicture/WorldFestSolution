@@ -20,8 +20,12 @@ namespace WorldFestSolution.XamarinApp.Models
                 {
                     try
                     {
-                        return JsonConvert.DeserializeObject<User>(
-                            SecureStorage.GetAsync("User").Result);
+                        string user = SecureStorage.GetAsync("User").Result;
+                        if (user == null)
+                        {
+                            return null;
+                        }
+                        return JsonConvert.DeserializeObject<User>(user);
                     }
                     catch (JsonReaderException ex)
                     {
@@ -58,6 +62,7 @@ namespace WorldFestSolution.XamarinApp.Models
         internal static void Logout()
         {
             (App.Current as App).User = null;
+            (App.Current as App).Identity = null;
             SecureStorage.RemoveAll();
         }
 

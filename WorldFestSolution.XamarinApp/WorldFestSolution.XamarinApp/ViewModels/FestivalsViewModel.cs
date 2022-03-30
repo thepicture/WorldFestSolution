@@ -157,14 +157,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void DeleteFestivalAsync(Festival festival)
         {
-            if (await AlertService.Ask($"Удалить фестиваль {festival.Title}? " +
-                "При удалении фестиваля у вас уменьшится рейтинг"))
+            if (await AlertService.Ask("Удалить фестиваль "
+                    + $"{festival.Title}? "
+                    + "При удалении фестиваля у вас уменьшится рейтинг"))
             {
                 if (await FestivalDataStore.DeleteItemAsync(
                     festival.Id.ToString()))
                 {
-                    await AlertService.Inform($"Фестиваль {festival.Title} удалён. " +
-                        "Ваш рейтинг уменьшился");
                     IsRefreshing = true;
                 }
             }
@@ -210,9 +209,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     "Оценка отменена");
                 return;
             }
-            if (!int.TryParse(result, out int starsCount)
-                || starsCount < 1
-                || starsCount > 5)
+            if (!int.TryParse(result, out int starsCount) || starsCount < 1 || starsCount > 5)
             {
                 await AlertService.InformError("Количество звёзд - " +
                     "это положительное число от 1 до 5");

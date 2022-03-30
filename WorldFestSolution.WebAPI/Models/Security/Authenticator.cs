@@ -15,8 +15,6 @@ namespace WorldFestSolution.WebAPI.Models.Security
             using (WorldFestBaseEntities context =
                 new WorldFestBaseEntities())
             {
-                byte[] passwordBytes = Encoding.UTF8
-                    .GetBytes(password);
                 user = context.User
                     .Include(u => u.UserType)
                     .FirstOrDefault(

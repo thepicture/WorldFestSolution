@@ -119,6 +119,12 @@ namespace WorldFestSolution.XamarinApp.Services
                         .DeleteAsync($"festivals/{id}");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            DependencyService.Get<IAlertService>()
+                                .Inform($"Фестиваль удалён. "
+                                + "Ваш рейтинг уменьшился");
+                        });
                         return true;
                     }
                 }
