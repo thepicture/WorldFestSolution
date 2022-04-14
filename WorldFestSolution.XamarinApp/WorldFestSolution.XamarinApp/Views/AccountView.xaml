@@ -35,11 +35,9 @@
                              VerticalOptions="Start">
                     <Label Text="{Binding Path=User.Login,
                                   StringFormat='{}Логин: {0}'}"
-                           FontSize="Large"
                            FontAttributes="Bold"
                            HorizontalTextAlignment="Center" />
-                    <Label FontSize="Medium"
-                           HorizontalTextAlignment="Center">
+                    <Label HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
                                 <FormattedString.Spans>
@@ -54,11 +52,9 @@
                     </Label>
                     <Label Text="{Binding Source={Static models:Identity.Role},
                    StringFormat='{}Вы {0}'}"
-                           FontSize="Medium"
                            HorizontalTextAlignment="Center" />
                     <Label Text="{Binding Path=User.Rating,
                                   StringFormat='{}Ваш рейтинг: {0:F2}'}"
-                           FontSize="Medium"
                            HorizontalTextAlignment="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"
@@ -84,9 +80,6 @@
                             </DataTrigger>
                         </rating:RatingBar.Triggers>
                     </rating:RatingBar>
-                </StackLayout>
-                <StackLayout VerticalOptions="End"
-                             Grid.Row="1">
                     <material:MaterialButton Text="Изменить пароль"
                                              Command="{Binding GoToChangePasswordViewCommand}"
                                              Style="{StaticResource BaseButton}" />
