@@ -77,13 +77,14 @@
                                         <Grid ColumnDefinitions="*,auto">
                                             <Label Text="{Binding Title}"
                                                    FontAttributes="Bold"
-                                                   FontSize="Medium"
+                                                   FontSize="Small"
                                                    LineBreakMode="TailTruncation"
                                                    WidthRequest="60" />
                                             <Label Text="{Binding Path=Rating,
                                                               StringFormat='{}Рейтинг фестиваля: {0}'}"
-                                                   FontSize="Medium"
+                                                   FontSize="Micro"
                                                    HorizontalTextAlignment="End"
+                                                   VerticalTextAlignment="Center"
                                                    IsVisible="False"
                                                    LineBreakMode="TailTruncation"
                                                    Grid.Column="1">
@@ -92,7 +93,7 @@
                                                                  Binding="{Binding Rating}"
                                                                  Value="0">
                                                         <Setter Property="Text"
-                                                                Value="Без рейтинга" />
+                                                                Value="Оценок нет" />
                                                         <Setter Property="IsVisible"
                                                                 Value="True" />
                                                     </DataTrigger>
