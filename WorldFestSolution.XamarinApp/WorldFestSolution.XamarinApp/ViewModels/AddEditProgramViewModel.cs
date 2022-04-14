@@ -10,8 +10,9 @@ namespace WorldFestSolution.XamarinApp.ViewModels
     {
         private ObservableCollection<FestivalProgram> programs;
 
-        public AddEditProgramViewModel(ObservableCollection<FestivalProgram> programs,
-                                       FestivalProgram programToEdit = null)
+        public AddEditProgramViewModel(
+            ObservableCollection<FestivalProgram> programs,
+            FestivalProgram programToEdit = null)
         {
             Programs = programs;
             if (programToEdit != null)

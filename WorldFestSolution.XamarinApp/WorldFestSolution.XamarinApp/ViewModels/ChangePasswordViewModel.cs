@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
@@ -26,36 +25,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void ChangePasswordAsync()
         {
-            StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(OldPassword))
-            {
-                _ = errors.AppendLine("Введите старый пароль");
-            }
-            if (string.IsNullOrWhiteSpace(NewPassword))
-            {
-                _ = errors.AppendLine("Введите новый пароль");
-            }
-            if (!string.IsNullOrWhiteSpace(OldPassword)
-                && !string.IsNullOrWhiteSpace(NewPassword)
-                && OldPassword == NewPassword)
-            {
-                _ = errors.AppendLine("Новый пароль " +
-                    "должен отличаться от старого пароля");
-            }
-            if (errors.Length > 0)
-            {
-                await AlertService.InformError(
-                    errors.ToString());
-                return;
-            }
-
-            ChangePasswordCredentials credentials = new ChangePasswordCredentials
-            {
-                Login = Identity.User.Login,
-                OldPassword = OldPassword,
-                NewPassword = NewPassword
-            };
-            if (await ChangePasswordDataStore.AddItemAsync(credentials))
+            if (await ChangePasswordDataStore.AddItemAsync(Credentials))
             {
                 Identity.ChangeLocalPassword(NewPassword);
                 await Shell.Current.GoToAsync("..");
@@ -71,11 +41,26 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
 
         private string newPassword;
+        private ChangePasswordCredentials credentials;
+
+        public ChangePasswordViewModel()
+        {
+            Credentials = new ChangePasswordCredentials
+            {
+                Login = Identity.User.Login,
+            };
+        }
 
         public string NewPassword
         {
             get => newPassword;
             set => SetProperty(ref newPassword, value);
+        }
+
+        public ChangePasswordCredentials Credentials
+        {
+            get => credentials;
+            set => SetProperty(ref credentials , value);
         }
     }
 }

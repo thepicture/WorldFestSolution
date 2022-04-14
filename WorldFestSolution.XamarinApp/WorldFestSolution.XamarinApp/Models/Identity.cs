@@ -66,9 +66,16 @@ namespace WorldFestSolution.XamarinApp.Models
             SecureStorage.RemoveAll();
         }
 
-        public static string Role => User.UserTypeId == 1
-            ? "Участник"
-            : "Организатор";
+        public static string Role
+        {
+            get
+            {
+                return User.UserTypeId == 1
+                    ? "Участник"
+                    : "Организатор";
+            }
+        }
+
         public static bool IsOrganizer => Role == "Организатор";
         public static bool IsParticipant => Role == "Участник";
         public static int Id => User.Id;

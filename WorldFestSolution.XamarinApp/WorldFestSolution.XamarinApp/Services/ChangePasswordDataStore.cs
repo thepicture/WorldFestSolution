@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
@@ -17,6 +16,30 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(ChangePasswordCredentials item)
         {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(item.OldPassword))
+            {
+                _ = errors.AppendLine("Введите старый пароль");
+            }
+            if (string.IsNullOrWhiteSpace(item.NewPassword))
+            {
+                _ = errors.AppendLine("Введите новый пароль");
+            }
+            if (!string.IsNullOrWhiteSpace(item.OldPassword)
+                && !string.IsNullOrWhiteSpace(item.NewPassword)
+                && item.OldPassword == item.NewPassword)
+            {
+                _ = errors.AppendLine("Новый пароль " +
+                    "должен отличаться от старого пароля");
+            }
+            if (errors.Length > 0)
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError(
+                        errors.ToString());
+                return false;
+            }
             string jsonPasswordCredentials = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient())
             {
