@@ -55,6 +55,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
+        private ImageSource imageSource;
+
         private async void RefreshAsync()
         {
             string[] loginAndPassword = BasicToCredentialsConverter.Decode();
@@ -64,8 +66,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 .AuthenticateAsync(login, password);
             if (isAuthenticated)
             {
-                User = JsonConvert
+                User responseUser = JsonConvert
                     .DeserializeObject<User>(AuthenticationService.Message);
+                ImageSource = responseUser.ImageSource;
+                User = responseUser;
             }
             IsRefreshing = false;
         }
@@ -83,6 +87,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
                 return goToChangePasswordViewCommand;
             }
+        }
+
+        public ImageSource ImageSource
+        {
+            get => imageSource;
+            set => SetProperty(ref imageSource, value);
         }
 
         private async void GoToChangePasswordView()

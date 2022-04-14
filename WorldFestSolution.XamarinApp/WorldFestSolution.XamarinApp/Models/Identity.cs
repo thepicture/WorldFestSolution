@@ -39,9 +39,12 @@ namespace WorldFestSolution.XamarinApp.Models
             }
             set
             {
+                value.Image = null;
                 (App.Current as App).User = value;
-                _ = SecureStorage.SetAsync(
-                    "User", JsonConvert.SerializeObject(value));
+                string serializedUser = JsonConvert.SerializeObject(value);
+                SecureStorage
+                    .SetAsync("User", serializedUser)
+                    .Wait();
             }
         }
 
