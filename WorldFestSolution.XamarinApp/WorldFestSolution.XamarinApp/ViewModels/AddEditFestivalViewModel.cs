@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
@@ -48,27 +46,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void SaveChangesAsync()
         {
-            StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(Festival.Title))
-            {
-                _ = errors.AppendLine("Введите название");
-            }
-            if (Festival.FromDateTime <= DateTime.Now)
-            {
-                _ = errors.AppendLine("Дата начала фестиваля " +
-                    "должна быть позднее текущей даты");
-            }
-            if (Festival.FestivalProgram.Count == 0)
-            {
-                _ = errors.AppendLine("Создайте хотя бы одну " +
-                    "программу для фестиваля");
-            }
-            if (errors.Length > 0)
-            {
-                await AlertService.InformError(
-                    errors.ToString());
-                return;
-            }
             if (await FestivalDataStore.AddItemAsync(Festival))
             {
                 await Shell.Current.GoToAsync("..");
@@ -124,7 +101,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToAddProgramViewCommand == null)
                 {
-                    goToAddProgramViewCommand = new Command(GoToAddProgramViewAsync);
+                    goToAddProgramViewCommand
+                        = new Command(GoToAddProgramViewAsync);
                 }
 
                 return goToAddProgramViewCommand;
@@ -146,7 +124,9 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToEditProgramViewCommand == null)
                 {
-                    goToEditProgramViewCommand = new Command<FestivalProgram>(GoToEditProgramViewAsync);
+                    goToEditProgramViewCommand
+                        = new Command<FestivalProgram>
+                        (GoToEditProgramViewAsync);
                 }
 
                 return goToEditProgramViewCommand;
@@ -157,7 +137,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             await Shell.Current.Navigation.PushAsync(
                 new AddProgramView(
-                    new AddEditProgramViewModel(Festival.FestivalProgram, program)));
+                    new AddEditProgramViewModel(Festival.FestivalProgram,
+                                                program)));
         }
 
         private Command<FestivalProgram> deleteProgramCommand;
@@ -168,7 +149,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (deleteProgramCommand == null)
                 {
-                    deleteProgramCommand = new Command<FestivalProgram>(DeleteProgramAsync);
+                    deleteProgramCommand
+                        = new Command<FestivalProgram>(DeleteProgramAsync);
                 }
 
                 return deleteProgramCommand;

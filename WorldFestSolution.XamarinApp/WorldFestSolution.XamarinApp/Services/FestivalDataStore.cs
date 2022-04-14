@@ -17,6 +17,29 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(Festival item)
         {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(item.Title))
+            {
+                _ = errors.AppendLine("Введите название");
+            }
+            if (item.FromDateTime <= DateTime.Now)
+            {
+                _ = errors.AppendLine("Дата начала фестиваля " +
+                    "должна быть позднее текущей даты");
+            }
+            if (item.FestivalProgram.Count == 0)
+            {
+                _ = errors.AppendLine("Создайте хотя бы одну " +
+                    "программу для фестиваля");
+            }
+            if (errors.Length > 0)
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError(
+                        errors.ToString());
+                return false;
+            }
             string jsonFestival = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient())
             {
