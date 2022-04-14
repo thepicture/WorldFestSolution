@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
+using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
@@ -14,6 +16,24 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<bool> AuthenticateAsync(string login, string password)
         {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(login))
+            {
+                _ = errors.AppendLine("Введите логин");
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                _ = errors.AppendLine("Введите пароль");
+            }
+
+            if (errors.Length > 0)
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError(
+                        errors.ToString());
+                return false;
+            }
             string encodedLoginAndPassword =
            CredentialsToBasicConverter
            .Encode(login, password);
@@ -33,7 +53,8 @@ namespace WorldFestSolution.XamarinApp.Services
                             .ReadAsStringAsync();
                         Message = content;
                         return true;
-                    } else
+                    }
+                    else
                     {
                         Message = "Вы ввели "
                             + "неверный логин или пароль. "

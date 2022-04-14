@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Text;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
@@ -53,22 +52,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void AuthenticateAsync()
         {
-            StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(Login))
-            {
-                _ = errors.AppendLine("Введите логин");
-            }
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                _ = errors.AppendLine("Введите пароль");
-            }
-
-            if (errors.Length > 0)
-            {
-                await AlertService.InformError(
-                    errors.ToString());
-                return;
-            }
             IsBusy = true;
             IsRefreshing = true;
             bool isAuthenticated = await AuthenticationService
