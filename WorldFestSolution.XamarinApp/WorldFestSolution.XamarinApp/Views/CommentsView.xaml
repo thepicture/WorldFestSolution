@@ -58,15 +58,16 @@
                                                 </Image.Source>
                                             </Image>
                                         </Frame>
-                                        <Grid RowDefinitions="auto,*,auto"
+                                        <Grid RowDefinitions="auto,auto,*,auto"
                                               Grid.Column="1">
                                             <Label Text="{Binding UserFullName}"
                                                    FontAttributes="Bold" />
                                             <Label Text="{Binding Path=CreationDateTime, 
                                                               StringFormat='{0:dd/MM/yyyy hh:mm}'}"
-                                                   HorizontalTextAlignment="End" />
+                                                   FontSize="Caption"
+                                                   Grid.Row="1"/>
                                             <Label Text="{Binding Text}"
-                                                   Grid.Row="1" />
+                                                   Grid.Row="2" />
                                         </Grid>
                                         <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
                                                                                             Path=BindingContext}"
