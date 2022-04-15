@@ -100,7 +100,7 @@
                     </StackLayout>
                 </ScrollView>
                 <StackLayout Grid.Row="1">
-                    <Editor Text="{Binding CommentText}"
+                    <Editor Text="{Binding Comment.Text}"
                             HeightRequest="120"
                             Placeholder="Введите комментарий..."
                             MaxLength="1024" />

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
@@ -14,6 +13,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             Comments = new ObservableCollection<Comment>();
             FestivalId = festivalId;
+            Comment = new Comment
+            {
+                FestivalId = festivalId
+            };
         }
 
         public ObservableCollection<Comment> Comments
@@ -48,6 +51,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get => festivalId;
             set => SetProperty(ref festivalId, value);
         }
+        public Comment Comment
+        {
+            get => comment;
+            set => SetProperty(ref comment, value);
+        }
 
         private async void RefreshAsync()
         {
@@ -74,14 +82,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             IsRefreshing = false;
         }
 
-        private string commentText;
-
-        public string CommentText
-        {
-            get => commentText;
-            set => SetProperty(ref commentText, value);
-        }
-
         private Command postCommentCommand;
 
         public ICommand PostCommentCommand
@@ -99,24 +99,16 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void PostCommentAsync()
         {
-            if (string.IsNullOrWhiteSpace(CommentText))
+            if (await CommentDataStore.AddItemAsync(Comment))
             {
-                await AlertService.InformError("Введите комментарий");
-                return;
-            }
-            Comment newComment = new Comment
-            {
-                Text = CommentText,
-                FestivalId = FestivalId
-            };
-            if (await CommentDataStore.AddItemAsync(newComment))
-            {
-                CommentText = string.Empty;
+                Comment.Text = string.Empty;
+                OnPropertyChanged(nameof(Comment));
                 IsRefreshing = true;
             }
         }
 
         private Command<Comment> deleteCommentCommand;
+        private Comment comment;
 
         public Command<Comment> DeleteCommentCommand
         {
@@ -124,7 +116,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (deleteCommentCommand == null)
                 {
-                    deleteCommentCommand = new Command<Comment>(DeleteCommentAsync);
+                    deleteCommentCommand
+                        = new Command<Comment>(DeleteCommentAsync);
                 }
 
                 return deleteCommentCommand;

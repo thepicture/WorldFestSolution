@@ -17,6 +17,13 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(Comment item)
         {
+            if (string.IsNullOrWhiteSpace(item.Text))
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError("Введите комментарий");
+                return false;
+            }
             string jsonComment = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient())
             {
