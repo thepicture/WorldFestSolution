@@ -130,6 +130,15 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<bool> DeleteItemAsync(string id)
         {
+            bool isUserWantsToDelete = await DependencyService
+                .Get<IAlertService>()
+                .Ask("Удалить фестиваль? "
+                     + "При удалении фестиваля "
+                     + "у вас уменьшится рейтинг");
+            if (!isUserWantsToDelete)
+            {
+                return false;
+            }
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Authorization =

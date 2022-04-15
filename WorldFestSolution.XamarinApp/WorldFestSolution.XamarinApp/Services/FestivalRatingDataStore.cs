@@ -17,6 +17,31 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(FestivalRating item)
         {
+            string result = await DependencyService
+                .Get<IAlertService>()
+                .Prompt("Введите количество звёзд от 1 до 5",
+                        maxLength: 1,
+                        Keyboard.Numeric);
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError("Вы ничего не ввели. "
+                                 + "Оценка отменена");
+                return false;
+            }
+            if (!int.TryParse(result, out int starsCount)
+                || starsCount < 1
+                || starsCount > 5)
+            {
+                await DependencyService
+                    .Get<IAlertService>()
+                    .InformError("Количество звёзд - "
+                                 + "это положительное число от 1 до 5");
+                return await AddItemAsync(item);
+            }
+            item.CountOfStars = starsCount;
+
             string jsonFestivalRating = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient())
             {

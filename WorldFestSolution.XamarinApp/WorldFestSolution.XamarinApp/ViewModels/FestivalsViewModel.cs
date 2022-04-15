@@ -75,8 +75,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 {
                     items = items.Where(i =>
                     {
-                        return i.Title.IndexOf(SearchText,
-                                              StringComparison.OrdinalIgnoreCase) != -1;
+                        return i
+                        .Title
+                        .IndexOf(SearchText,
+                                 StringComparison.OrdinalIgnoreCase) != -1;
                     });
                 }
                 if (IsActualOnly)
@@ -104,7 +106,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToAddFestivalViewCommand == null)
                 {
-                    goToAddFestivalViewCommand = new Command(GoToAddFestivalViewAsync);
+                    goToAddFestivalViewCommand
+                        = new Command(GoToAddFestivalViewAsync);
                 }
 
                 return goToAddFestivalViewCommand;
@@ -127,7 +130,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToFestivalViewCommand == null)
                 {
-                    goToFestivalViewCommand = new Command<Festival>(GoToFestivalViewAsync);
+                    goToFestivalViewCommand
+                        = new Command<Festival>(GoToFestivalViewAsync);
                 }
 
                 return goToFestivalViewCommand;
@@ -148,7 +152,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (deleteFestivalCommand == null)
                 {
-                    deleteFestivalCommand = new Command<Festival>(DeleteFestivalAsync);
+                    deleteFestivalCommand
+                        = new Command<Festival>(DeleteFestivalAsync);
                 }
 
                 return deleteFestivalCommand;
@@ -157,15 +162,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void DeleteFestivalAsync(Festival festival)
         {
-            if (await AlertService.Ask("Удалить фестиваль "
-                    + $"{festival.Title}? "
-                    + "При удалении фестиваля у вас уменьшится рейтинг"))
+            if (await FestivalDataStore.DeleteItemAsync(
+                festival.Id.ToString()))
             {
-                if (await FestivalDataStore.DeleteItemAsync(
-                    festival.Id.ToString()))
-                {
-                    IsRefreshing = true;
-                }
+                IsRefreshing = true;
             }
         }
 
@@ -191,7 +191,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (rateFestivalCommand == null)
                 {
-                    rateFestivalCommand = new Command<Festival>(RateFestivalAsync);
+                    rateFestivalCommand =
+                        new Command<Festival>(RateFestivalAsync);
                 }
 
                 return rateFestivalCommand;
@@ -200,33 +201,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RateFestivalAsync(Festival festival)
         {
-            string result = await AlertService.Prompt("Введите количество звёзд от 1 до 5",
-                                                      maxLength: 1,
-                                                      Keyboard.Numeric);
-            if (string.IsNullOrWhiteSpace(result))
+            FestivalRating festivalRating = new FestivalRating
             {
-                await AlertService.InformError("Вы ничего не ввели. " +
-                    "Оценка отменена");
-                return;
-            }
-            if (!int.TryParse(result, out int starsCount) || starsCount < 1 || starsCount > 5)
+                FestivalId = festival.Id
+            };
+            if (await FestivalRatingDataStore.AddItemAsync(festivalRating))
             {
-                await AlertService.InformError("Количество звёзд - " +
-                    "это положительное число от 1 до 5");
-                RateFestivalAsync(festival);
-                return;
-            }
-            else
-            {
-                FestivalRating festivalRating = new FestivalRating
-                {
-                    CountOfStars = starsCount,
-                    FestivalId = festival.Id
-                };
-                if (await FestivalRatingDataStore.AddItemAsync(festivalRating))
-                {
-                    IsRefreshing = true;
-                }
+                IsRefreshing = true;
             }
         }
     }
