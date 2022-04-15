@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Essentials;
@@ -50,36 +49,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RegisterAsync()
         {
-            StringBuilder validationErrors = new StringBuilder();
-            if (UserType == null)
-            {
-                _ = validationErrors.AppendLine("Укажите роль");
-            }
-            if (string.IsNullOrWhiteSpace(Login))
-            {
-                _ = validationErrors.AppendLine("Введите логин");
-            }
-            if (string.IsNullOrWhiteSpace(Password))
-            {
-                _ = validationErrors.AppendLine("Введите пароль");
-            }
-            if (string.IsNullOrWhiteSpace(LastName))
-            {
-                _ = validationErrors.AppendLine("Введите фамилию");
-            }
-            if (string.IsNullOrWhiteSpace(FirstName))
-            {
-                _ = validationErrors.AppendLine("Введите имя");
-            }
-
-            if (validationErrors.Length > 0)
-            {
-                await AlertService.InformError(
-                    validationErrors.ToString());
-                IsBusy = false;
-                return;
-            }
-
             User user = new User
             {
                 Login = Login,
@@ -87,27 +56,18 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 FirstName = FirstName,
                 LastName = LastName,
                 Patronymic = Patronymic,
-                UserTypeId = UserType.Id,
+                UserTypeId = UserType == null ? 0 : UserType.Id,
                 Image = ImageBytes
             };
 
-
             IsBusy = true;
             IsRefreshing = true;
-            bool isRegistered = await RegistrationService.RegisterAsync(user);
-            IsRefreshing = false;
-            IsBusy = false;
-            if (isRegistered)
+            if (await RegistrationService.RegisterAsync(user))
             {
-                await AlertService.Inform(
-                    RegistrationService.Message);
                 (AppShell.Current as AppShell).LoadLoginAndRegisterShell();
             }
-            else
-            {
-                await AlertService.InformError(
-                    RegistrationService.Message);
-            }
+            IsRefreshing = false;
+            IsBusy = false;
         }
 
         private Command refreshCommand;

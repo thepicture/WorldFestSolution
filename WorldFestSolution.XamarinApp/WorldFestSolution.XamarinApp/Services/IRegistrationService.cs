@@ -3,7 +3,7 @@ using WorldFestSolution.XamarinApp.Models.Serialized;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
-    public interface IRegistrationService : IHaveMessage
+    public interface IRegistrationService
     {
         Task<bool> RegisterAsync(User user);
     }
