@@ -74,9 +74,8 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding Festival.FestivalProgram}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <Label HorizontalOptions="Center"
+                            <Label HorizontalTextAlignment="Center"
                                    VerticalOptions="CenterAndExpand"
-                                   FontSize="Large"
                                    Text="Программ нет" />
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>

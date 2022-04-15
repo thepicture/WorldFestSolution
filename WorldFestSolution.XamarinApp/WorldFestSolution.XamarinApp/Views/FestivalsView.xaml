@@ -34,9 +34,8 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <Label HorizontalOptions="Center"
+                            <Label HorizontalTextAlignment="Center"
                                    VerticalOptions="CenterAndExpand"
-                                   FontSize="Large"
                                    Text="Фестивалей не найдено">
                                 <Label.IsVisible>
                                     <Binding Path="BindingContext.IsRefreshing"

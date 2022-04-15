@@ -19,9 +19,8 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding Comments}">
                         <BindableLayout.EmptyViewTemplate>
                             <DataTemplate>
-                                <Label HorizontalOptions="Center"
-                                       VerticalOptions="CenterAndExpand"
-                                       FontSize="Large"
+                                <Label VerticalOptions="CenterAndExpand"
+                                       HorizontalTextAlignment="Center"
                                        Text="Комментариев не найдено">
                                     <Label.IsVisible>
                                         <Binding Path="BindingContext.IsRefreshing"
