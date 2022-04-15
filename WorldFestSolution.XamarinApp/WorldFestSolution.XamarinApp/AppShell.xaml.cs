@@ -30,7 +30,8 @@ namespace WorldFestSolution.XamarinApp
                     Route = nameof(LoginView),
                     Icon = "login_bar",
                     Title = "Авторизация",
-                    ContentTemplate = new DataTemplate(typeof(LoginView))
+                    ContentTemplate = new DataTemplate(
+                        typeof(LoginView))
                 });
             ShellContentTabBar
               .Items.Add(new ShellContent
@@ -38,7 +39,8 @@ namespace WorldFestSolution.XamarinApp
                   Route = nameof(RegisterView),
                   Icon = "register_bar",
                   Title = "Регистрация",
-                  ContentTemplate = new DataTemplate(typeof(RegisterView))
+                  ContentTemplate = new DataTemplate(
+                      typeof(RegisterView))
               });
         }
 
@@ -56,11 +58,20 @@ namespace WorldFestSolution.XamarinApp
                 Route = $"My{nameof(FestivalsView)}",
                 Icon = "programs",
                 Title = "Мои фестивали",
-                ContentTemplate = new DataTemplate(typeof(FestivalsView)),
+                ContentTemplate = new DataTemplate(
+                    typeof(FestivalsView)),
             });
             switch (Identity.Role)
             {
                 case "Организатор":
+                    ShellContentTabBar.Items.Add(new ShellContent
+                    {
+                        Route = nameof(FestivalsPopularityChartView),
+                        Icon = "icon_feed",
+                        Title = "Популярность фестов",
+                        ContentTemplate = new DataTemplate(
+                            typeof(FestivalsPopularityChartView)),
+                    });
                     break;
                 case "Участник":
                     ShellContentTabBar.Items.Add(new ShellContent
@@ -68,7 +79,8 @@ namespace WorldFestSolution.XamarinApp
                         Route = nameof(FestivalsView),
                         Icon = "logo",
                         Title = "Поиск фестивалей",
-                        ContentTemplate = new DataTemplate(typeof(FestivalsView)),
+                        ContentTemplate = new DataTemplate(
+                            typeof(FestivalsView)),
                     });
                     break;
                 default:
@@ -79,7 +91,8 @@ namespace WorldFestSolution.XamarinApp
                 Route = nameof(AccountView),
                 Icon = "login",
                 Title = "Аккаунт",
-                ContentTemplate = new DataTemplate(typeof(AccountView))
+                ContentTemplate = new DataTemplate(
+                    typeof(AccountView))
             });
         }
     }

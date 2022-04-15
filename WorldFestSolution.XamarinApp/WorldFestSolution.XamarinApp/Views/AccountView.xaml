@@ -54,7 +54,7 @@
                    StringFormat='{}Вы {0}'}"
                            HorizontalTextAlignment="Center" />
                     <Label Text="{Binding Path=User.Rating,
-                                  StringFormat='{}Ваш рейтинг: {0:F2}'}"
+                                          StringFormat='{}Ваш рейтинг: {0:F2}'}"
                            HorizontalTextAlignment="Center">
                         <Label.Triggers>
                             <DataTrigger TargetType="Label"

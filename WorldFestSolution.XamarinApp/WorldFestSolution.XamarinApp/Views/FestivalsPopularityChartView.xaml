@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             x:DataType="viewmodels:FestivalsPopularityChartViewModel"
+             Title="Популярность моих фестивалей"
+             x:Class="WorldFestSolution.XamarinApp.Views.FestivalsPopularityChartView">
+    <ContentView>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView Orientation="Horizontal">
+                <microcharts:ChartView x:Name="PopularityChart"
+                                       Chart="{Binding Chart}"
+                                       HorizontalOptions="StartAndExpand" />
+            </ScrollView>
+        </RefreshView>
+    </ContentView>
+</ContentPage>
