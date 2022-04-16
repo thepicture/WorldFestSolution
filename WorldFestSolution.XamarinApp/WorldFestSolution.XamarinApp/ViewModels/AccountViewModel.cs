@@ -36,7 +36,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (await AlertService.Ask("Выйти из аккаунта?"))
             {
                 Identity.Logout();
-                (AppShell.Current as AppShell).LoadLoginAndRegisterShell();
+                AppShell.LoadLoginAndRegisterShell();
             }
         }
 

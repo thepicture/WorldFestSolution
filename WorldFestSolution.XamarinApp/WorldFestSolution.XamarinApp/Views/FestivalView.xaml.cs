@@ -7,6 +7,8 @@ namespace WorldFestSolution.XamarinApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FestivalView : ContentPage
     {
+        private readonly FestivalViewModel _viewModel;
+
         public FestivalView()
         {
             InitializeComponent();
@@ -15,13 +17,13 @@ namespace WorldFestSolution.XamarinApp.Views
         public FestivalView(FestivalViewModel festivalViewModel)
         {
             InitializeComponent();
-            BindingContext = festivalViewModel;
+            BindingContext = _viewModel = festivalViewModel;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            (BindingContext as FestivalViewModel).OnAppearing();
+            _viewModel.OnAppearing();
         }
     }
 }

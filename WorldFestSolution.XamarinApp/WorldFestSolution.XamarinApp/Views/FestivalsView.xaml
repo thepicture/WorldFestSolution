@@ -19,9 +19,6 @@
                                       Command="{Binding GoToAddFestivalViewCommand}"
                                       IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
     </ContentPage.ToolbarItems>
-    <ContentPage.BindingContext>
-        <viewmodels:FestivalsViewModel />
-    </ContentPage.BindingContext>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
         <Grid RowDefinitions="auto,auto,*">

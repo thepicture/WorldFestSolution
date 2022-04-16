@@ -11,35 +11,23 @@ namespace WorldFestSolution.XamarinApp.Controls
         public MaterialDatePicker _datePicker { get; private set; } = new MaterialDatePicker() { MinimumDate = DateTime.Today, IsVisible = false };
         public MaterialTimePicker _timePicker { get; private set; } = new MaterialTimePicker() { IsVisible = false };
         string _stringFormat { get; set; }
-        public string StringFormat { get { return _stringFormat ?? "dd/MM/yyyy HH:mm"; } set { _stringFormat = value; } }
+        public string StringFormat { get => _stringFormat ?? "dd/MM/yyyy HH:mm"; set => _stringFormat = value; }
         public DateTime DateTime
         {
-            get { return (DateTime)GetValue(DateTimeProperty); }
+            get => (DateTime)GetValue(DateTimeProperty);
             set { SetValue(DateTimeProperty, value); OnPropertyChanged("DateTime"); }
         }
 
         private TimeSpan _time
         {
-            get
-            {
-                return TimeSpan.FromTicks(DateTime.Ticks);
-            }
-            set
-            {
-                DateTime = new DateTime(DateTime.Date.Ticks).AddTicks(value.Ticks);
-            }
+            get => TimeSpan.FromTicks(DateTime.Ticks);
+            set => DateTime = new DateTime(DateTime.Date.Ticks).AddTicks(value.Ticks);
         }
 
         private DateTime _date
         {
-            get
-            {
-                return DateTime.Date;
-            }
-            set
-            {
-                DateTime = new DateTime(DateTime.TimeOfDay.Ticks).AddTicks(value.Ticks);
-            }
+            get => DateTime.Date;
+            set => DateTime = new DateTime(DateTime.TimeOfDay.Ticks).AddTicks(value.Ticks);
         }
 
         public static BindableProperty DateTimeProperty = BindableProperty.Create("DateTime",
@@ -92,7 +80,7 @@ namespace WorldFestSolution.XamarinApp.Controls
 
         static void DTPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            var timePicker = (bindable as DateTimePicker);
+            var timePicker = bindable as DateTimePicker;
             timePicker.UpdateEntryText();
         }
     }

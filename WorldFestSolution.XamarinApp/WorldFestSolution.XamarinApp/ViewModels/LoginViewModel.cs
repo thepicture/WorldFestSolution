@@ -4,7 +4,6 @@ using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -68,21 +67,19 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     Identity.User = JsonConvert
                         .DeserializeObject<User>
                         (AuthenticationService.Message);
-                    await SecureStorage
-                        .SetAsync("Identity",
-                                  encodedLoginAndPassword);
+                    Identity.AuthorizationValue = encodedLoginAndPassword;
                 }
                 else
                 {
-                    (App.Current as App).User = JsonConvert
+                    App.User = JsonConvert
                         .DeserializeObject<User>
                         (AuthenticationService.Message);
-                    (App.Current as App).Role = AuthenticationService.Message;
-                    (App.Current as App).Identity = encodedLoginAndPassword;
+                    App.Role = AuthenticationService.Message;
+                    App.Identity = encodedLoginAndPassword;
                 }
                 await AlertService.Inform("Вы авторизованы " +
                     $"с ролью {Identity.Role}");
-                (AppShell.Current as AppShell).SetShellStacksDependingOnRole();
+                AppShell.SetShellStacksDependingOnRole();
             }
             else
             {

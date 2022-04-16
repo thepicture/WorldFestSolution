@@ -8,87 +8,84 @@
              x:DataType="viewmodels:AccountViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.AccountView"
              Title="Аккаунт">
-    <ContentPage.BindingContext>
-        <viewmodels:AccountViewModel />
-    </ContentPage.BindingContext>
     <ContentView>
-    <RefreshView IsRefreshing="{Binding IsRefreshing}"
-                 Command="{Binding RefreshCommand}">
-        <ScrollView>
-            <Grid RowDefinitions="*,1.2*">
-                <Frame Padding="0">
-                    <Image Source="{Binding ImageSource}"
-                           Aspect="AspectFill" 
-                           HeightRequest="1"/>
-                </Frame>
-                <Grid Opacity=".5">
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0"
-                                             EndPoint="0,1">
-                            <GradientStop Offset="0.5" />
-                            <GradientStop Offset="1"
-                                          Color="Black" />
-                        </LinearGradientBrush>
-                    </Grid.Background>
-                </Grid>
-                <StackLayout Grid.Row="1"
-                             VerticalOptions="Start">
-                    <Label Text="{Binding Path=User.Login,
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <Grid RowDefinitions="*,1.2*">
+                    <Frame Padding="0">
+                        <Image Source="{Binding ImageSource}"
+                               Aspect="AspectFill"
+                               HeightRequest="1" />
+                    </Frame>
+                    <Grid Opacity=".5">
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0"
+                                                 EndPoint="0,1">
+                                <GradientStop Offset="0.5" />
+                                <GradientStop Offset="1"
+                                              Color="Black" />
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                    </Grid>
+                    <StackLayout Grid.Row="1"
+                                 VerticalOptions="Start">
+                        <Label Text="{Binding Path=User.Login,
                                   StringFormat='{}Логин: {0}'}"
-                           FontAttributes="Bold"
-                           HorizontalTextAlignment="Center" />
-                    <Label HorizontalTextAlignment="Center">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <FormattedString.Spans>
-                                    <Span Text="{Binding User.LastName}" />
-                                    <Span Text=" " />
-                                    <Span Text="{Binding User.FirstName}" />
-                                    <Span Text=" " />
-                                    <Span Text="{Binding User.Patronymic}" />
-                                </FormattedString.Spans>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                    <Label Text="{Binding Source={Static models:Identity.Role},
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center" />
+                        <Label HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="{Binding User.LastName}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding User.FirstName}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding User.Patronymic}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding Source={Static models:Identity.Role},
                    StringFormat='{}Вы {0}'}"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="{Binding Path=User.Rating,
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Path=User.Rating,
                                           StringFormat='{}Ваш рейтинг: {0:F2}'}"
-                           HorizontalTextAlignment="Center">
-                        <Label.Triggers>
-                            <DataTrigger TargetType="Label"
-                                         Binding="{Binding User.Rating}"
-                                         Value="0">
-                                <Setter Property="Text"
-                                        Value="Вас пока не оценивали" />
-                            </DataTrigger>
-                        </Label.Triggers>
-                    </Label>
-                    <rating:RatingBar SelectedStarValue="{Binding User.Rating}"
-                                      EmptyStarImage="empty_star"
-                                      FillStarImage="filled_star"
-                                      StarHeightRequest="32"
-                                      InputTransparent="True"
-                                      HorizontalOptions="Center">
-                        <rating:RatingBar.Triggers>
-                            <DataTrigger TargetType="rating:RatingBar"
-                                         Binding="{Binding User.Rating}"
-                                         Value="0">
-                                <Setter Property="IsVisible"
-                                        Value="False" />
-                            </DataTrigger>
-                        </rating:RatingBar.Triggers>
-                    </rating:RatingBar>
-                    <material:MaterialButton Text="Изменить пароль"
-                                             Command="{Binding GoToChangePasswordViewCommand}"
-                                             Style="{StaticResource BaseButton}" />
-                    <material:MaterialButton Text="Разлогиниться"
-                                             Command="{Binding LogoutCommand}"
-                                             Style="{StaticResource BackgroundButton}" />
-                </StackLayout>
-            </Grid>
-        </ScrollView>
-    </RefreshView>
+                               HorizontalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding User.Rating}"
+                                             Value="0">
+                                    <Setter Property="Text"
+                                            Value="Вас пока не оценивали" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <rating:RatingBar SelectedStarValue="{Binding User.Rating}"
+                                          EmptyStarImage="empty_star"
+                                          FillStarImage="filled_star"
+                                          StarHeightRequest="32"
+                                          InputTransparent="True"
+                                          HorizontalOptions="Center">
+                            <rating:RatingBar.Triggers>
+                                <DataTrigger TargetType="rating:RatingBar"
+                                             Binding="{Binding User.Rating}"
+                                             Value="0">
+                                    <Setter Property="IsVisible"
+                                            Value="False" />
+                                </DataTrigger>
+                            </rating:RatingBar.Triggers>
+                        </rating:RatingBar>
+                        <material:MaterialButton Text="Изменить пароль"
+                                                 Command="{Binding GoToChangePasswordViewCommand}"
+                                                 Style="{StaticResource BaseButton}" />
+                        <material:MaterialButton Text="Разлогиниться"
+                                                 Command="{Binding LogoutCommand}"
+                                                 Style="{StaticResource BackgroundButton}" />
+                    </StackLayout>
+                </Grid>
+            </ScrollView>
+        </RefreshView>
     </ContentView>
 </ContentPage>

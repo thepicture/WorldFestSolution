@@ -12,9 +12,9 @@ namespace WorldFestSolution.XamarinApp.Models
         {
             get
             {
-                if ((App.Current as App).User != null)
+                if (App.User != null)
                 {
-                    return (App.Current as App).User;
+                    return App.User;
                 }
                 else
                 {
@@ -40,7 +40,7 @@ namespace WorldFestSolution.XamarinApp.Models
             set
             {
                 value.Image = null;
-                (App.Current as App).User = value;
+                App.User = value;
                 string serializedUser = JsonConvert.SerializeObject(value);
                 SecureStorage
                     .SetAsync("User", serializedUser)
@@ -52,9 +52,9 @@ namespace WorldFestSolution.XamarinApp.Models
         {
             string newAuthorizationValue = CredentialsToBasicConverter
                                 .Encode(User.Login, newPassword);
-            if ((App.Current as App).Identity != null)
+            if (App.Identity != null)
             {
-                (App.Current as App).Identity = newAuthorizationValue;
+                App.Identity = newAuthorizationValue;
             }
             else
             {
@@ -64,8 +64,8 @@ namespace WorldFestSolution.XamarinApp.Models
 
         internal static void Logout()
         {
-            (App.Current as App).User = null;
-            (App.Current as App).Identity = null;
+            App.User = null;
+            App.Identity = null;
             SecureStorage.RemoveAll();
         }
 
@@ -86,9 +86,9 @@ namespace WorldFestSolution.XamarinApp.Models
         {
             get
             {
-                if ((App.Current as App).Identity != null)
+                if (App.Identity != null)
                 {
-                    return (App.Current as App).Identity;
+                    return App.Identity;
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace WorldFestSolution.XamarinApp.Models
             }
             set
             {
-                (App.Current as App).Identity = value;
+                App.Identity = value;
                 if (value == null)
                 {
                     _ = SecureStorage.Remove("Identity");

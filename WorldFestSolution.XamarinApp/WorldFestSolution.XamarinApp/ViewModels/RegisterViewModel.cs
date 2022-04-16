@@ -64,7 +64,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             IsRefreshing = true;
             if (await RegistrationService.RegisterAsync(user))
             {
-                (AppShell.Current as AppShell).LoadLoginAndRegisterShell();
+                AppShell.LoadLoginAndRegisterShell();
             }
             IsRefreshing = false;
             IsBusy = false;

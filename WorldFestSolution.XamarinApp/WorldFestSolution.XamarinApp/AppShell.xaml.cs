@@ -7,9 +7,13 @@ namespace WorldFestSolution.XamarinApp
 {
     public partial class AppShell : Shell
     {
+        private static TabBar TabBar;
         public AppShell()
         {
             InitializeComponent();
+
+            TabBar = new TabBar();
+            Items.Add(TabBar);
 
             if (IsLoggedIn())
             {
@@ -21,10 +25,10 @@ namespace WorldFestSolution.XamarinApp
             }
         }
 
-        public void LoadLoginAndRegisterShell()
+        public static void LoadLoginAndRegisterShell()
         {
-            ShellContentTabBar.Items.Clear();
-            ShellContentTabBar
+            TabBar.Items.Clear();
+            TabBar
                 .Items.Add(new ShellContent
                 {
                     Route = nameof(LoginView),
@@ -33,7 +37,7 @@ namespace WorldFestSolution.XamarinApp
                     ContentTemplate = new DataTemplate(
                         typeof(LoginView))
                 });
-            ShellContentTabBar
+            TabBar
               .Items.Add(new ShellContent
               {
                   Route = nameof(RegisterView),
@@ -50,10 +54,10 @@ namespace WorldFestSolution.XamarinApp
                 .GetAsync("Identity").Result != null;
         }
 
-        internal void SetShellStacksDependingOnRole()
+        public static void SetShellStacksDependingOnRole()
         {
-            ShellContentTabBar.Items.Clear();
-            ShellContentTabBar.Items.Add(new ShellContent
+            TabBar.Items.Clear();
+            TabBar.Items.Add(new ShellContent
             {
                 Route = $"My{nameof(FestivalsView)}",
                 Icon = "programs",
@@ -64,7 +68,7 @@ namespace WorldFestSolution.XamarinApp
             switch (Identity.Role)
             {
                 case "Организатор":
-                    ShellContentTabBar.Items.Add(new ShellContent
+                    TabBar.Items.Add(new ShellContent
                     {
                         Route = nameof(FestivalsPopularityChartView),
                         Icon = "icon_feed",
@@ -74,7 +78,7 @@ namespace WorldFestSolution.XamarinApp
                     });
                     break;
                 case "Участник":
-                    ShellContentTabBar.Items.Add(new ShellContent
+                    TabBar.Items.Add(new ShellContent
                     {
                         Route = nameof(FestivalsView),
                         Icon = "logo",
@@ -86,7 +90,7 @@ namespace WorldFestSolution.XamarinApp
                 default:
                     break;
             }
-            ShellContentTabBar.Items.Add(new ShellContent
+            TabBar.Items.Add(new ShellContent
             {
                 Route = nameof(AccountView),
                 Icon = "login",
