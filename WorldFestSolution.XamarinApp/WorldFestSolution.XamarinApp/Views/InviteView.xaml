@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xamarinapp="clr-namespace:WorldFestSolution.XamarinApp"
+             xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             x:DataType="viewmodels:InviteViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.InviteView"
+             x:Name="Page"
+             Title="Пригласить участников">
+    <ContentView>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <StackLayout BindableLayout.ItemsSource="{Binding Invites}">
+                    <BindableLayout.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label VerticalOptions="CenterAndExpand"
+                                   HorizontalTextAlignment="Center"
+                                   Text="Участники не найдены">
+                                <Label.IsVisible>
+                                    <Binding Path="BindingContext.IsRefreshing"
+                                             Source="{Reference Page}">
+                                        <Binding.Converter>
+                                            <converters:BooleanInvertValueConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Label.IsVisible>
+                            </Label>
+                        </DataTemplate>
+                    </BindableLayout.EmptyViewTemplate>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="serialized:Invite">
+                            <material:MaterialCard Elevation="5"
+                                                   Margin="10"
+                                                   CornerRadius="25">
+                                <Grid RowDefinitions="*,auto"
+                                      ColumnDefinitions="auto,*">
+                                    <Frame CornerRadius="60"
+                                           VerticalOptions="Start"
+                                           Padding="0"
+                                           WidthRequest="60"
+                                           HeightRequest="60"
+                                           HasShadow="False">
+                                        <Image Aspect="AspectFill">
+                                            <Image.Source>
+                                                <Binding Path="User.ImageSource">
+                                                    <Binding.TargetNullValue>
+                                                        login
+                                                    </Binding.TargetNullValue>
+                                                </Binding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Frame>
+                                    <Label Text="{Binding User.FullName}"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1" />
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.InviteUserCommand}"
+                                                             Text="Пригласить"
+                                                             Style="{StaticResource BaseButton}"
+                                                             Grid.Row="1"
+                                                             Grid.ColumnSpan="2">
+                                        <material:MaterialButton.Triggers>
+                                            <DataTrigger TargetType="material:MaterialButton"
+                                                         Binding="{Binding IsSent}"
+                                                         Value="True">
+                                                <Setter Property="IsEnabled"
+                                                        Value="False" />
+                                                <Setter Property="Text"
+                                                        Value="Приглашен" />
+                                            </DataTrigger>
+                                        </material:MaterialButton.Triggers>
+                                    </material:MaterialButton>
+                                </Grid>
+                            </material:MaterialCard>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </ContentView>
+</ContentPage>

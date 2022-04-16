@@ -25,6 +25,10 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 });
             }
         }
+        [JsonIgnore]
+        public string FullName => string.IsNullOrWhiteSpace(Patronymic)
+            ? $"{LastName} {FirstName}"
+            : $"{LastName} {FirstName} {Patronymic}";
 
         public double Rating { get; set; }
     }

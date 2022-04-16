@@ -45,7 +45,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         private async void ToggleMyParticipateStateOfFestivalAsync()
         {
             IsBusy = true;
-            if (await InviteOfFestivalDataStore.ToggleParticipateAsync(FestivalId))
+            if (await InviteOfFestivalDataStore
+                .ToggleParticipateAsync(FestivalId))
             {
                 string action = Festival.IsMeParticipating
                     ? "покинули"
@@ -123,7 +124,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToEditFestivalViewCommand == null)
                 {
-                    goToEditFestivalViewCommand = new Command(GoToEditFestivalViewAsync);
+                    goToEditFestivalViewCommand =
+                        new Command(GoToEditFestivalViewAsync);
                 }
 
                 return goToEditFestivalViewCommand;
@@ -150,7 +152,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToProgramsViewCommand == null)
                 {
-                    goToProgramsViewCommand = new Command(GoToProgramsViewAsync);
+                    goToProgramsViewCommand =
+                        new Command(GoToProgramsViewAsync);
                 }
 
                 return goToProgramsViewCommand;
@@ -162,6 +165,28 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             await Shell.Current.Navigation.PushAsync(
                 new ProgramsView(
                     new ProgramsViewModel(Festival)));
+        }
+
+        private Command goToInviteViewCommand;
+
+        public ICommand GoToInviteViewCommand
+        {
+            get
+            {
+                if (goToInviteViewCommand == null)
+                {
+                    goToInviteViewCommand = new Command(GoToInviteViewAsync);
+                }
+
+                return goToInviteViewCommand;
+            }
+        }
+
+        private async void GoToInviteViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new InviteView(
+                    new InviteViewModel(FestivalId)));
         }
     }
 }

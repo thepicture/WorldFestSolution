@@ -5,14 +5,14 @@ using Xamarin.Forms.Xaml;
 namespace WorldFestSolution.XamarinApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FestivalView : ContentPage
+    public partial class InviteView : ContentPage
     {
-        private readonly FestivalViewModel _viewModel;
+        private readonly InviteViewModel _viewModel;
 
-        public FestivalView(FestivalViewModel festivalViewModel)
+        public InviteView(InviteViewModel inviteViewModel)
         {
             InitializeComponent();
-            BindingContext = _viewModel = festivalViewModel;
+            BindingContext = _viewModel = inviteViewModel;
         }
 
         protected override void OnAppearing()

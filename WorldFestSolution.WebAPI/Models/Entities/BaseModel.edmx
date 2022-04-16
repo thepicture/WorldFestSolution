@@ -67,6 +67,7 @@
           <Property Name="Patronymic" Type="nvarchar" MaxLength="100" />
           <Property Name="UserTypeId" Type="int" Nullable="false" />
           <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="IsWantInvites" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserOfFestival">
           <Key>
@@ -456,6 +457,7 @@
           <Property Name="Patronymic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeId" Type="Int32" Nullable="false" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsWantInvites" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FestivalComment" Relationship="WorldFestBaseModel.FK_FestivalComment_User" FromRole="User" ToRole="FestivalComment" />
           <NavigationProperty Name="FestivalRating" Relationship="WorldFestBaseModel.FK_FestivalRating_User" FromRole="User" ToRole="FestivalRating" />
           <NavigationProperty Name="ParticipantInvite" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User" FromRole="User" ToRole="ParticipantInvite" />
@@ -689,6 +691,7 @@
           <EntitySetMapping Name="User">
             <EntityTypeMapping TypeName="WorldFestBaseModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="IsWantInvites" ColumnName="IsWantInvites" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
                 <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />

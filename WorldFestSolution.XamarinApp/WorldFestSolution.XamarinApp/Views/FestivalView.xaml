@@ -122,13 +122,15 @@
                         <material:MaterialButton Command="{Binding GoToCommentsViewCommand}"
                                                  Text="{Binding Path=Festival.CountOfComments,
                                                                 StringFormat='{}Комментарии ({0})'}"
-                                                 Grid.Row="1"
                                                  Style="{StaticResource BaseButton}" />
                         <material:MaterialButton Command="{Binding GoToProgramsViewCommand}"
                                                  Text="{Binding Path=Festival.CountOfPrograms,
                                                                 StringFormat='{}Программы ({0})'}"
-                                                 Grid.Row="1"
                                                  Style="{StaticResource BaseButton}" />
+                        <material:MaterialButton Command="{Binding GoToInviteViewCommand}"
+                                                 Text="Пригласить участников"
+                                                 Style="{StaticResource BaseButton}"
+                                                 IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
                     </StackLayout>
                 </Grid>
             </ScrollView>

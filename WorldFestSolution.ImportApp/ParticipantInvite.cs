@@ -17,7 +17,10 @@ namespace WorldFestSolution.ImportApp
         public int Id { get; set; }
         public int OrganizerId { get; set; }
         public int ParticipantId { get; set; }
+        public int FestivalId { get; set; }
+        public bool IsAccepted { get; set; }
     
+        public virtual Festival Festival { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
     }

@@ -20,6 +20,7 @@ namespace WorldFestSolution.ImportApp
             this.FestivalComment = new HashSet<FestivalComment>();
             this.FestivalProgram = new HashSet<FestivalProgram>();
             this.FestivalRating = new HashSet<FestivalRating>();
+            this.ParticipantInvite = new HashSet<ParticipantInvite>();
             this.User = new HashSet<User>();
         }
     
@@ -35,6 +36,8 @@ namespace WorldFestSolution.ImportApp
         public virtual ICollection<FestivalProgram> FestivalProgram { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FestivalRating> FestivalRating { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ParticipantInvite> ParticipantInvite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> User { get; set; }
     }
