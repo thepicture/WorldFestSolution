@@ -9,6 +9,7 @@
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
              xmlns:app="clr-namespace:WorldFestSolution.XamarinApp"
              xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
+             xmlns:filters="clr-namespace:WorldFestSolution.XamarinApp.Models.Filters"
              x:DataType="viewmodels:FestivalsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsView"
              Title="{Binding Source={Static app:AppShell.Current},
@@ -21,13 +22,66 @@
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
-        <Grid RowDefinitions="auto,auto,*">
+        <Grid RowDefinitions="auto,auto,auto,auto,*">
             <SearchBar Text="{Binding SearchText}"
                        Placeholder="Поиск по названию" />
             <material:MaterialCheckbox Text="Показывать только актуальные"
                                        IsSelected="{Binding IsActualOnly}"
                                        Grid.Row="1" />
-            <ScrollView Grid.Row="2">
+            <Label Text="Фильтровать по"
+                   Grid.Row="2"
+                   Margin="10,0,0,10" />
+            <Picker x:Name="FilterPicker"
+                    SelectedItem="{Binding SelectedFilter}"
+                    FontSize="Micro"
+                    Title="Фильтровать по"
+                    Grid.Row="3"
+                    Margin="10,0,0,10">
+                <Picker.ItemDisplayBinding>
+                    <Binding Path="Title" />
+                </Picker.ItemDisplayBinding>
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type filters:Filter}">
+                        <filters:Filter Title="сначала новым"
+                                        SortType="Descending"
+                                        PropertyName="FromDateTime" />
+                        <filters:Filter Title="сначала старым"
+                                        SortType="Ascending"
+                                        PropertyName="FromDateTime" />
+                        <filters:Filter Title="рейтингу фестиваля по убыванию"
+                                        SortType="Descending"
+                                        PropertyName="Rating" />
+                        <filters:Filter Title="рейтингу фестиваля по возрастанию"
+                                        SortType="Ascending"
+                                        PropertyName="Rating" />
+                        <filters:Filter Title="рейтингу организатора по убыванию"
+                                        SortType="Descending"
+                                        PropertyName="OrganizerRating" />
+                        <filters:Filter Title="рейтингу организатора по возрастанию"
+                                        SortType="Ascending"
+                                        PropertyName="OrganizerRating" />
+                        <filters:Filter Title="количеству участников по убыванию"
+                                        SortType="Descending"
+                                        PropertyName="CountOfUsers" />
+                        <filters:Filter Title="количеству участников по возрастанию"
+                                        SortType="Ascending"
+                                        PropertyName="CountOfUsers" />
+                        <filters:Filter Title="количеству программ по возрастанию"
+                                        SortType="Ascending"
+                                        PropertyName="CountOfPrograms" />
+                        <filters:Filter Title="количеству программ по убыванию"
+                                        SortType="Descending"
+                                        PropertyName="CountOfPrograms" />
+                        <filters:Filter Title="количеству комментариев по возрастанию"
+                                        SortType="Ascending"
+                                        PropertyName="CountOfComments" />
+                        <filters:Filter Title="количеству комментариев по убыванию"
+                                        SortType="Descending"
+                                        PropertyName="CountOfComments" />
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <ScrollView Grid.Row="4">
                 <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Models.Filters;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
@@ -85,7 +86,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 {
                     items = items.Where(i => i.IsStarting || i.IsLive);
                 }
-                items = items.OrderBy(i => i.FromDateTime);
+                items = SelectedFilter.Accept(items);
                 foreach (Festival festival in items)
                 {
                     Device.BeginInvokeOnMainThread(() =>
@@ -208,6 +209,20 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (await FestivalRatingDataStore.AddItemAsync(festivalRating))
             {
                 IsRefreshing = true;
+            }
+        }
+
+        private IFilter selectedFilter;
+
+        public IFilter SelectedFilter
+        {
+            get => selectedFilter;
+            set
+            {
+                if (SetProperty(ref selectedFilter, value))
+                {
+                    IsRefreshing = true;
+                }
             }
         }
     }

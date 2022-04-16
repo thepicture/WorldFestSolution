@@ -35,6 +35,17 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
                 .First(u => u.UserType.Title == "Организатор");
             OrganizerId = organizer.Id;
             OrganizerFullName = $"{organizer.LastName} {organizer.FirstName}";
+            if (organizer.UserRating.Count > 0)
+            {
+
+                OrganizerRating = organizer.UserRating
+                    .Average(or => or.CountOfStars)
+                    .ToString("F2");
+            }
+            else
+            {
+                OrganizerRating = "0";
+            }
             UsersId = festival.User
                 .Where(u => u.Id != organizer.Id)
                 .Select(u => u.Id);
@@ -61,6 +72,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public double Rating { get; set; }
         public int OrganizerId { get; set; }
         public string OrganizerFullName { get; set; }
+        public string OrganizerRating { get; set; }
         public IEnumerable<int> UsersId { get; set; }
         public IEnumerable<int> CommentsId { get; set; }
         public List<SerializedFestivalProgram> FestivalProgram { get; set; }

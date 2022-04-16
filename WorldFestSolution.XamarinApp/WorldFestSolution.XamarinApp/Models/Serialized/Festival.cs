@@ -14,6 +14,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime FromDateTime { get; set; }
+        [JsonIgnore]
         public DateTime ToDateTime
         {
             get
@@ -32,6 +33,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public double Rating { get; set; }
         public int OrganizerId { get; set; }
         public string OrganizerFullName { get; set; }
+        public string OrganizerRating { get; set; }
         public IEnumerable<int> UsersId { get; set; }
         public IEnumerable<int> CommentsId { get; set; }
         public ObservableCollection<FestivalProgram> FestivalProgram { get; set; }
@@ -54,6 +56,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         }
         [JsonIgnore]
         public bool IsMeParticipating => UsersId.Any(ui => ui == Identity.User.Id);
+        [JsonIgnore]
         public bool IsFinished
         {
             get
@@ -61,6 +64,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 return DateTime.Now > ToDateTime;
             }
         }
+        [JsonIgnore]
         public bool IsStarting
         {
             get
@@ -68,7 +72,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 return DateTime.Now < FromDateTime;
             }
         }
-
+        [JsonIgnore]
         public bool IsLive
         {
             get

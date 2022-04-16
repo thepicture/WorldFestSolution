@@ -13,6 +13,7 @@ namespace WorldFestSolution.XamarinApp.Views
         {
             InitializeComponent();
             BindingContext = _viewModel = new FestivalsViewModel();
+            FilterPicker.SelectedIndex = 0;
         }
 
         protected override void OnAppearing()
