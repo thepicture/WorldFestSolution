@@ -7,10 +7,11 @@ namespace WorldFestSolution.XamarinApp.Controls
 {
     public class DateTimePicker : ContentView, INotifyPropertyChanged
     {
-        public Entry _entry { get; private set; } = new Entry();
-        public MaterialDatePicker _datePicker { get; private set; } = new MaterialDatePicker() { MinimumDate = DateTime.Today, IsVisible = false };
-        public MaterialTimePicker _timePicker { get; private set; } = new MaterialTimePicker() { IsVisible = false };
-        string _stringFormat { get; set; }
+        public Entry Entry { get; private set; } = new Entry();
+        public MaterialDatePicker DatePicker { get; private set; } = new MaterialDatePicker() { MinimumDate = DateTime.Today, IsVisible = false };
+        public MaterialTimePicker TimePicker { get; private set; } = new MaterialTimePicker() { IsVisible = false };
+
+        private string _stringFormat;
         public string StringFormat { get => _stringFormat ?? "dd/MM/yyyy HH:mm"; set => _stringFormat = value; }
         public DateTime DateTime
         {
@@ -18,13 +19,13 @@ namespace WorldFestSolution.XamarinApp.Controls
             set { SetValue(DateTimeProperty, value); OnPropertyChanged("DateTime"); }
         }
 
-        private TimeSpan _time
+        private TimeSpan Time
         {
             get => TimeSpan.FromTicks(DateTime.Ticks);
             set => DateTime = new DateTime(DateTime.Date.Ticks).AddTicks(value.Ticks);
         }
 
-        private DateTime _date
+        private DateTime Date
         {
             get => DateTime.Date;
             set => DateTime = new DateTime(DateTime.TimeOfDay.Ticks).AddTicks(value.Ticks);
@@ -43,39 +44,39 @@ namespace WorldFestSolution.XamarinApp.Controls
             {
                 Children =
             {
-                _datePicker,
-                _timePicker,
-                _entry
+                DatePicker,
+                TimePicker,
+                Entry
             }
             };
-            _datePicker.SetBinding<DateTimePicker>(MaterialDatePicker.DateProperty, p => p._date);
-            _timePicker.SetBinding<DateTimePicker>(MaterialTimePicker.TimeProperty, p => p._time);
-            _timePicker.Unfocused += (sender, args) => _time = _timePicker.Time;
-            _datePicker.Focused += (s, a) => UpdateEntryText();
+            DatePicker.SetBinding(MaterialDatePicker.DateProperty, new Binding(nameof(Date)));
+            TimePicker.SetBinding(MaterialTimePicker.TimeProperty, new Binding(nameof(Time)));
+            TimePicker.Unfocused += (sender, args) => Time = TimePicker.Time;
+            DatePicker.Focused += (s, a) => UpdateEntryText();
 
             GestureRecognizers.Add(new TapGestureRecognizer()
             {
-                Command = new Command(() => _datePicker.Focus())
+                Command = new Command(() => DatePicker.Focus())
             });
-            _entry.Focused += (sender, args) =>
+            Entry.Focused += (sender, args) =>
             {
-                Device.BeginInvokeOnMainThread(() => _datePicker.Focus());
+                Device.BeginInvokeOnMainThread(() => DatePicker.Focus());
             };
-            _datePicker.Unfocused += (sender, args) =>
+            DatePicker.Unfocused += (sender, args) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    _timePicker.Focus();
-                    _date = _datePicker.Date;
+                    TimePicker.Focus();
+                    Date = DatePicker.Date;
                     UpdateEntryText();
-                    _datePicker.Unfocus();
+                    DatePicker.Unfocus();
                 });
             };
         }
 
         private void UpdateEntryText()
         {
-            _entry.Text = DateTime.ToString(StringFormat);
+            Entry.Text = DateTime.ToString(StringFormat);
         }
 
         static void DTPropertyChanged(BindableObject bindable, object oldValue, object newValue)

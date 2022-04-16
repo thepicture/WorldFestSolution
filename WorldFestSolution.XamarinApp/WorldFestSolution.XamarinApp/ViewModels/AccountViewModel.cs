@@ -59,7 +59,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            string[] loginAndPassword = BasicToCredentialsConverter.Decode();
+            string[] loginAndPassword = CredentialsService.Decode();
             string login = loginAndPassword[0];
             string password = loginAndPassword[1];
             bool isAuthenticated = await AuthenticationService

@@ -50,8 +50,9 @@ namespace WorldFestSolution.XamarinApp.Models
 
         internal static void ChangeLocalPassword(string newPassword)
         {
-            string newAuthorizationValue = CredentialsToBasicConverter
-                                .Encode(User.Login, newPassword);
+            string newAuthorizationValue = DependencyService
+                .Get<ICredentialsService>()
+                .Encode(User.Login, newPassword);
             if (App.Identity != null)
             {
                 App.Identity = newAuthorizationValue;

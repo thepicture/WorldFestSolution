@@ -3,7 +3,6 @@ using System;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -60,7 +59,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (isAuthenticated)
             {
                 string encodedLoginAndPassword =
-                    CredentialsToBasicConverter
+                    CredentialsService
                     .Encode(Login, Password);
                 if (IsRememberMe)
                 {

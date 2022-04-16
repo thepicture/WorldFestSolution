@@ -20,6 +20,7 @@ namespace WorldFestSolution.XamarinApp
                 .Resources
                 .MaterialConfiguration)Resources["CommonMaterial"]);
 
+            DependencyService.Register<CredentialsService>();
             DependencyService.Register<AndroidAlertService>();
             DependencyService.Register<HttpClientAuthenticationService>();
             DependencyService.Register<HttpClientRegistrationService>();

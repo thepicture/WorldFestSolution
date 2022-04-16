@@ -27,6 +27,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
           DependencyService.Get<IDataStore<ChangePasswordCredentials>>();
         public IDataStore<FestivalRating> FestivalRatingDataStore =>
          DependencyService.Get<IDataStore<FestivalRating>>();
+        public ICredentialsService CredentialsService =>
+        DependencyService.Get<ICredentialsService>();
         public User User
         {
             get => Identity.User;
