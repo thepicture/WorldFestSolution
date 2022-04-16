@@ -48,7 +48,6 @@ namespace WorldFestSolution.WebAPI.Controllers
                     .Identity.Name;
                 });
                 SerializedUser serializedUser = new SerializedUser(u);
-                serializedUser.Image = ImageResizerService.Resize(serializedUser.Image);
                 return new SerializedInvite
                 {
                     Id = exitingInvite?.Id ?? 0,

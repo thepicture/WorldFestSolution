@@ -9,6 +9,10 @@ namespace WorldFestSolution.WebAPI.Services
     {
         public static byte[] Resize(byte[] inputBytes)
         {
+            if (inputBytes == null)
+            {
+                return null;
+            }
             int jpegQuality = 5;
             Image image;
             using (MemoryStream inputStream = new MemoryStream(inputBytes))

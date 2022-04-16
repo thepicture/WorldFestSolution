@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WorldFestSolution.WebAPI.Models.Entities;
+using WorldFestSolution.WebAPI.Services;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized
 {
@@ -18,7 +19,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             Title = festival.Title;
             Description = festival.Description;
             FromDateTime = festival.FromDateTime;
-            Image = festival.Image;
+            Image = ImageResizerService.Resize(festival.Image);
             CountOfComments = festival.FestivalComment.Count;
             CountOfPrograms = festival.FestivalProgram.Count;
             CountOfUsers = festival.User.Count;

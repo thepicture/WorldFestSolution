@@ -1,4 +1,5 @@
-﻿Concert icons created by surang - Flaticon
+﻿Xamarin.Forms:
+Concert icons created by surang - Flaticon
 Login icons created by Freepik - Flaticon
 Password icons created by Pixel perfect - Flaticon
 Login icons created by Freepik - Flaticon
@@ -10,3 +11,6 @@ Star icons created by Pixel perfect - Flaticon
 Time icons created by Ilham Fitrotul Hayat - Flaticon
 BindableToolbarItem source: https://forums.xamarin.com/discussion/comment/168974/#Comment_168974
 DateTimePicker's source: https://stackoverflow.com/a/60808944
+
+WebAPI:
+ImageResizerService's source: https://stackoverflow.com/a/9432319

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using WorldFestSolution.WebAPI.Models.Entities;
+using WorldFestSolution.WebAPI.Services;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized
 {
@@ -17,7 +18,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             LastName = user.LastName;
             Patronymic = user.Patronymic;
             UserTypeId = user.UserTypeId;
-            Image = user.Image;
+            Image = ImageResizerService.Resize(user.Image);
             if (user.UserRating.Count > 0)
             {
                 Rating = user.UserRating.Average(ur => ur.CountOfStars);
