@@ -1,6 +1,6 @@
 ﻿namespace WorldFestSolution.XamarinApp.Models.Serialized
 {
-    public class Invite
+    public class ResponseInvite
     {
         public int Id { get; set; }
         public int OrganizerId { get; set; }

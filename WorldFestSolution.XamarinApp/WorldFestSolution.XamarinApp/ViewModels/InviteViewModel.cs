@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
@@ -36,11 +35,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 Invites.Clear();
             }
 
-            IEnumerable<Invite> dataStoreInvites =
+            IEnumerable<ResponseInvite> dataStoreInvites =
                 await InviteDataStore.GetItemsAsync();
             if (dataStoreInvites != null)
             {
-                foreach (Invite invite in dataStoreInvites)
+                foreach (ResponseInvite invite in dataStoreInvites)
                 {
                     Invites.Add(invite);
                 }
@@ -48,29 +47,29 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             IsRefreshing = false;
         }
 
-        private ObservableCollection<Invite> invites;
+        private ObservableCollection<ResponseInvite> invites;
 
-        public ObservableCollection<Invite> Invites
+        public ObservableCollection<ResponseInvite> Invites
         {
             get => invites;
             set => SetProperty(ref invites, value);
         }
 
-        private Command inviteUserCommand;
+        private Command<ResponseInvite> inviteUserCommand;
 
         public InviteViewModel(int festivalId)
         {
-            Invites = new ObservableCollection<Invite>();
+            Invites = new ObservableCollection<ResponseInvite>();
             FestivalId = festivalId;
         }
 
-        public ICommand InviteUserCommand
+        public Command<ResponseInvite> InviteUserCommand
         {
             get
             {
                 if (inviteUserCommand == null)
                 {
-                    inviteUserCommand = new Command(InviteUserAsync);
+                    inviteUserCommand = new Command<ResponseInvite>(InviteUserAsync);
                 }
 
                 return inviteUserCommand;
@@ -79,8 +78,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         public int FestivalId { get; }
 
-        private void InviteUserAsync()
+        private async void InviteUserAsync(ResponseInvite invite)
         {
+            if (await InviteDataStore.AddItemAsync(invite))
+            {
+                IsRefreshing = true;
+            }
         }
     }
 }

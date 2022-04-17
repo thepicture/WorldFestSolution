@@ -32,7 +32,7 @@
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="serialized:Invite">
+                        <DataTemplate x:DataType="serialized:ResponseInvite">
                             <material:MaterialCard Elevation="5"
                                                    Margin="10"
                                                    CornerRadius="25">

@@ -10,7 +10,6 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using WorldFestSolution.WebAPI.Models.Entities;
 using WorldFestSolution.WebAPI.Models.Serialized;
-using WorldFestSolution.WebAPI.Services;
 
 namespace WorldFestSolution.WebAPI.Controllers
 {
@@ -28,6 +27,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 
         // GET: api/ParticipantInvites?festivalId=1
         [ResponseType(typeof(List<SerializedInvite>))]
+        [Authorize(Roles = "Организатор, Участник")]
         public IHttpActionResult GetParticipantInvite(
             int festivalId)
         {
@@ -36,6 +36,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                     !u.Festival.Select(f => f.Id)
                                .Contains(festivalId))
                 .Where(u => u.UserType.Title == "Участник")
+                .Where(u => u.IsWantInvites)
                 .Where(u => u.Login != HttpContext.Current.User.Identity.Name)
                 .ToList();
             List<SerializedInvite> invites = users.ConvertAll(u =>
@@ -44,7 +45,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                 .ParticipantInvite
                 .FirstOrDefault(pi =>
                 {
-                    return pi.User.Login == HttpContext.Current.User
+                    return pi.User1.Login == HttpContext.Current.User
                     .Identity.Name;
                 });
                 SerializedUser serializedUser = new SerializedUser(u);
@@ -53,7 +54,9 @@ namespace WorldFestSolution.WebAPI.Controllers
                     Id = exitingInvite?.Id ?? 0,
                     ParticipantId = u.Id,
                     FestivalId = festivalId,
-                    IsAccepted = exitingInvite != null && exitingInvite.IsAccepted,
+                    IsAccepted = exitingInvite != null
+                                 && exitingInvite.IsAccepted,
+                    IsSent = exitingInvite != null,
                     User = serializedUser
                 };
             });
@@ -62,7 +65,8 @@ namespace WorldFestSolution.WebAPI.Controllers
 
         // PUT: api/ParticipantInvites/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutParticipantInvite(int id, ParticipantInvite participantInvite)
+        public async Task<IHttpActionResult> PutParticipantInvite
+            (int id, ParticipantInvite participantInvite)
         {
             if (!ModelState.IsValid)
             {
@@ -96,18 +100,27 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // POST: api/ParticipantInvites
-        [ResponseType(typeof(ParticipantInvite))]
-        public async Task<IHttpActionResult> PostParticipantInvite(ParticipantInvite participantInvite)
+        [ResponseType(typeof(SerializedInvite))]
+        [Authorize(Roles = "Организатор, Участник")]
+        public async Task<IHttpActionResult> PostParticipantInvite
+            (ParticipantInvite participantInvite)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            participantInvite.OrganizerId =
+                db.User
+                .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                .Id;
+
             db.ParticipantInvite.Add(participantInvite);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = participantInvite.Id }, participantInvite);
+            return CreatedAtRoute("DefaultApi",
+                                  new { id = participantInvite.Id },
+                                  participantInvite.Id);
         }
 
         // DELETE: api/ParticipantInvites/5
