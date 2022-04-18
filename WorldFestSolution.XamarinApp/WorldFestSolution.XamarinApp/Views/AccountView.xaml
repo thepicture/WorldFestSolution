@@ -80,6 +80,10 @@
                         <material:MaterialButton Text="Изменить пароль"
                                                  Command="{Binding GoToChangePasswordViewCommand}"
                                                  Style="{StaticResource BaseButton}" />
+                        <material:MaterialButton Text="Мои приглашения"
+                                                 Command="{Binding GoToMyInvitesViewCommand}"
+                                                 Style="{StaticResource BaseButton}"
+                                                 IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
                         <material:MaterialButton Text="Разлогиниться"
                                                  Command="{Binding LogoutCommand}"
                                                  Style="{StaticResource BackgroundButton}" />

@@ -31,35 +31,59 @@ namespace WorldFestSolution.WebAPI.Controllers
         public IHttpActionResult GetParticipantInvite(
             int festivalId)
         {
-            List<User> users = db.User
-                .Where(u =>
-                    !u.Festival.Select(f => f.Id)
-                               .Contains(festivalId))
-                .Where(u => u.UserType.Title == "Участник")
-                .Where(u => u.IsWantInvites)
-                .Where(u => u.Login != HttpContext.Current.User.Identity.Name)
-                .ToList();
-            List<SerializedInvite> invites = users.ConvertAll(u =>
+            List<SerializedInvite> invites = new List<SerializedInvite>();
+            if (HttpContext.Current.User.IsInRole("Организатор"))
             {
-                ParticipantInvite exitingInvite = u
-                .ParticipantInvite
-                .FirstOrDefault(pi =>
+                List<User> users = db.User
+                    .Where(u =>
+                        !u.Festival.Select(f => f.Id)
+                                   .Contains(festivalId))
+                    .Where(u => u.UserType.Title == "Участник")
+                    .Where(u => u.IsWantInvites)
+                    .Where(u => u.Login != HttpContext.Current.User.Identity.Name)
+                    .ToList();
+                invites = users.ConvertAll(u =>
                 {
-                    return pi.User1.Login == HttpContext.Current.User
-                    .Identity.Name;
+                    ParticipantInvite exitingInvite = u
+                    .ParticipantInvite
+                    .FirstOrDefault(pi =>
+                    {
+                        return pi.User1.Login == HttpContext.Current.User
+                        .Identity.Name;
+                    });
+                    SerializedUser serializedUser = new SerializedUser(u);
+                    return new SerializedInvite
+                    {
+                        Id = exitingInvite?.Id ?? 0,
+                        ParticipantId = u.Id,
+                        FestivalId = festivalId,
+                        IsAccepted = exitingInvite != null
+                                     && exitingInvite.IsAccepted,
+                        IsSent = exitingInvite != null,
+                        Participant = serializedUser,
+                    };
                 });
-                SerializedUser serializedUser = new SerializedUser(u);
-                return new SerializedInvite
-                {
-                    Id = exitingInvite?.Id ?? 0,
-                    ParticipantId = u.Id,
-                    FestivalId = festivalId,
-                    IsAccepted = exitingInvite != null
-                                 && exitingInvite.IsAccepted,
-                    IsSent = exitingInvite != null,
-                    User = serializedUser
-                };
-            });
+            }
+            else
+            {
+                User currentParticipant = db.User.First(u => u.Login == HttpContext.Current.User.Identity.Name);
+                invites = currentParticipant
+                    .ParticipantInvite
+                    .Where(pi => !pi.IsLookedByParticipant)
+                    .Select(pi =>
+                    {
+                        return new SerializedInvite
+                        {
+                            Id = pi.Id,
+                            OrganizerId = pi.OrganizerId,
+                            FestivalId = pi.FestivalId,
+                            IsAccepted = pi.IsAccepted,
+                            Organizer = new SerializedUser(pi.User1),
+                            FestivalTitle = pi.Festival.Title
+                        };
+                    })
+                    .ToList();
+            }
             return Ok(invites);
         }
 
@@ -110,12 +134,27 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            participantInvite.OrganizerId =
-                db.User
-                .First(u => u.Login == HttpContext.Current.User.Identity.Name)
-                .Id;
+            if (participantInvite.Id == 0)
+            {
 
-            db.ParticipantInvite.Add(participantInvite);
+                participantInvite.OrganizerId =
+                    db.User
+                    .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                    .Id;
+
+                db.ParticipantInvite.Add(participantInvite);
+            }
+            else
+            {
+                db.ParticipantInvite.Find(participantInvite.Id)
+                    .IsLookedByParticipant = true;
+                db.ParticipantInvite.Find(participantInvite.Id)
+                    .IsAccepted = participantInvite.IsAccepted;
+                db.User
+                   .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                   .Festival.Add(
+                    db.Festival.Find(participantInvite.FestivalId));
+            }
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi",

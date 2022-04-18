@@ -7,6 +7,6 @@
         public int ParticipantId { get; set; }
         public int FestivalId { get; set; }
         public bool IsAccepted { get; set; }
-
+        public bool IsLookedByParticipant { get; set; }
     }
 }

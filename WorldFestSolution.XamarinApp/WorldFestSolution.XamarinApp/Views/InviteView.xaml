@@ -5,11 +5,12 @@
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              x:DataType="viewmodels:InviteViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.InviteView"
              x:Name="Page"
-             Title="Пригласить участников">
+             Title="Список приглашений">
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
@@ -19,7 +20,7 @@
                         <DataTemplate>
                             <Label VerticalOptions="CenterAndExpand"
                                    HorizontalTextAlignment="Center"
-                                   Text="Участники не найдены">
+                                   Text="Ничего не найдено">
                                 <Label.IsVisible>
                                     <Binding Path="BindingContext.IsRefreshing"
                                              Source="{Reference Page}">
@@ -36,7 +37,7 @@
                             <material:MaterialCard Elevation="5"
                                                    Margin="10"
                                                    CornerRadius="25">
-                                <Grid RowDefinitions="*,auto"
+                                <Grid RowDefinitions="*,auto,auto,auto,auto"
                                       ColumnDefinitions="auto,*">
                                     <Frame CornerRadius="60"
                                            VerticalOptions="Start"
@@ -46,7 +47,7 @@
                                            HasShadow="False">
                                         <Image Aspect="AspectFill">
                                             <Image.Source>
-                                                <Binding Path="User.ImageSource">
+                                                <Binding Path="VisibleImageSource">
                                                     <Binding.TargetNullValue>
                                                         login
                                                     </Binding.TargetNullValue>
@@ -54,17 +55,24 @@
                                             </Image.Source>
                                         </Image>
                                     </Frame>
-                                    <Label Text="{Binding User.FullName}"
+                                    <Label Text="{Binding VisibleFullName}"
                                            FontAttributes="Bold"
                                            Grid.Column="1" />
+                                    <Label Text="{Binding FestivalTitle, 
+                                                          StringFormat='Фестиваль: {0}'}"
+                                           IsVisible="{Binding FestivalTitle, TargetNullValue=false}"
+                                           Grid.ColumnSpan="2"
+                                           HorizontalOptions="Center"
+                                           Grid.Row="1"/>
                                     <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
                                                                                         Path=BindingContext}"
                                                              Command="{Binding Source={Reference Page}, 
                                                                                Path=BindingContext.InviteUserCommand}"
                                                              Text="Пригласить"
                                                              Style="{StaticResource BaseButton}"
-                                                             Grid.Row="1"
-                                                             Grid.ColumnSpan="2">
+                                                             Grid.Row="2"
+                                                             Grid.ColumnSpan="2"
+                                                             IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}">
                                         <material:MaterialButton.Triggers>
                                             <DataTrigger TargetType="material:MaterialButton"
                                                          Binding="{Binding IsSent}"
@@ -76,6 +84,26 @@
                                             </DataTrigger>
                                         </material:MaterialButton.Triggers>
                                     </material:MaterialButton>
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.AcceptInviteCommand}"
+                                                             Text="Вступить"
+                                                             Style="{StaticResource BaseButton}"
+                                                             Grid.Row="3"
+                                                             BackgroundColor="Green"
+                                                             Grid.ColumnSpan="2"
+                                                             IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.RejectInviteCommand}"
+                                                             Text="Отклонить"
+                                                             Style="{StaticResource BaseButton}"
+                                                             Grid.Row="4"
+                                                             BackgroundColor="Red"
+                                                             Grid.ColumnSpan="2"
+                                                             IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
                                 </Grid>
                             </material:MaterialCard>
                         </DataTemplate>

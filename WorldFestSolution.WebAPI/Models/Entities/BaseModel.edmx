@@ -53,6 +53,7 @@
           <Property Name="ParticipantId" Type="int" Nullable="false" />
           <Property Name="FestivalId" Type="int" Nullable="false" />
           <Property Name="IsAccepted" Type="bit" Nullable="false" />
+          <Property Name="IsLookedByParticipant" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -440,6 +441,7 @@
           <Property Name="ParticipantId" Type="Int32" Nullable="false" />
           <Property Name="FestivalId" Type="Int32" Nullable="false" />
           <Property Name="IsAccepted" Type="Boolean" Nullable="false" />
+          <Property Name="IsLookedByParticipant" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Festival" Relationship="WorldFestBaseModel.FK_ParticipantInvite_Festival" FromRole="ParticipantInvite" ToRole="Festival" />
           <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User" FromRole="ParticipantInvite" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User1" FromRole="ParticipantInvite" ToRole="User" />
@@ -680,6 +682,7 @@
           <EntitySetMapping Name="ParticipantInvite">
             <EntityTypeMapping TypeName="WorldFestBaseModel.ParticipantInvite">
               <MappingFragment StoreEntitySet="ParticipantInvite">
+                <ScalarProperty Name="IsLookedByParticipant" ColumnName="IsLookedByParticipant" />
                 <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
                 <ScalarProperty Name="FestivalId" ColumnName="FestivalId" />
                 <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />

@@ -24,6 +24,11 @@ namespace WorldFestSolution.XamarinApp.Services
                 ParticipantId = item.ParticipantId,
                 FestivalId = item.FestivalId
             };
+            if (item.Organizer != null)
+            {
+                requestInvite.IsAccepted = item.IsAccepted;
+                requestInvite.Id = item.Id;
+            }
             string jsonRequestInvite = JsonConvert.SerializeObject(requestInvite);
             using (HttpClient client = new HttpClient())
             {
@@ -45,7 +50,7 @@ namespace WorldFestSolution.XamarinApp.Services
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .Inform("Пользователь приглашён");
+                                .Inform("Приглашение обработано");
                         });
                         return true;
                     }

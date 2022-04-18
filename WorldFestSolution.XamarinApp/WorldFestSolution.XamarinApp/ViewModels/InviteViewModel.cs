@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -69,7 +70,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (inviteUserCommand == null)
                 {
-                    inviteUserCommand = new Command<ResponseInvite>(InviteUserAsync);
+                    inviteUserCommand =
+                        new Command<ResponseInvite>(InviteUserAsync);
                 }
 
                 return inviteUserCommand;
@@ -79,6 +81,66 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         public int FestivalId { get; }
 
         private async void InviteUserAsync(ResponseInvite invite)
+        {
+            if (await InviteDataStore.AddItemAsync(invite))
+            {
+                IsRefreshing = true;
+            }
+        }
+
+        private Command<ResponseInvite> acceptInviteCommand;
+
+        public Command<ResponseInvite> AcceptInviteCommand
+        {
+            get
+            {
+                if (acceptInviteCommand == null)
+                {
+                    acceptInviteCommand =
+                        new Command<ResponseInvite>(AcceptInviteAsync);
+                }
+
+                return acceptInviteCommand;
+            }
+        }
+
+        private async void AcceptInviteAsync(ResponseInvite invite)
+        {
+            invite.IsAccepted = true;
+            if (await InviteDataStore.AddItemAsync(invite))
+            {
+                NavigateToFestivalAsync(invite.FestivalId);
+            }
+            else
+            {
+                invite.IsAccepted = false;
+            }
+        }
+
+        private async void NavigateToFestivalAsync(int festivalId)
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new FestivalView(
+                    new FestivalViewModel(festivalId)));
+        }
+
+        private Command<ResponseInvite> rejectInviteCommand;
+
+        public Command<ResponseInvite> RejectInviteCommand
+        {
+            get
+            {
+                if (rejectInviteCommand == null)
+                {
+                    rejectInviteCommand =
+                        new Command<ResponseInvite>(RejectInviteAsync);
+                }
+
+                return rejectInviteCommand;
+            }
+        }
+
+        private async void RejectInviteAsync(ResponseInvite invite)
         {
             if (await InviteDataStore.AddItemAsync(invite))
             {

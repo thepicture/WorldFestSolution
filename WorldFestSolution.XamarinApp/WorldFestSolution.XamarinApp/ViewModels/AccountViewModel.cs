@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using WorldFestSolution.XamarinApp.Services;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
@@ -99,6 +98,28 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             await Shell.Current.Navigation.PushAsync(
                 new ChangePasswordView());
+        }
+
+        private Command goToMyInvitesViewCommand;
+
+        public ICommand GoToMyInvitesViewCommand
+        {
+            get
+            {
+                if (goToMyInvitesViewCommand == null)
+                {
+                    goToMyInvitesViewCommand = new Command(GoToMyInvitesViewAsync);
+                }
+
+                return goToMyInvitesViewCommand;
+            }
+        }
+
+        private async void GoToMyInvitesViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+               new InviteView(
+                   new InviteViewModel(festivalId: 0)));
         }
     }
 }
