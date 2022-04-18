@@ -70,6 +70,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 ImageSource = responseUser.ImageSource;
                 User = responseUser;
             }
+            else
+            {
+                await AlertService.InformError(AuthenticationService.Message);
+            }
             IsRefreshing = false;
         }
 

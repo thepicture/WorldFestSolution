@@ -34,7 +34,7 @@ namespace WorldFestSolution.XamarinApp.Services
                         errors.ToString());
                 return false;
             }
-            string encodedLoginAndPassword =DependencyService
+            string encodedLoginAndPassword = DependencyService
                 .Get<ICredentialsService>()
                 .Encode(login, password);
             using (HttpClient client = new HttpClient())
@@ -47,18 +47,22 @@ namespace WorldFestSolution.XamarinApp.Services
                 {
                     HttpResponseMessage response = await client
                         .GetAsync("users/authenticate");
-                    if (response.StatusCode != HttpStatusCode.Unauthorized)
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
                         string content = await response.Content
                             .ReadAsStringAsync();
                         Message = content;
                         return true;
                     }
-                    else
+                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
                         Message = "Вы ввели "
                             + "неверный логин или пароль. "
                             + "Попробуйте ещё раз";
+                    }
+                    else
+                    {
+                        Message = "Произошла ошибка подключения";
                     }
                 }
                 catch (HttpRequestException ex)

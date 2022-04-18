@@ -41,10 +41,22 @@ namespace WorldFestSolution.XamarinApp.Models
             {
                 value.Image = null;
                 App.User = value;
-                string serializedUser = JsonConvert.SerializeObject(value);
-                SecureStorage
-                    .SetAsync("User", serializedUser)
-                    .Wait();
+                try
+                {
+
+                    string serializedUser = JsonConvert.SerializeObject(value);
+                    SecureStorage
+                        .SetAsync("User", serializedUser)
+                        .Wait();
+                }
+                catch (JsonReaderException ex)
+                {
+                    DependencyService.Get<IAlertService>()
+                        .InformError("Не удалось "
+                        + "сохранить пользователя в системе. "
+                        + "Ошибка: "
+                        + ex.StackTrace);
+                }
             }
         }
 

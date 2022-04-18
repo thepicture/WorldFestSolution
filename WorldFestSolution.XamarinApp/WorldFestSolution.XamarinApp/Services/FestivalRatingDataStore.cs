@@ -74,10 +74,9 @@ namespace WorldFestSolution.XamarinApp.Services
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .Inform(
-                                    "Ошибка запроса: "
-                                    + JsonConvert.DeserializeObject
-                                    <HttpError>(content).ExceptionMessage);
+                                .InformError(
+                                    "Произошла ошибка сервера. Подождите " +
+                                    "и попробуйте ещё раз");
                         });
                     }
                     else
@@ -85,9 +84,10 @@ namespace WorldFestSolution.XamarinApp.Services
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             DependencyService
-                                .Get<IAlertService>()
-                                .InformError(
-                                    JsonConvert.DeserializeObject<string>(content));
+                               .Get<IAlertService>()
+                               .InformError(
+                                   $"Произошла ошибка {response.StatusCode}. " +
+                                   $"Подождите и попробуйте ещё раз");
                         });
                     }
                 }

@@ -71,10 +71,11 @@ namespace WorldFestSolution.XamarinApp.Services
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .Inform(
-                                    "Ошибка запроса: "
-                                    + JsonConvert.DeserializeObject
-                                    <HttpError>(content).ExceptionMessage);
+                                .InformError(
+                                    "Произошла внутренняя ошибка " +
+                                    "сервера. Подождите минуту " +
+                                    "и попробуйте добавить фестиваль " +
+                                    "ещё раз");
                         });
                     }
                     else
@@ -83,8 +84,8 @@ namespace WorldFestSolution.XamarinApp.Services
                         {
                             DependencyService
                                 .Get<IAlertService>()
-                                .InformError(
-                                    JsonConvert.DeserializeObject<string>(content));
+                                .InformError($"Ошибка добавления (код {response.StatusCode}): "
+                                    + content);
                         });
                     }
                 }
