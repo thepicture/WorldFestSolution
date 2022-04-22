@@ -30,8 +30,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 await DependencyService
                     .Get<IAlertService>()
-                    .InformError(
-                        errors.ToString());
+                    .InformError(errors);
                 return false;
             }
             string encodedLoginAndPassword = DependencyService
@@ -49,44 +48,37 @@ namespace WorldFestSolution.XamarinApp.Services
                         .GetAsync("users/authenticate");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        string content = await response.Content
+                        Message = await response.Content
                             .ReadAsStringAsync();
-                        Message = content;
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .Inform("Вы авторизованы");
                         return true;
                     }
                     else if (response.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        Message = "Вы ввели "
-                            + "неверный логин или пароль. "
-                            + "Попробуйте ещё раз";
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError("Неверный логин или пароль");
                     }
                     else
                     {
-                        Message = "Произошла ошибка подключения";
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
                     }
-                }
-                catch (HttpRequestException ex)
-                {
-                    Message = "Ошибка запроса: " + ex.StackTrace;
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (TaskCanceledException ex)
-                {
-                    Message = "Запрос отменён: " + ex.StackTrace;
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Message = "Операция некорректна: " + ex.StackTrace;
-                    Debug.WriteLine(ex.StackTrace);
+                    return response.StatusCode == HttpStatusCode.OK;
                 }
                 catch (Exception ex)
                 {
-                    Message = "Неизвестная ошибка: " + ex.StackTrace;
-                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                    return false;
                 }
             }
-            return false;
         }
     }
 }

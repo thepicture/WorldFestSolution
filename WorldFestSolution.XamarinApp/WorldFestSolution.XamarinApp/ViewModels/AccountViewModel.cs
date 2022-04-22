@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
-using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
@@ -58,21 +57,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            string[] loginAndPassword = CredentialsService.Decode();
-            string login = loginAndPassword[0];
-            string password = loginAndPassword[1];
-            bool isAuthenticated = await AuthenticationService
-                .AuthenticateAsync(login, password);
-            if (isAuthenticated)
+            byte[] currentImage = await UserImageDataStore.GetItemAsync("");
+            if (currentImage != null)
             {
-                User responseUser = JsonConvert
-                    .DeserializeObject<User>(AuthenticationService.Message);
-                ImageSource = responseUser.ImageSource;
-                User = responseUser;
-            }
-            else
-            {
-                await AlertService.InformError(AuthenticationService.Message);
+                ImageSource = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(currentImage);
+                });
             }
             IsRefreshing = false;
         }

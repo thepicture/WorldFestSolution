@@ -5,51 +5,60 @@ namespace WorldFestSolution.XamarinApp.Services
 {
     public class AndroidAlertService : IAlertService
     {
-        public async Task<bool> Ask(string question)
+        public async Task<bool> Ask(object question)
         {
             return await App
                 .Current
                 .MainPage
-                .DisplayAlert("Вопрос", question, "Да", "Нет");
+                .DisplayAlert("Вопрос",
+                              question.ToString(),
+                              "Да",
+                              "Нет");
         }
 
-        public async Task Inform(string information)
+        public async Task Inform(object information)
         {
             await App
             .Current
             .MainPage
-            .DisplayAlert("Информация", information, "ОК");
+            .DisplayAlert("Информация",
+                          information.ToString(),
+                          "ОК");
         }
 
-        public async Task InformError(string error)
+        public async Task InformError(object error)
         {
             await App
            .Current
            .MainPage
-           .DisplayAlert("Ошибка", error, "ОК");
+           .DisplayAlert("Ошибка",
+                         error.ToString(),
+                         "ОК");
         }
 
-        public async Task<string> Prompt(string message, int maxLength, Keyboard keyboard)
+        public async Task<string> Prompt(object message, int maxLength, Keyboard keyboard)
         {
             return await App
                 .Current
                 .MainPage
                 .DisplayPromptAsync("Форма заполнения",
-                                    message,
+                                    message.ToString(),
                                     accept: "Подтвердить",
                                     cancel: "Отмена",
-                                    placeholder: message,
+                                    placeholder: message.ToString(),
                                     maxLength: maxLength,
                                     keyboard: keyboard,
                                     initialValue: "");
         }
 
-        public async Task Warn(string warning)
+        public async Task Warn(object warning)
         {
             await App
             .Current
             .MainPage
-            .DisplayAlert("Предупреждение", warning, "ОК");
+            .DisplayAlert("Предупреждение",
+                          warning.ToString(),
+                          "ОК");
         }
     }
 }

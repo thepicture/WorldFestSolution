@@ -29,6 +29,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             DependencyService.Get<IDataStore<FestivalRating>>();
         public IDataStore<ResponseInvite> InviteDataStore =>
             DependencyService.Get<IDataStore<ResponseInvite>>();
+        public IDataStore<IEnumerable<Comment>> FestivalCommentDataStore =>
+            DependencyService.Get<IDataStore<IEnumerable<Comment>>>();
+        public IDataStore<byte[]> UserImageDataStore =>
+            DependencyService.Get<IDataStore<byte[]>>();
         public ICredentialsService CredentialsService =>
             DependencyService.Get<ICredentialsService>();
         public User User
@@ -46,7 +50,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         public bool IsBusy
         {
             get => isBusy;
-            set => SetProperty(ref isBusy, value);
+            set
+            {
+                if (SetProperty(ref isBusy, value))
+                {
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
         }
 
         public bool IsNotBusy => !IsBusy;

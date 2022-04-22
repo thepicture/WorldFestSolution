@@ -74,15 +74,9 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                         .DeserializeObject<User>
                         (AuthenticationService.Message);
                     App.Role = AuthenticationService.Message;
-                    App.Identity = encodedLoginAndPassword;
+                    App.AuthorizationValue = encodedLoginAndPassword;
                 }
-                await AlertService.Inform("Вы авторизованы " +
-                    $"с ролью {Identity.Role}");
                 AppShell.SetShellStacksDependingOnRole();
-            }
-            else
-            {
-                await AlertService.InformError(AuthenticationService.Message);
             }
             IsBusy = false;
         }

@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models
 {
@@ -12,73 +10,30 @@ namespace WorldFestSolution.XamarinApp.Models
         {
             get
             {
-                if (App.User != null)
+                if (SecureStorage.GetAsync("User").Result is string value)
                 {
-                    return App.User;
+                    return JsonConvert.DeserializeObject<User>(value);
                 }
                 else
                 {
-                    try
-                    {
-                        string user = SecureStorage.GetAsync("User").Result;
-                        if (user == null)
-                        {
-                            return null;
-                        }
-                        return JsonConvert.DeserializeObject<User>(user);
-                    }
-                    catch (JsonReaderException ex)
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Не удалось сохранить данные в системе. "
-                            + "Ошибка: "
-                            + ex.StackTrace);
-                        return null;
-                    }
+                    return App.User;
                 }
             }
             set
             {
                 value.Image = null;
                 App.User = value;
-                try
-                {
 
-                    string serializedUser = JsonConvert.SerializeObject(value);
-                    SecureStorage
-                        .SetAsync("User", serializedUser)
-                        .Wait();
-                }
-                catch (JsonReaderException ex)
-                {
-                    DependencyService.Get<IAlertService>()
-                        .InformError("Не удалось "
-                        + "сохранить пользователя в системе. "
-                        + "Ошибка: "
-                        + ex.StackTrace);
-                }
-            }
-        }
-
-        internal static void ChangeLocalPassword(string newPassword)
-        {
-            string newAuthorizationValue = DependencyService
-                .Get<ICredentialsService>()
-                .Encode(User.Login, newPassword);
-            if (App.Identity != null)
-            {
-                App.Identity = newAuthorizationValue;
-            }
-            else
-            {
-                _ = SecureStorage.SetAsync("Identity", newAuthorizationValue);
+                string serializedUser = JsonConvert.SerializeObject(value);
+                SecureStorage
+                    .SetAsync("User", serializedUser);
             }
         }
 
         internal static void Logout()
         {
             App.User = null;
-            App.Identity = null;
+            App.AuthorizationValue = null;
             SecureStorage.RemoveAll();
         }
 
@@ -99,26 +54,20 @@ namespace WorldFestSolution.XamarinApp.Models
         {
             get
             {
-                if (App.Identity != null)
+                if (SecureStorage.GetAsync("AuthorizationValue").Result
+                    is string value)
                 {
-                    return App.Identity;
+                    return value;
                 }
                 else
                 {
-                    return SecureStorage.GetAsync("Identity").Result;
+                    return App.AuthorizationValue;
                 }
             }
             set
             {
-                App.Identity = value;
-                if (value == null)
-                {
-                    _ = SecureStorage.Remove("Identity");
-                }
-                else
-                {
-                    _ = SecureStorage.SetAsync("Identity", value);
-                }
+                App.AuthorizationValue = value;
+                _ = SecureStorage.SetAsync("AuthorizationValue", value);
             }
         }
     }

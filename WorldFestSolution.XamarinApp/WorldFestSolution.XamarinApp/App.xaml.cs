@@ -7,8 +7,8 @@ namespace WorldFestSolution.XamarinApp
     public partial class App : Application
     {
         public static string Role { get; set; }
-        public static string Identity { get; set; }
         public static User User { get; set; }
+        public static string AuthorizationValue { get; set; }
 
         public App()
         {
@@ -30,6 +30,8 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<ChangePasswordDataStore>();
             DependencyService.Register<FestivalRatingDataStore>();
             DependencyService.Register<InviteDataStore>();
+            DependencyService.Register<FestivalCommentDataStore>();
+            DependencyService.Register<UserImageDataStore>();
 
             MainPage = new AppShell();
         }

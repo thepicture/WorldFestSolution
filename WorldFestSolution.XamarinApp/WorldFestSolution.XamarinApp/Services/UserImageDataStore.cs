@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -9,9 +11,19 @@ using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
-    public class InviteOfFestivalDataStore : IInviteOfFestivalDataStore
+    public class UserImageDataStore : IDataStore<byte[]>
     {
-        public async Task<bool> ToggleParticipateAsync(int festivalId)
+        public Task<bool> AddItemAsync(byte[] item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteItemAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<byte[]> GetItemAsync(string id)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -22,14 +34,12 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                        .GetAsync($"festivals/toggleparticipatestate"
-                        + $"?{nameof(festivalId)}={festivalId}");
+                        .GetAsync($"users/image");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        await DependencyService
-                            .Get<IAlertService>()
-                            .Inform("Состояние участия " +
-                            "в фестивале изменено");
+                        return JsonConvert
+                            .DeserializeObject<byte[]>(
+                                await response.Content.ReadAsStringAsync());
                     }
                     else
                     {
@@ -38,7 +48,6 @@ namespace WorldFestSolution.XamarinApp.Services
                             .Get<IAlertService>()
                             .InformError(response);
                     }
-                    return response.StatusCode == HttpStatusCode.OK;
                 }
                 catch (Exception ex)
                 {
@@ -46,9 +55,19 @@ namespace WorldFestSolution.XamarinApp.Services
                     await DependencyService
                         .Get<IAlertService>()
                         .InformError(ex);
-                    return false;
                 }
             }
+            return null;
+        }
+
+        public Task<IEnumerable<byte[]>> GetItemsAsync(bool forceRefresh = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateItemAsync(byte[] item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

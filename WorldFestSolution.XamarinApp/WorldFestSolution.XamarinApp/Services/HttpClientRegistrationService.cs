@@ -41,8 +41,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 await DependencyService
                     .Get<IAlertService>()
-                    .InformError(
-                    validationErrors.ToString());
+                    .InformError(validationErrors);
                 return false;
             }
 
@@ -53,7 +52,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                     .PostAsync(new Uri(client.BaseAddress + "users/register"),
+                     .PostAsync("users/register",
                                 new StringContent(jsonUser,
                                                   Encoding.UTF8,
                                                   "application/json"));
@@ -62,51 +61,25 @@ namespace WorldFestSolution.XamarinApp.Services
                         await DependencyService
                             .Get<IAlertService>()
                             .Inform("Вы зарегистрированы");
-                        return true;
                     }
                     else
                     {
+                        Debug.WriteLine(response);
                         await DependencyService
-                           .Get<IAlertService>()
-                           .Inform("Регистрация неуспешна. " +
-                            "Попробуйте ещё раз");
-                        return false;
+                            .Get<IAlertService>()
+                            .InformError(response);
                     }
-                }
-                catch (HttpRequestException ex)
-                {
-                    await DependencyService
-                           .Get<IAlertService>()
-                           .InformError("Ошибка запроса: "
-                           + ex.StackTrace);
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (TaskCanceledException ex)
-                {
-                    await DependencyService
-                           .Get<IAlertService>()
-                           .InformError("Запрос отменён: "
-                           + ex.StackTrace);
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    await DependencyService
-                           .Get<IAlertService>()
-                           .InformError("Операция некорректна: "
-                           + ex.StackTrace);
-                    Debug.WriteLine(ex.StackTrace);
+                    return response.StatusCode == HttpStatusCode.Created;
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     await DependencyService
-                           .Get<IAlertService>()
-                           .InformError("Неизвестная ошибка: "
-                           + ex.StackTrace);
-                    Debug.WriteLine(ex.StackTrace);
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                    return false;
                 }
             }
-            return false;
         }
     }
 }

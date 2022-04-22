@@ -14,9 +14,16 @@
             <ScrollView>
                 <Grid RowDefinitions="*,1.2*">
                     <Frame Padding="0">
-                        <Image Source="{Binding ImageSource}"
-                               Aspect="AspectFill"
-                               HeightRequest="1" />
+                        <Image Aspect="AspectFill"
+                               HeightRequest="1">
+                            <Image.Source>
+                                <Binding Path="ImageSource">
+                                    <Binding.TargetNullValue>
+                                        login
+                                    </Binding.TargetNullValue>
+                                </Binding>
+                            </Image.Source>
+                        </Image>
                     </Frame>
                     <Grid Opacity=".5">
                         <Grid.Background>

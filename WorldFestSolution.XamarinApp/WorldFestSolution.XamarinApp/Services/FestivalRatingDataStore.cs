@@ -52,83 +52,34 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                     .PostAsync(new Uri(client.BaseAddress + "festivalratings"),
+                     .PostAsync("festivalratings",
                                 new StringContent(jsonFestivalRating,
                                                   Encoding.UTF8,
                                                   "application/json"));
-                    string content = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService
-                                .Get<IAlertService>()
-                                .Inform(
-                                    JsonConvert.DeserializeObject<string>(content));
-                        });
-                        return true;
-                    }
-                    else if (response.StatusCode == HttpStatusCode.InternalServerError)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService
-                                .Get<IAlertService>()
-                                .InformError(
-                                    "Произошла ошибка сервера. Подождите " +
-                                    "и попробуйте ещё раз");
-                        });
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .Inform("Оценка сохранена");
                     }
                     else
                     {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService
-                               .Get<IAlertService>()
-                               .InformError(
-                                   $"Произошла ошибка {response.StatusCode}. " +
-                                   $"Подождите и попробуйте ещё раз");
-                        });
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
                     }
-                }
-                catch (HttpRequestException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Ошибка запроса: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (TaskCanceledException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Запрос отменён: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Операция некорректна: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
+                    return response.StatusCode == HttpStatusCode.Created;
                 }
                 catch (Exception ex)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Неизвестная ошибка: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                    return false;
                 }
             }
-            return false;
         }
 
         public Task<bool> DeleteItemAsync(string id)

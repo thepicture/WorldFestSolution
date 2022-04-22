@@ -27,7 +27,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             if (await ChangePasswordDataStore.AddItemAsync(Credentials))
             {
-                Identity.ChangeLocalPassword(NewPassword);
                 await Shell.Current.GoToAsync("..");
             }
         }
@@ -60,7 +59,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         public ChangePasswordCredentials Credentials
         {
             get => credentials;
-            set => SetProperty(ref credentials , value);
+            set => SetProperty(ref credentials, value);
         }
     }
 }

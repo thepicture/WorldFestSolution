@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
@@ -36,8 +37,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 await DependencyService
                     .Get<IAlertService>()
-                    .InformError(
-                        errors.ToString());
+                    .InformError(errors);
                 return false;
             }
             string jsonPasswordCredentials = JsonConvert.SerializeObject(item);
@@ -47,82 +47,57 @@ namespace WorldFestSolution.XamarinApp.Services
                 try
                 {
                     HttpResponseMessage response = await client
-                     .PostAsync(new Uri(client.BaseAddress + "users/changepassword"),
+                     .PostAsync("users/changePassword",
                                 new StringContent(jsonPasswordCredentials,
                                                   Encoding.UTF8,
                                                   "application/json"));
-                    string content = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
-                        Device.BeginInvokeOnMainThread(() =>
+                        User user = Identity.User ?? App.User;
+                        string authorizationValue = DependencyService
+                                .Get<ICredentialsService>()
+                                .Encode(item.Login, item.NewPassword);
+                        user.Password = item.NewPassword;
+                        if (await SecureStorage.GetAsync("User") is string)
                         {
-                            DependencyService
-                                .Get<IAlertService>()
-                                .Inform(
-                                    JsonConvert.DeserializeObject<string>(content));
-                        });
-                        return true;
+                            Identity.User = user;
+                            Identity.AuthorizationValue = authorizationValue;
+                        }
+                        else
+                        {
+                            App.User = user;
+                            App.AuthorizationValue = authorizationValue;
+                        }
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .Inform("Пароль изменён");
                     }
-                    else if (response.StatusCode == HttpStatusCode.InternalServerError)
+                    else if (response.StatusCode == HttpStatusCode.Forbidden)
                     {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService
-                                .Get<IAlertService>()
-                                .InformError(
-                                    "Ошибка сервера: "
-                                    + content);
-                        });
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(
+                                JsonConvert.DeserializeObject<string>(
+                                    await response.Content.ReadAsStringAsync()));
                     }
                     else
                     {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            DependencyService
-                                .Get<IAlertService>()
-                                .InformError(
-                                    $"Произошла ошибка с кодом {response.StatusCode}");
-                        });
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
                     }
-                }
-                catch (HttpRequestException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Ошибка запроса: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (TaskCanceledException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Запрос отменён: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Операция некорректна: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
+                    return response.StatusCode == HttpStatusCode.Created;
                 }
                 catch (Exception ex)
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        DependencyService.Get<IAlertService>()
-                            .InformError("Неизвестная ошибка: " + ex.StackTrace);
-                    });
-                    Debug.WriteLine(ex.StackTrace);
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                    .Get<IAlertService>()
+                    .InformError(ex);
+                    return false;
                 }
             }
-            return false;
         }
 
         public Task<bool> DeleteItemAsync(string id)

@@ -1,6 +1,5 @@
 ﻿using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Views;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp
@@ -50,8 +49,7 @@ namespace WorldFestSolution.XamarinApp
 
         private bool IsLoggedIn()
         {
-            return SecureStorage
-                .GetAsync("Identity").Result != null;
+            return Identity.User != null;
         }
 
         public static void SetShellStacksDependingOnRole()

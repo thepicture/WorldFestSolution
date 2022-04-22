@@ -16,7 +16,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        private readonly WorldFestBaseEntities db = 
+        private readonly WorldFestBaseEntities db =
             new WorldFestBaseEntities();
 
         // GET: api/Users
@@ -217,6 +217,21 @@ namespace WorldFestSolution.WebAPI.Controllers
             await db.SaveChangesAsync();
 
             return Content(HttpStatusCode.Created, "Пароль изменён");
+        }
+
+        // GET: api/Users/image
+        [HttpGet]
+        [Route("api/users/image")]
+        [Authorize(Roles = "Участник, Организатор")]
+        public async Task<IHttpActionResult> GetImage()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            User user = await db.User.FirstAsync(u =>
+                u.Login == HttpContext.Current.User.Identity.Name);
+            return Ok(user.Image);
         }
     }
 }

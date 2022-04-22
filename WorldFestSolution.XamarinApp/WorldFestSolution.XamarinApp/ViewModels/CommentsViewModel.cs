@@ -59,24 +59,15 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            Festival festival = await FestivalDataStore
+            Comments.Clear();
+            IEnumerable<Comment> currentComments =
+                await FestivalCommentDataStore
                 .GetItemAsync(
                     FestivalId.ToString());
-            if (festival != null)
             {
-                IEnumerable<int> responseComments = festival.CommentsId;
-                Device.BeginInvokeOnMainThread(() =>
+                foreach (Comment currentComment in currentComments)
                 {
-                    Comments.Clear();
-                });
-                foreach (int commentId in responseComments)
-                {
-                    Comment comment = await CommentDataStore.GetItemAsync(
-                        commentId.ToString());
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Comments.Add(comment);
-                    });
+                    Comments.Add(currentComment);
                 }
             }
             IsRefreshing = false;
@@ -126,13 +117,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void DeleteCommentAsync(Comment comment)
         {
-            if (await AlertService.Ask("Удалить комментарий?"))
+            if (await CommentDataStore.DeleteItemAsync(
+                comment.Id.ToString()))
             {
-                if (await CommentDataStore.DeleteItemAsync(
-                    comment.Id.ToString()))
-                {
-                    IsRefreshing = true;
-                }
+                IsRefreshing = true;
             }
         }
     }

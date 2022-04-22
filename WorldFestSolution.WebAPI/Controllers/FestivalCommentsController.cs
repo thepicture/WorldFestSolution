@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -42,6 +43,23 @@ namespace WorldFestSolution.WebAPI.Controllers
                 new SerializedComment(festivalComment));
         }
 
+        // GET: api/FestivalComments?festivalId=1
+        [ResponseType(typeof(SerializedComment))]
+        [Authorize(Roles = "Участник, Организатор")]
+        [Route("api/festivalComments")]
+        [HttpGet]
+        public IHttpActionResult GetFestivalCommentsByFestivalId(
+            int festivalId)
+        {
+            List<SerializedComment> comments = db
+                .Festival
+                .Find(festivalId)
+                .FestivalComment
+                .ToList()
+                .ConvertAll(c => new SerializedComment(c));
+            return Ok(comments);
+        }
+
         // PUT: api/FestivalComments/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutFestivalComment(int id, FestivalComment festivalComment)
@@ -78,9 +96,12 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // POST: api/FestivalComments
-        [ResponseType(typeof(SerializedComment))]
+        [ResponseType(typeof(int))]
         [Authorize(Roles = "Участник, Организатор")]
-        public async Task<IHttpActionResult> PostFestivalComment(FestivalComment festivalComment)
+        [Route("api/festivalComments")]
+        [HttpPost]
+        public async Task<IHttpActionResult> PostFestivalComment(
+            FestivalComment festivalComment)
         {
             if (!ModelState.IsValid)
             {
@@ -90,13 +111,15 @@ namespace WorldFestSolution.WebAPI.Controllers
             if (swearingFilter.IsTextContainsSwearing(festivalComment.Text))
             {
                 return Content(HttpStatusCode.Forbidden,
-                               "Текст содержит нецензурную брань");
+                               "Текст не должен содержать "
+                               + "нецензурную лексику");
             }
 
             var lastComment = db
                 .FestivalComment
                 .OrderByDescending(fc => fc.CreationDateTime)
-                .FirstOrDefault(fc => fc.User.Login == HttpContext.Current.User.Identity.Name);
+                .FirstOrDefault(fc =>
+                    fc.User.Login == HttpContext.Current.User.Identity.Name);
             if (lastComment != null)
             {
                 bool isUserIsSendingCommentsTooOften =
@@ -119,9 +142,7 @@ namespace WorldFestSolution.WebAPI.Controllers
             db.FestivalComment.Add(festivalComment);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi",
-                                  new { id = festivalComment.Id },
-                                  new SerializedComment(festivalComment));
+            return StatusCode(HttpStatusCode.Created);
         }
 
         // DELETE: api/FestivalComments/5
@@ -148,12 +169,11 @@ namespace WorldFestSolution.WebAPI.Controllers
                 db.FestivalComment.Remove(festivalComment);
                 await db.SaveChangesAsync();
 
-                return Ok("Комментарий удалён");
+                return StatusCode(HttpStatusCode.NoContent);
             }
             else
             {
-                return Content(HttpStatusCode.Forbidden,
-                               "У вас недостаточно привилегий для удаления");
+                return StatusCode(HttpStatusCode.Forbidden);
             }
         }
 
