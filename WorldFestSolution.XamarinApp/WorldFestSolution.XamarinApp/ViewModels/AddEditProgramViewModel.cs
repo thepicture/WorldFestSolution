@@ -60,8 +60,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
             if (errors.Length > 0)
             {
-                await AlertService.InformError(
-                    errors.ToString());
+                await AlertService.InformError(errors);
                 return;
             }
             string action = Program.IsAddedLocally ? "изменена" : "добавлена";

@@ -167,9 +167,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (await AlertService.Ask($"Удалить программу {program.Title}?"))
             {
                 program.IsDeletedLocally = true;
-                await AlertService.Inform($"Программа {program.Title} " +
-                    $"будет удалена после подтверждения " +
-                    $"изменений фестиваля");
+                await AlertService.Warn(
+                    $"Программа {program.Title} "
+                    + $"будет удалена после подтверждения "
+                    + $"изменений фестиваля");
             }
         }
     }
