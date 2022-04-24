@@ -31,19 +31,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            if (Invites.Count > 0)
-            {
-                Invites.Clear();
-            }
-
+            Invites.Clear();
             IEnumerable<ResponseInvite> dataStoreInvites =
-                await InviteDataStore.GetItemsAsync();
-            if (dataStoreInvites != null)
+                await FestivalResponseInviteDataStore.GetItemAsync(
+                    FestivalId.ToString());
+            foreach (ResponseInvite invite in dataStoreInvites)
             {
-                foreach (ResponseInvite invite in dataStoreInvites)
-                {
-                    Invites.Add(invite);
-                }
+                Invites.Add(invite);
             }
             IsRefreshing = false;
         }

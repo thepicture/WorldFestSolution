@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
@@ -80,45 +78,10 @@ namespace WorldFestSolution.XamarinApp.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ResponseInvite>> GetItemsAsync(
+        public Task<IEnumerable<ResponseInvite>> GetItemsAsync(
             bool forceRefresh = false)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Authorization =
-                     new AuthenticationHeaderValue("Basic",
-                                                   Identity.AuthorizationValue);
-                client.BaseAddress = new Uri(Api.BaseUrl);
-                int festivalId = (AppShell.Current
-                    .Navigation.NavigationStack.Last().BindingContext
-                    as InviteViewModel).FestivalId;
-                try
-                {
-                    HttpResponseMessage response = await client
-                        .GetAsync("ParticipantInvites?festivalId={festivalId}");
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return JsonConvert
-                            .DeserializeObject<IEnumerable<ResponseInvite>>(
-                                await response.Content.ReadAsStringAsync());
-                    }
-                    else
-                    {
-                        Debug.WriteLine(response);
-                        await DependencyService
-                            .Get<IAlertService>()
-                            .InformError(response);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex);
-                    await DependencyService
-                        .Get<IAlertService>()
-                        .InformError(ex);
-                }
-            }
-            return null;
+            throw new NotImplementedException();
         }
 
         public Task<bool> UpdateItemAsync(ResponseInvite item)
