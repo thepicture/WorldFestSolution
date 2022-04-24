@@ -45,23 +45,14 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         private async void ToggleMyParticipateStateOfFestivalAsync()
         {
             IsBusy = true;
-            if (await InviteOfFestivalDataStore
-                .ToggleParticipateAsync(FestivalId))
+            UserOfFestival userOfFestival = new UserOfFestival
             {
-                string action = Festival.IsMeParticipating
-                    ? "покинули"
-                    : "вступили в";
-                await AlertService
-                    .InformError($"Вы {action} фестиваль");
+                FestivalId = FestivalId,
+                IsParticipating = Festival.IsMeParticipating
+            };
+            if (await UserOfFestivalDataStore.UpdateItemAsync(userOfFestival))
+            {
                 IsRefreshing = true;
-            }
-            else
-            {
-                string action = Festival.IsMeParticipating
-                    ? "покинуть"
-                    : "вступить в";
-                await AlertService
-                    .InformError($"Не удалось {action} фестиваль");
             }
             IsBusy = false;
         }

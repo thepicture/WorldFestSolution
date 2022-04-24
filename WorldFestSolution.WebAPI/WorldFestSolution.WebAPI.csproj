@@ -222,6 +222,7 @@
     <Compile Include="Models\Serialized\SerializedFestivalProgram.cs" />
     <Compile Include="Models\Serialized\SerializedInvite.cs" />
     <Compile Include="Models\Serialized\SerializedUser.cs" />
+    <Compile Include="Models\Serialized\SerializedUserOfFestival.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ImageResizerService.cs" />
   </ItemGroup>
