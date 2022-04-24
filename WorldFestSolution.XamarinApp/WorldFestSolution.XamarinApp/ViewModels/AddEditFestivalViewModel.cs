@@ -81,6 +81,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                {
                    Title = "Выберите фото фестиваля"
                });
+            if (result == null)
+            {
+                await AlertService.Inform("Вы не выбрали фото");
+                return;
+            }
             Stream imageStream = await result.OpenReadAsync();
             using (MemoryStream memoryStream = new MemoryStream())
             {

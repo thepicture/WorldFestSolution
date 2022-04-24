@@ -76,7 +76,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToChangePasswordViewCommand == null)
                 {
-                    goToChangePasswordViewCommand = new Command(GoToChangePasswordView);
+                    goToChangePasswordViewCommand =
+                        new Command(GoToChangePasswordView);
                 }
 
                 return goToChangePasswordViewCommand;
@@ -103,7 +104,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 if (goToMyInvitesViewCommand == null)
                 {
-                    goToMyInvitesViewCommand = new Command(GoToMyInvitesViewAsync);
+                    goToMyInvitesViewCommand =
+                        new Command(GoToMyInvitesViewAsync);
                 }
 
                 return goToMyInvitesViewCommand;
