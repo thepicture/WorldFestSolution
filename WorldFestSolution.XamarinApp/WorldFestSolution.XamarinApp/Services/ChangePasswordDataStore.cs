@@ -55,7 +55,7 @@ namespace WorldFestSolution.XamarinApp.Services
                     {
                         User user = Identity.User ?? App.User;
                         string authorizationValue = DependencyService
-                                .Get<ICredentialsService>()
+                                .Get<ILoginPasswordEncoder>()
                                 .Encode(item.Login, item.NewPassword);
                         user.Password = item.NewPassword;
                         if (await SecureStorage.GetAsync("User") is string)

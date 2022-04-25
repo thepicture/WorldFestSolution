@@ -34,7 +34,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
             string encodedLoginAndPassword = DependencyService
-                .Get<ICredentialsService>()
+                .Get<ILoginPasswordEncoder>()
                 .Encode(login, password);
             using (HttpClient client = new HttpClient())
             {

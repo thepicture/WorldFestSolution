@@ -35,8 +35,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
            DependencyService.Get<IDataStore<IEnumerable<ResponseInvite>>>();
         public IDataStore<byte[]> UserImageDataStore =>
             DependencyService.Get<IDataStore<byte[]>>();
-        public ICredentialsService CredentialsService =>
-            DependencyService.Get<ICredentialsService>();
+        public ILoginPasswordEncoder LoginPasswordEncoder =>
+            DependencyService.Get<ILoginPasswordEncoder>();
         public User User
         {
             get => Identity.User;

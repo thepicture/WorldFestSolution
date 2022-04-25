@@ -1,8 +1,7 @@
 ﻿namespace WorldFestSolution.XamarinApp.Services
 {
-    public interface ICredentialsService
+    public interface ILoginPasswordEncoder
     {
         string Encode(string login, string password);
-        string[] Decode();
     }
 }

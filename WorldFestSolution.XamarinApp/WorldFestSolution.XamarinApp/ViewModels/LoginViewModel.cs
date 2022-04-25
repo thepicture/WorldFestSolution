@@ -59,7 +59,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (isAuthenticated)
             {
                 string encodedLoginAndPassword =
-                    CredentialsService
+                    LoginPasswordEncoder
                     .Encode(Login, Password);
                 if (IsRememberMe)
                 {
