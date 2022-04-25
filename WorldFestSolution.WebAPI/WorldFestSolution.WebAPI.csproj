@@ -219,6 +219,7 @@
     <Compile Include="Models\Serialized\ChangePasswordCredentials.cs" />
     <Compile Include="Models\Serialized\SerializedComment.cs" />
     <Compile Include="Models\Serialized\SerializedFestival.cs" />
+    <Compile Include="Models\Serialized\SerializedFestivalPopularity.cs" />
     <Compile Include="Models\Serialized\SerializedFestivalProgram.cs" />
     <Compile Include="Models\Serialized\SerializedInvite.cs" />
     <Compile Include="Models\Serialized\SerializedUser.cs" />

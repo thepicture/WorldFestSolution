@@ -32,24 +32,33 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             Entries.Clear();
             IsRefreshing = true;
-            IEnumerable<Festival> festivals
-                = await FestivalDataStore.GetItemsAsync();
-            IEnumerable<ChartEntry> festivalEntries
-                = festivals.Select(f => new ChartEntry(f.CountOfUsers)
-                {
-                    Label = f.Title,
-                    ValueLabel = f.CountOfUsers.ToString(),
-                    Color = SkiaSharp.SKColor.Parse("#"
-                    + random.Next(200, 256).ToString("x2")
-                    + random.Next(200, 256).ToString("x2")
-                    + random.Next(200, 256).ToString("x2"))
-                });
+            IEnumerable<FestivalPopularity> festivals
+                = await FestivalPopularityDataStore.GetItemsAsync();
+            IEnumerable<ChartEntry> festivalEntries = festivals.Select(f =>
+               {
+                   return new ChartEntry(f.CountOfUsers)
+                   {
+                       Label = f.FestivalTitle,
+                       ValueLabel = f.CountOfUsers.ToString(),
+                       Color = SkiaSharp.SKColor.Parse("#"
+                                       + random
+                                           .Next(200, 256)
+                                           .ToString("x2")
+                                       + random
+                                           .Next(200, 256)
+                                           .ToString("x2")
+                                       + random
+                                           .Next(200, 256)
+                                           .ToString("x2"))
+                   };
+               });
             foreach (ChartEntry festivalEntry in festivalEntries)
             {
                 Entries.Add(festivalEntry);
             }
             Chart.Entries = Entries;
-            OnPropertyChanged(nameof(Chart));
+            OnPropertyChanged(
+                nameof(Chart));
             EntriesChanged?.Invoke();
             IsRefreshing = false;
         }

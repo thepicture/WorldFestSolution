@@ -17,7 +17,7 @@ namespace WorldFestSolution.WebAPI.Controllers
         private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
 
         // GET: api/Festivals?isRelatedToMe=false
-        [Authorize(Roles = "Участник, Организатор")]
+        [Authorize]
         [ResponseType(typeof(IEnumerable<SerializedFestival>))]
         public IEnumerable<SerializedFestival> GetFestival(bool isRelatedToMe = false)
         {
@@ -43,7 +43,25 @@ namespace WorldFestSolution.WebAPI.Controllers
             }
             return db.Festival
                 .ToList()
-                .ConvertAll(f => new SerializedFestival(f));
+                .ConvertAll(f =>
+                {
+                    return new SerializedFestival(f);
+                });
+        }
+
+        // GET: api/Festivals/popularity
+        [Authorize]
+        [ResponseType(typeof(IEnumerable<SerializedFestivalPopularity>))]
+        [Route("api/Festivals/popularity")]
+        [HttpGet]
+        public IEnumerable<SerializedFestivalPopularity> GetFestivalPopularity()
+        {
+            return db.Festival
+                .ToList()
+                .ConvertAll(f =>
+                {
+                    return new SerializedFestivalPopularity(f);
+                });
         }
 
         // GET: api/Festivals/5

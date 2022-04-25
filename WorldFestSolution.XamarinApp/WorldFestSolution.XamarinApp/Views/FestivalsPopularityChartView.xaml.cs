@@ -18,7 +18,7 @@ namespace WorldFestSolution.XamarinApp.Views
                 = new FestivalsPopularityChartViewModel();
             _viewModel.EntriesChanged += delegate
             {
-                PopularityChart.WidthRequest = 150
+                PopularityChart.WidthRequest = 75
                 * PopularityChart.Chart.Entries.Count();
             };
         }

@@ -33,6 +33,7 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<UserImageDataStore>();
             DependencyService.Register<FestivalResponseInviteDataStore>();
             DependencyService.Register<UserOfFestivalDataStore>();
+            DependencyService.Register<FestivalPopularityDataStore>();
 
             MainPage = new AppShell();
         }

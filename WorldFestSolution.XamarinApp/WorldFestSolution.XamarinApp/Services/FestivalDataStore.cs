@@ -177,12 +177,7 @@ namespace WorldFestSolution.XamarinApp.Services
                         .Current
                         .CurrentItem
                         .CurrentItem
-                        .Title == "Мои фестивали"
-                        || AppShell
-                        .Current
-                        .CurrentItem
-                        .CurrentItem
-                        .Title == "Популярность фестов";
+                        .Title == "Мои фестивали";
                     HttpResponseMessage response = await client
                         .GetAsync($"festivals?isRelatedToMe={isRelatedToMe}");
                     if (response.StatusCode == HttpStatusCode.OK)
