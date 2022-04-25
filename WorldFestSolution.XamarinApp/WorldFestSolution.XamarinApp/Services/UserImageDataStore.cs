@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using Xamarin.Forms;
@@ -13,9 +14,45 @@ namespace WorldFestSolution.XamarinApp.Services
 {
     public class UserImageDataStore : IDataStore<byte[]>
     {
-        public Task<bool> AddItemAsync(byte[] item)
+        public async Task<bool> AddItemAsync(byte[] item)
         {
-            throw new NotImplementedException();
+            string imageBytes = JsonConvert.SerializeObject(item);
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization =
+                     new AuthenticationHeaderValue("Basic",
+                                                   Identity.AuthorizationValue);
+                client.BaseAddress = new Uri(Api.BaseUrl);
+                try
+                {
+                    HttpResponseMessage response = await client
+                        .PostAsync($"users/image", new StringContent(imageBytes,
+                                                                     Encoding.UTF8,
+                                                                     "application/json"));
+                    if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .Inform("Фото изменено");
+                    }
+                    else
+                    {
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
+                    }
+                    return response.StatusCode == HttpStatusCode.NoContent;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                    return false;
+                }
+            }
         }
 
         public Task<bool> DeleteItemAsync(string id)

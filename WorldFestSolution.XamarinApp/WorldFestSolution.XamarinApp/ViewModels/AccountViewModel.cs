@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -117,6 +118,46 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             await Shell.Current.Navigation.PushAsync(
                new InviteView(
                    new InviteViewModel(festivalId: 0)));
+        }
+
+        private Command changeImageCommand;
+
+        public ICommand ChangeImageCommand
+        {
+            get
+            {
+                if (changeImageCommand == null)
+                {
+                    changeImageCommand = new Command(ChangeImageAsync);
+                }
+
+                return changeImageCommand;
+            }
+        }
+
+        private async void ChangeImageAsync()
+        {
+            FileResult imageResult = await MediaPicker
+                .PickPhotoAsync(new MediaPickerOptions
+                {
+                    Title = "Выберите новое фото"
+                });
+            if (imageResult == null)
+            {
+                await AlertService.Warn("Изменение фото отменено");
+                return;
+            }
+
+            Stream imageStream = await imageResult.OpenReadAsync();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await imageStream.CopyToAsync(memoryStream);
+                if (await UserImageDataStore.AddItemAsync(
+                    memoryStream.ToArray()))
+                {
+                    IsRefreshing = true;
+                }
+            }
         }
     }
 }

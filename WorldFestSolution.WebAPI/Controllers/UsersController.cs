@@ -222,7 +222,7 @@ namespace WorldFestSolution.WebAPI.Controllers
         // GET: api/Users/image
         [HttpGet]
         [Route("api/users/image")]
-        [Authorize(Roles = "Участник, Организатор")]
+        [Authorize]
         public async Task<IHttpActionResult> GetImage()
         {
             if (!ModelState.IsValid)
@@ -232,6 +232,23 @@ namespace WorldFestSolution.WebAPI.Controllers
             User user = await db.User.FirstAsync(u =>
                 u.Login == HttpContext.Current.User.Identity.Name);
             return Ok(user.Image);
+        }
+
+        // POST: api/Users/image
+        [HttpPost]
+        [Route("api/users/image")]
+        [Authorize]
+        public async Task<IHttpActionResult> PostImage(byte[] imageBytes)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            User user = await db.User.FirstAsync(u =>
+                u.Login == HttpContext.Current.User.Identity.Name);
+            user.Image = imageBytes;
+            db.SaveChanges();
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }
