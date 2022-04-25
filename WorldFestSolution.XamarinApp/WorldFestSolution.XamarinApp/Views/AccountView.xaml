@@ -37,39 +37,39 @@
                     </Grid>
                     <StackLayout Grid.Row="1"
                                  VerticalOptions="Start">
-                        <Label Text="{Binding Path=User.Login,
-                                  StringFormat='{}Логин: {0}'}"
+                        <Label Text="{Binding Path=CurrentUser.Login,
+                                              StringFormat='{}Логин: {0}'}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
                         <Label HorizontalTextAlignment="Center">
                             <Label.FormattedText>
                                 <FormattedString>
                                     <FormattedString.Spans>
-                                        <Span Text="{Binding User.LastName}" />
+                                        <Span Text="{Binding CurrentUser.LastName}" />
                                         <Span Text=" " />
-                                        <Span Text="{Binding User.FirstName}" />
+                                        <Span Text="{Binding CurrentUser.FirstName}" />
                                         <Span Text=" " />
-                                        <Span Text="{Binding User.Patronymic}" />
+                                        <Span Text="{Binding CurrentUser.Patronymic}" />
                                     </FormattedString.Spans>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
                         <Label Text="{Binding Source={Static models:Identity.Role},
-                   StringFormat='{}Вы {0}'}"
+                                              StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Path=User.Rating,
-                                          StringFormat='{}Ваш рейтинг: {0:F2}'}"
+                        <Label Text="{Binding Path=CurrentUser.Rating,
+                                              StringFormat='{}Рейтинг: {0:F2}'}"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding User.Rating}"
+                                             Binding="{Binding CurrentUser.Rating}"
                                              Value="0">
                                     <Setter Property="Text"
-                                            Value="Вас пока не оценивали" />
+                                            Value="Пользователя пока не оценивали" />
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <rating:RatingBar SelectedStarValue="{Binding User.Rating}"
+                        <rating:RatingBar SelectedStarValue="{Binding CurrentUser.Rating}"
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
@@ -77,26 +77,36 @@
                                           HorizontalOptions="Center">
                             <rating:RatingBar.Triggers>
                                 <DataTrigger TargetType="rating:RatingBar"
-                                             Binding="{Binding User.Rating}"
+                                             Binding="{Binding CurrentUser.Rating}"
                                              Value="0">
                                     <Setter Property="IsVisible"
                                             Value="False" />
                                 </DataTrigger>
                             </rating:RatingBar.Triggers>
                         </rating:RatingBar>
-                        <material:MaterialButton Text="Мои приглашения"
-                                                 Command="{Binding GoToMyInvitesViewCommand}"
-                                                 Style="{StaticResource BaseButton}"
-                                                 IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
-                        <material:MaterialButton Text="Изменить фото"
-                                                 Command="{Binding ChangeImageCommand}"
-                                                 Style="{StaticResource BackgroundButton}" />
-                        <material:MaterialButton Text="Изменить пароль"
-                                                 Command="{Binding GoToChangePasswordViewCommand}"
-                                                 Style="{StaticResource BackgroundButton}" />
-                        <material:MaterialButton Text="Разлогиниться"
-                                                 Command="{Binding LogoutCommand}"
-                                                 Style="{StaticResource BackgroundButton}" />
+                        <StackLayout IsVisible="False">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout"
+                                             Binding="{Binding CurrentUser.Id}"
+                                             Value="{Static models:Identity.Id}">
+                                    <Setter Property="IsVisible"
+                                            Value="True" />
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <material:MaterialButton Text="Мои приглашения"
+                                                     Command="{Binding GoToMyInvitesViewCommand}"
+                                                     Style="{StaticResource BaseButton}"
+                                                     IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
+                            <material:MaterialButton Text="Изменить фото"
+                                                     Command="{Binding ChangeImageCommand}"
+                                                     Style="{StaticResource BackgroundButton}" />
+                            <material:MaterialButton Text="Изменить пароль"
+                                                     Command="{Binding GoToChangePasswordViewCommand}"
+                                                     Style="{StaticResource BackgroundButton}" />
+                            <material:MaterialButton Text="Разлогиниться"
+                                                     Command="{Binding LogoutCommand}"
+                                                     Style="{StaticResource BackgroundButton}" />
+                        </StackLayout>
                     </StackLayout>
                 </Grid>
             </ScrollView>

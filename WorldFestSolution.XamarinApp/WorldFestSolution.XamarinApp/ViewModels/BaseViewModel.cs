@@ -32,11 +32,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         public IDataStore<IEnumerable<Comment>> FestivalCommentDataStore =>
             DependencyService.Get<IDataStore<IEnumerable<Comment>>>();
         public IDataStore<IEnumerable<ResponseInvite>> FestivalResponseInviteDataStore =>
-           DependencyService.Get<IDataStore<IEnumerable<ResponseInvite>>>();
+            DependencyService.Get<IDataStore<IEnumerable<ResponseInvite>>>();
         public IDataStore<byte[]> UserImageDataStore =>
             DependencyService.Get<IDataStore<byte[]>>();
         public IDataStore<FestivalPopularity> FestivalPopularityDataStore =>
-         DependencyService.Get<IDataStore<FestivalPopularity>>();
+            DependencyService.Get<IDataStore<FestivalPopularity>>();
+        public IDataStore<User> UserDataStore =>
+            DependencyService.Get<IDataStore<User>>();
         public ILoginPasswordEncoder LoginPasswordEncoder =>
             DependencyService.Get<ILoginPasswordEncoder>();
         public User User

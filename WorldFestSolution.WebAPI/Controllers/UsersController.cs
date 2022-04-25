@@ -26,7 +26,8 @@ namespace WorldFestSolution.WebAPI.Controllers
         }
 
         // GET: api/Users/5
-        [ResponseType(typeof(User))]
+        [ResponseType(typeof(SerializedUser))]
+        [Authorize]
         public async Task<IHttpActionResult> GetUser(int id)
         {
             User user = await db.User.FindAsync(id);
@@ -35,7 +36,8 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(
+                new SerializedUser(user));
         }
 
         // PUT: api/Users/5

@@ -9,10 +9,12 @@ namespace WorldFestSolution.XamarinApp.Views
     {
         private readonly AccountViewModel _viewModel;
 
-        public AccountView()
+        public AccountView() : this(new AccountViewModel()) { }
+
+        public AccountView(AccountViewModel accountViewModel)
         {
             InitializeComponent();
-            BindingContext = _viewModel = new AccountViewModel();
+            BindingContext = _viewModel = accountViewModel;
         }
 
         protected override void OnAppearing()

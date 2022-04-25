@@ -38,7 +38,11 @@
                                 <material:MaterialCard Elevation="5"
                                                        Margin="10"
                                                        CornerRadius="25"
-                                                       IsClickable="True">
+                                                       IsClickable="True"
+                                                       ClickCommandParameter="{Binding Source={RelativeSource Self}, 
+                                                                                       Path=BindingContext}"
+                                                       ClickCommand="{Binding Source={Reference Page}, 
+                                                                              Path=BindingContext.GoToAccountViewCommand}">
                                     <Grid RowDefinitions="*,auto"
                                           ColumnDefinitions="auto,*">
                                         <Frame CornerRadius="60"
@@ -62,9 +66,9 @@
                                             <Label Text="{Binding UserFullName}"
                                                    FontAttributes="Bold" />
                                             <Label Text="{Binding Path=CreationDateTime, 
-                                                              StringFormat='{0:dd/MM/yyyy hh:mm}'}"
+                                                                  StringFormat='{0:dd/MM/yyyy hh:mm}'}"
                                                    FontSize="Caption"
-                                                   Grid.Row="1"/>
+                                                   Grid.Row="1" />
                                             <Label Text="{Binding Text}"
                                                    Grid.Row="2" />
                                         </Grid>

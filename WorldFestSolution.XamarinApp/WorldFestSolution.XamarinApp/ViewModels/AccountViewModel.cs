@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
+using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -58,13 +59,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            byte[] currentImage = await UserImageDataStore.GetItemAsync("");
-            if (currentImage != null)
+            CurrentUser = await UserDataStore.GetItemAsync(
+                UserId.ToString());
+            if (CurrentUser != null)
             {
-                ImageSource = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(currentImage);
-                });
+                ImageSource = CurrentUser.ImageSource;
             }
             IsRefreshing = false;
         }
@@ -121,6 +120,16 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
 
         private Command changeImageCommand;
+        private User currentUser;
+
+        public AccountViewModel()
+        {
+            UserId = User.Id;
+        }
+        public AccountViewModel(int userId)
+        {
+            UserId = userId;
+        }
 
         public ICommand ChangeImageCommand
         {
@@ -133,6 +142,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
                 return changeImageCommand;
             }
+        }
+
+        public int UserId { get; }
+        public User CurrentUser
+        {
+            get => currentUser;
+            set => SetProperty(ref currentUser, value);
         }
 
         private async void ChangeImageAsync()

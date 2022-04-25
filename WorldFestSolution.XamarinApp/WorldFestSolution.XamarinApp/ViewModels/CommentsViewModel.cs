@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -122,6 +123,29 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 IsRefreshing = true;
             }
+        }
+
+        private Command<Comment> goToAccountViewCommand;
+
+        public Command<Comment> GoToAccountViewCommand
+        {
+            get
+            {
+                if (goToAccountViewCommand == null)
+                {
+                    goToAccountViewCommand =
+                        new Command<Comment>(GoToAccountViewAsync);
+                }
+
+                return goToAccountViewCommand;
+            }
+        }
+
+        private async void GoToAccountViewAsync(Comment param)
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new AccountView(
+                    new AccountViewModel(param.UserId)));
         }
     }
 }
