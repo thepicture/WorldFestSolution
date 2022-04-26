@@ -70,20 +70,11 @@
                             </Label.Triggers>
                         </Label>
                         <rating:RatingBar SelectedStarValue="{Binding CurrentUser.Rating}"
+                                          SelectedStarCommand="{Binding RateUserCommand}"
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
-                                          InputTransparent="True"
-                                          HorizontalOptions="Center">
-                            <rating:RatingBar.Triggers>
-                                <DataTrigger TargetType="rating:RatingBar"
-                                             Binding="{Binding CurrentUser.Rating}"
-                                             Value="0">
-                                    <Setter Property="IsVisible"
-                                            Value="False" />
-                                </DataTrigger>
-                            </rating:RatingBar.Triggers>
-                        </rating:RatingBar>
+                                          HorizontalOptions="Center" />
                         <StackLayout IsVisible="False">
                             <StackLayout.Triggers>
                                 <DataTrigger TargetType="StackLayout"

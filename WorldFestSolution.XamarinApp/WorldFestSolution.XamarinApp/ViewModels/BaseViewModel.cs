@@ -41,6 +41,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             DependencyService.Get<IDataStore<User>>();
         public IDataStore<IEnumerable<Festival>> UserFestivalDataStore =>
             DependencyService.Get<IDataStore<IEnumerable<Festival>>>();
+        public IDataStore<UserRating> UserRatingDataStore =>
+            DependencyService.Get<IDataStore<UserRating>>();
         public ILoginPasswordEncoder LoginPasswordEncoder =>
             DependencyService.Get<ILoginPasswordEncoder>();
         public User User

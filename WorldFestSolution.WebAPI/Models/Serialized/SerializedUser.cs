@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using WorldFestSolution.WebAPI.Models.Entities;
 using WorldFestSolution.WebAPI.Services;
 
@@ -27,6 +28,10 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             {
                 Rating = 0;
             }
+            IsRated = user.UserRating.Any(r =>
+            {
+                return r.User1.Login == HttpContext.Current.User.Identity.Name;
+            });
         }
 
         public int Id { get; set; }
@@ -38,5 +43,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
         public double Rating { get; set; }
+        public bool IsRated { get; set; }
     }
 }

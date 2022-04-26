@@ -175,5 +175,31 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 }
             }
         }
+
+        private Command<int> rateUserCommand;
+
+        public Command<int> RateUserCommand
+        {
+            get
+            {
+                if (rateUserCommand == null)
+                    rateUserCommand = new Command<int>(RateUserAsync);
+
+                return rateUserCommand;
+            }
+        }
+
+        private async void RateUserAsync(int countOfStars)
+        {
+            UserRating rating = new UserRating
+            {
+                RaterId = CurrentUser.Id,
+                UserId = CurrentUser.Id,
+                CountOfStars = countOfStars,
+                IsRated = CurrentUser.IsRated
+            };
+            await UserRatingDataStore.AddItemAsync(rating);
+            IsRefreshing = true;
+        }
     }
 }

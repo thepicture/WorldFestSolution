@@ -31,5 +31,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
             : $"{LastName} {FirstName} {Patronymic}";
 
         public double Rating { get; set; }
+        public bool IsRated { get; set; }
     }
 }
