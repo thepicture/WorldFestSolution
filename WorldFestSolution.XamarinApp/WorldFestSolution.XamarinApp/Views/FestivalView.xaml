@@ -84,21 +84,13 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <rating:RatingBar SelectedStarValue="{Binding Festival.Rating}"
+                        <rating:RatingBar x:Name="FestivalRatingBar"
+                                          SelectedStarValue="{Binding Festival.Rating, Mode=TwoWay}"
+                                          SelectedStarCommand="{Binding RateFestivalCommand}"
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
-                                          InputTransparent="True"
-                                          HorizontalOptions="Center">
-                            <rating:RatingBar.Triggers>
-                                <DataTrigger TargetType="rating:RatingBar"
-                                             Binding="{Binding Festival.Rating}"
-                                             Value="0">
-                                    <Setter Property="IsVisible"
-                                            Value="False" />
-                                </DataTrigger>
-                            </rating:RatingBar.Triggers>
-                        </rating:RatingBar>
+                                          HorizontalOptions="Center" />
                         <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
                                                  Grid.Row="1"
                                                  IsEnabled="{Binding IsNotBusy}"

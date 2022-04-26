@@ -178,5 +178,32 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 new InviteView(
                     new InviteViewModel(FestivalId)));
         }
+
+        private Command<int> rateFestivalCommand;
+
+        public Command<int> RateFestivalCommand
+        {
+            get
+            {
+                if (rateFestivalCommand == null)
+                {
+                    rateFestivalCommand = new Command<int>(RateFestivalAsync);
+                }
+
+                return rateFestivalCommand;
+            }
+        }
+
+        private async void RateFestivalAsync(int countOfStars)
+        {
+            FestivalRating festivalRating = new FestivalRating
+            {
+                FestivalId = Festival.Id,
+                CountOfStars = countOfStars,
+                IsRated = Festival.IsRated
+            };
+            await FestivalRatingDataStore.AddItemAsync(festivalRating);
+            IsRefreshing = true;
+        }
     }
 }
