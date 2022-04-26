@@ -42,9 +42,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private Command refreshCommand;
 
-        public FestivalsViewModel()
+        public FestivalsViewModel(bool isRelatedToMe)
         {
             Festivals = new ObservableCollection<Festival>();
+            IsRelatedToMe = isRelatedToMe;
         }
 
         public ICommand RefreshCommand
@@ -62,39 +63,40 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
+            Festivals.Clear();
             IEnumerable<Festival> items = await Task.Run(() =>
             {
-                return FestivalDataStore.GetItemsAsync();
+                if (IsRelatedToMe)
+                {
+                    return UserFestivalDataStore.GetItemAsync("");
+                }
+                else
+                {
+                    return FestivalDataStore.GetItemsAsync();
+                }
             });
-            if (items != null)
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                items = items.Where(i =>
+                {
+                    return i
+                    .Title
+                    .IndexOf(SearchText,
+                             StringComparison.OrdinalIgnoreCase) != -1;
+                });
+            }
+            if (IsActualOnly)
+            {
+                items = items.Where(i => i.IsStarting || i.IsLive);
+            }
+            items = SelectedFilter.Accept(items);
+            foreach (Festival festival in items)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    Festivals.Clear();
+                    Festivals.Add(festival);
                 });
-                if (!string.IsNullOrWhiteSpace(SearchText))
-                {
-                    items = items.Where(i =>
-                    {
-                        return i
-                        .Title
-                        .IndexOf(SearchText,
-                                 StringComparison.OrdinalIgnoreCase) != -1;
-                    });
-                }
-                if (IsActualOnly)
-                {
-                    items = items.Where(i => i.IsStarting || i.IsLive);
-                }
-                items = SelectedFilter.Accept(items);
-                foreach (Festival festival in items)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Festivals.Add(festival);
-                    });
-                    await Task.Delay(50);
-                }
+                await Task.Delay(50);
             }
             IsRefreshing = false;
         }
@@ -225,5 +227,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 }
             }
         }
+
+        public bool IsRelatedToMe { get; }
     }
 }

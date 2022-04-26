@@ -1,4 +1,5 @@
 ﻿using WorldFestSolution.XamarinApp.Models;
+using WorldFestSolution.XamarinApp.ViewModels;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
@@ -60,8 +61,11 @@ namespace WorldFestSolution.XamarinApp
                 Route = $"My{nameof(FestivalsView)}",
                 Icon = "programs",
                 Title = "Мои фестивали",
-                ContentTemplate = new DataTemplate(
-                    typeof(FestivalsView)),
+                ContentTemplate = new DataTemplate(() =>
+                {
+                    return new FestivalsView(
+                        new FestivalsViewModel(isRelatedToMe: true));
+                })
             });
             switch (Identity.Role)
             {
@@ -81,8 +85,11 @@ namespace WorldFestSolution.XamarinApp
                         Route = nameof(FestivalsView),
                         Icon = "logo",
                         Title = "Поиск фестивалей",
-                        ContentTemplate = new DataTemplate(
-                            typeof(FestivalsView)),
+                        ContentTemplate = new DataTemplate(() =>
+                        {
+                            return new FestivalsView(
+                                new FestivalsViewModel(isRelatedToMe: false));
+                        })
                     });
                     break;
                 default:

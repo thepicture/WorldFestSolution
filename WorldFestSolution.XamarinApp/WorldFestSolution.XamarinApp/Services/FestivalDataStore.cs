@@ -173,13 +173,8 @@ namespace WorldFestSolution.XamarinApp.Services
                 client.BaseAddress = new Uri(Api.BaseUrl);
                 try
                 {
-                    bool isRelatedToMe = AppShell
-                        .Current
-                        .CurrentItem
-                        .CurrentItem
-                        .Title == "Мои фестивали";
                     HttpResponseMessage response = await client
-                        .GetAsync($"festivals?isRelatedToMe={isRelatedToMe}");
+                        .GetAsync($"festivals?isRelatedToMe=false");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return JsonConvert

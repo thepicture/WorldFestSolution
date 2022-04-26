@@ -9,10 +9,10 @@ namespace WorldFestSolution.XamarinApp.Views
     {
         private readonly FestivalsViewModel _viewModel;
 
-        public FestivalsView()
+        public FestivalsView(FestivalsViewModel festivalsViewModel)
         {
             InitializeComponent();
-            BindingContext = _viewModel = new FestivalsViewModel();
+            BindingContext = _viewModel = festivalsViewModel;
             FilterPicker.SelectedIndex = 0;
         }
 

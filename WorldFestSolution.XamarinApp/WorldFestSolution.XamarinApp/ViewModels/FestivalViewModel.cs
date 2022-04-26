@@ -77,7 +77,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get => festivalId;
             set => SetProperty(ref festivalId, value);
         }
-
         private async void RefreshAsync()
         {
             Festival = await FestivalDataStore.GetItemAsync(
