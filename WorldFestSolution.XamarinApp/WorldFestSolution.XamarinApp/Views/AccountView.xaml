@@ -57,6 +57,18 @@
                         <Label Text="{Binding Source={Static models:Identity.Role},
                                               StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
+                        <Label Text="Минор" 
+                               HorizontalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Source={Static models:Identity.User}, 
+                                                               Path=Is18OrMoreYearsOld}"
+                                             Value="True">
+                                    <Setter Property="Text"
+                                            Value="Совершеннолетний" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
                         <Label Text="{Binding CurrentUser.Rating, StringFormat='{}Рейтинг: {0:F2}'}"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>

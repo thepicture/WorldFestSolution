@@ -20,6 +20,10 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 _ = validationErrors.AppendLine("Укажите роль");
             }
+            if (string.IsNullOrWhiteSpace(user.Is18OrMoreYearsOldAsString))
+            {
+                _ = validationErrors.AppendLine("Укажите ваш возраст");
+            }
             if (string.IsNullOrWhiteSpace(user.Login))
             {
                 _ = validationErrors.AppendLine("Введите логин");
@@ -44,6 +48,9 @@ namespace WorldFestSolution.XamarinApp.Services
                     .InformError(validationErrors);
                 return false;
             }
+
+            user.Is18OrMoreYearsOld =
+                user.Is18OrMoreYearsOldAsString == "Мне уже есть 18";
 
             string jsonUser = JsonConvert.SerializeObject(user);
             using (HttpClient client = new HttpClient(App.ClientHandler))

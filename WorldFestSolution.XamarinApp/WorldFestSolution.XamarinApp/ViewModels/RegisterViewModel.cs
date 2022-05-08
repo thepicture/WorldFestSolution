@@ -57,7 +57,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 LastName = LastName,
                 Patronymic = Patronymic,
                 UserTypeId = UserType == null ? 0 : UserType.Id,
-                Image = ImageBytes
+                Image = ImageBytes,
+                Is18OrMoreYearsOldAsString = Is18OrMoreYearsOldAsString
             };
 
             IsBusy = true;
@@ -163,6 +164,14 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             get => imageBytes;
             set => SetProperty(ref imageBytes, value);
+        }
+
+        private string age;
+
+        public string Is18OrMoreYearsOldAsString
+        {
+            get => age;
+            set => SetProperty(ref age, value);
         }
     }
 }

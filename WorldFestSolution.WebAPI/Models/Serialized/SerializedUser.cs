@@ -20,6 +20,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             Patronymic = user.Patronymic;
             UserTypeId = user.UserTypeId;
             Image = ImageResizerService.Resize(user.Image);
+            Is18OrMoreYearsOld = user.Is18OrMoreYearsOld;
             if (user.UserRating.Count > 0)
             {
                 Rating = user.UserRating.Average(ur => ur.CountOfStars);
@@ -44,5 +45,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public byte[] Image { get; set; }
         public double Rating { get; set; }
         public bool IsRated { get; set; }
+        public bool Is18OrMoreYearsOld { get; set; }
     }
 }

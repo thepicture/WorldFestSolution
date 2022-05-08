@@ -170,7 +170,8 @@ namespace WorldFestSolution.WebAPI.Controllers
                 LastName = serializedUser.LastName,
                 Patronymic = serializedUser.Patronymic,
                 UserTypeId = serializedUser.UserTypeId,
-                Image = serializedUser.Image
+                Image = serializedUser.Image,
+                Is18OrMoreYearsOld = serializedUser.Is18OrMoreYearsOld
             };
 
             db.User.Add(user);

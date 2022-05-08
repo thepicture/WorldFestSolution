@@ -43,14 +43,23 @@
                                         </x:Array>
                                     </Picker.ItemsSource>
                                 </Picker>
-                                <material:MaterialTextField Text="{Binding Login,UpdateSourceEventName=PropertyChanged}"
+                                <Label Text="Укажите возраст (* обязательно)" />
+                                <Picker Title="Возраст"
+                                        SelectedItem="{Binding Is18OrMoreYearsOldAsString}">
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Мне меньше 18</x:String>
+                                            <x:String>Мне уже есть 18</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                                <material:MaterialTextField Text="{Binding Login}"
                                                             Placeholder="Введите логин"
                                                             LeadingIcon="login"
                                                             InputType="Text"
                                                             MaxLength="50"
                                                             AlwaysShowUnderline="True"
-                                                            HelperText="* Обязательно">
-                                </material:MaterialTextField>
+                                                            HelperText="* Обязательно" />
                                 <material:MaterialTextField Text="{Binding Password}"
                                                             Placeholder="Введите пароль"
                                                             LeadingIcon="password"

@@ -36,6 +36,7 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
         public bool IsWantInvites { get; set; }
+        public bool Is18OrMoreYearsOld { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FestivalComment> FestivalComment { get; set; }
