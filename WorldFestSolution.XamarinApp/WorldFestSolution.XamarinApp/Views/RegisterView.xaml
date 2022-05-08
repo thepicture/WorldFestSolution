@@ -43,7 +43,7 @@
                                         </x:Array>
                                     </Picker.ItemsSource>
                                 </Picker>
-                                <material:MaterialTextField Text="{Binding Login}"
+                                <material:MaterialTextField Text="{Binding Login,UpdateSourceEventName=PropertyChanged}"
                                                             Placeholder="Введите логин"
                                                             LeadingIcon="login"
                                                             InputType="Text"
