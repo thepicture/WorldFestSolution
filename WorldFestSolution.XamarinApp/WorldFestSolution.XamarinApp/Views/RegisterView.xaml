@@ -13,90 +13,105 @@
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
-            <ScrollView>
-                <StackLayout Padding="10,0,10,0">
-                    <Label Text="Выберите роль (* обязательно)" />
-                    <Picker Title="Роль"
-                            SelectedItem="{Binding UserType}">
-                        <Picker.ItemDisplayBinding>
-                            <Binding Path="Title"
-                                     x:DataType="serialized:UserType" />
-                        </Picker.ItemDisplayBinding>
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type serialized:UserType}">
-                                <serialized:UserType Id="1"
-                                                     Title="Участник" />
-                                <serialized:UserType Id="2"
-                                                     Title="Организатор" />
-                            </x:Array>
-                        </Picker.ItemsSource>
-                    </Picker>
-                    <material:MaterialTextField Text="{Binding Login}"
-                                                Placeholder="Введите логин"
-                                                LeadingIcon="login"
-                                                InputType="Text"
-                                                MaxLength="50"
-                                                AlwaysShowUnderline="True"
-                                                HelperText="* Обязательно">
-                    </material:MaterialTextField>
-                    <material:MaterialTextField Text="{Binding Password}"
-                                                Placeholder="Введите пароль"
-                                                LeadingIcon="password"
-                                                InputType="Password"
-                                                MaxLength="50"
-                                                AlwaysShowUnderline="True"
-                                                HelperText="* Обязательно" />
-                    <material:MaterialTextField Text="{Binding LastName}"
-                                                Placeholder="Введите фамилию"
-                                                LeadingIcon="name"
-                                                InputType="Text"
-                                                MaxLength="50"
-                                                AlwaysShowUnderline="True"
-                                                HelperText="* Обязательно" />
-                    <material:MaterialTextField Text="{Binding FirstName}"
-                                                Placeholder="Введите имя"
-                                                LeadingIcon="name"
-                                                InputType="Text"
-                                                MaxLength="50"
-                                                AlwaysShowUnderline="True"
-                                                HelperText="* Обязательно" />
-                    <material:MaterialTextField Text="{Binding Patronymic}"
-                                                Placeholder="Введите отчество"
-                                                LeadingIcon="name"
-                                                InputType="Text"
-                                                MaxLength="50"
-                                                AlwaysShowUnderline="True"
-                                                HelperText="можно оставить пустым" />
-                    <Label Text="Выберите фото профиля (можно оставить пустым)" />
-                    <Frame CornerRadius="200"
-                           Padding="0"
-                           WidthRequest="300"
-                           HeightRequest="300"
-                           HasShadow="False"
-                           HorizontalOptions="Center">
-                        <Image Source="{Binding Path=Image, 
+            <Grid Margin="20">
+                <material:MaterialCard Elevation="10">
+                    <StackLayout>
+                        <Grid Margin="-20,-20,-20,0"
+                              BackgroundColor="{StaticResource Primary}"
+                              HeightRequest="125">
+                            <Label Text="Создать аккаунт"
+                                   TextColor="White"
+                                   FontSize="Medium"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
+                        <ScrollView>
+                            <StackLayout>
+                                <Label Text="Выберите роль (* обязательно)" />
+                                <Picker Title="Роль"
+                                        SelectedItem="{Binding UserType}">
+                                    <Picker.ItemDisplayBinding>
+                                        <Binding Path="Title"
+                                                 x:DataType="serialized:UserType" />
+                                    </Picker.ItemDisplayBinding>
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type serialized:UserType}">
+                                            <serialized:UserType Id="1"
+                                                                 Title="Участник" />
+                                            <serialized:UserType Id="2"
+                                                                 Title="Организатор" />
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                                <material:MaterialTextField Text="{Binding Login}"
+                                                            Placeholder="Введите логин"
+                                                            LeadingIcon="login"
+                                                            InputType="Text"
+                                                            MaxLength="50"
+                                                            AlwaysShowUnderline="True"
+                                                            HelperText="* Обязательно">
+                                </material:MaterialTextField>
+                                <material:MaterialTextField Text="{Binding Password}"
+                                                            Placeholder="Введите пароль"
+                                                            LeadingIcon="password"
+                                                            InputType="Password"
+                                                            MaxLength="50"
+                                                            AlwaysShowUnderline="True"
+                                                            HelperText="* Обязательно" />
+                                <material:MaterialTextField Text="{Binding LastName}"
+                                                            Placeholder="Введите фамилию"
+                                                            LeadingIcon="name"
+                                                            InputType="Text"
+                                                            MaxLength="50"
+                                                            AlwaysShowUnderline="True"
+                                                            HelperText="* Обязательно" />
+                                <material:MaterialTextField Text="{Binding FirstName}"
+                                                            Placeholder="Введите имя"
+                                                            LeadingIcon="name"
+                                                            InputType="Text"
+                                                            MaxLength="50"
+                                                            AlwaysShowUnderline="True"
+                                                            HelperText="* Обязательно" />
+                                <material:MaterialTextField Text="{Binding Patronymic}"
+                                                            Placeholder="Введите отчество"
+                                                            LeadingIcon="name"
+                                                            InputType="Text"
+                                                            MaxLength="50"
+                                                            AlwaysShowUnderline="True"
+                                                            HelperText="можно оставить пустым" />
+                                <Label Text="Выберите фото профиля (можно оставить пустым)" />
+                                <Frame CornerRadius="200"
+                                       Padding="0"
+                                       WidthRequest="300"
+                                       HeightRequest="300"
+                                       HasShadow="False"
+                                       HorizontalOptions="Center">
+                                    <Image Source="{Binding Path=Image, 
                                     TargetNullValue='login'}"
-                               Aspect="AspectFill" />
-                    </Frame>
-                    <material:MaterialButton Command="{Binding GetImageCommand}"
-                                             Text="Выбрать фото"
-                                             VerticalOptions="EndAndExpand"
-                                             Style="{StaticResource BackgroundButton}" />
-                    <material:MaterialButton Command="{Binding RegisterCommand}"
-                                             Text="Зарегистрироваться"
-                                             VerticalOptions="EndAndExpand"
-                                             Style="{StaticResource BaseButton}">
-                        <material:MaterialButton.Triggers>
-                            <DataTrigger TargetType="material:MaterialButton"
-                                         Binding="{Binding IsBusy}"
-                                         Value="True">
-                                <Setter Property="IsEnabled"
-                                        Value="False" />
-                            </DataTrigger>
-                        </material:MaterialButton.Triggers>
-                    </material:MaterialButton>
-                </StackLayout>
-            </ScrollView>
+                                           Aspect="AspectFill" />
+                                </Frame>
+                                <material:MaterialButton Command="{Binding GetImageCommand}"
+                                                         Text="Выбрать фото"
+                                                         VerticalOptions="EndAndExpand"
+                                                         Style="{StaticResource BackgroundButton}" />
+                                <material:MaterialButton Command="{Binding RegisterCommand}"
+                                                         Text="Зарегистрироваться"
+                                                         VerticalOptions="EndAndExpand"
+                                                         Style="{StaticResource BaseButton}">
+                                    <material:MaterialButton.Triggers>
+                                        <DataTrigger TargetType="material:MaterialButton"
+                                                     Binding="{Binding IsBusy}"
+                                                     Value="True">
+                                            <Setter Property="IsEnabled"
+                                                    Value="False" />
+                                        </DataTrigger>
+                                    </material:MaterialButton.Triggers>
+                                </material:MaterialButton>
+                            </StackLayout>
+                        </ScrollView>
+                    </StackLayout>
+                </material:MaterialCard>
+            </Grid>
         </RefreshView>
     </ContentView>
 </ContentPage>

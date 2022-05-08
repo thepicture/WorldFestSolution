@@ -14,8 +14,9 @@
             <material:MaterialCard Elevation="10">
                 <StackLayout>
                     <Grid Margin="-20,-20,-20,10"
-                          BackgroundColor="{StaticResource Primary}" HeightRequest="50">
-                        <Label Text="WorldFest"
+                          BackgroundColor="{StaticResource Primary}"
+                          HeightRequest="50">
+                        <Label Text="Войти в аккаунт"
                                TextColor="White"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center"
