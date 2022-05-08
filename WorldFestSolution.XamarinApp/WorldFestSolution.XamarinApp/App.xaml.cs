@@ -1,5 +1,7 @@
-﻿using WorldFestSolution.XamarinApp.Models.Serialized;
+﻿using WorldFestSolution.XamarinApp.Models;
+using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp
@@ -13,6 +15,17 @@ namespace WorldFestSolution.XamarinApp
         public App()
         {
             InitializeComponent();
+
+            Accelerometer.Start(SensorSpeed.UI);
+            Accelerometer.ShakeDetected += async (o, e) =>
+            {
+                string newBaseUrl = await App.Current.MainPage
+                    .DisplayPromptAsync("Изменить путь к API",
+                                        "Введите путь к API",
+                                        initialValue: Api.BaseUrl);
+                Models.Api.BaseUrl = newBaseUrl;
+            };
+
             XF.Material.Forms.Material.Init(this,
                 (XF
                 .Material

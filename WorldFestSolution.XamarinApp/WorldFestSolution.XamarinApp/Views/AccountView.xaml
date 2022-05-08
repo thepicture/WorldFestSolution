@@ -57,8 +57,7 @@
                         <Label Text="{Binding Source={Static models:Identity.Role},
                                               StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Path=CurrentUser.Rating,
-                                              StringFormat='{}Рейтинг: {0:F2}'}"
+                        <Label Text="{Binding CurrentUser.Rating, StringFormat='{}Рейтинг: {0:F2}'}"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"

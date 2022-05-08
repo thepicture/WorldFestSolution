@@ -64,6 +64,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (CurrentUser != null)
             {
                 ImageSource = CurrentUser.ImageSource;
+                OnPropertyChanged(
+                    nameof(CurrentUser.Rating));
             }
             IsRefreshing = false;
         }

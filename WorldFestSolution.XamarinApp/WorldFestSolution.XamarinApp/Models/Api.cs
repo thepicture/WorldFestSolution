@@ -1,7 +1,19 @@
-﻿namespace WorldFestSolution.XamarinApp.Models
+﻿using Xamarin.Essentials;
+
+namespace WorldFestSolution.XamarinApp.Models
 {
     public class Api
     {
-        public const string BaseUrl = "https://worldfestsolution-webapi.conveyor.cloud/api/";
+        private const string defaultBaseUrl =
+            "https://worldfestsolution-webapi.conveyor.cloud/api/";
+
+        public static string BaseUrl
+        {
+            get => Preferences.Get(
+                nameof(BaseUrl), defaultBaseUrl);
+
+            set => Preferences.Set(
+                nameof(BaseUrl), value);
+        }
     }
 }
