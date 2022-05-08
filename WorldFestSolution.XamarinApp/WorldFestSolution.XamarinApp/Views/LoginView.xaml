@@ -10,53 +10,52 @@
         <viewmodels:LoginViewModel />
     </ContentPage.BindingContext>
     <RefreshView IsRefreshing="{Binding IsRefreshing}">
-        <StackLayout Padding="10"
-                     VerticalOptions="Fill">
-            <StackLayout Orientation="Horizontal"
-                         HorizontalOptions="Center">
-                <Image Source="icon_circle"
-                       WidthRequest="110" />
-                <StackLayout VerticalOptions="Center">
-                    <Label Text="WorldFest"
-                           Grid.Column="1"
-                           FontSize="30"
-                           FontAttributes="Bold"
-                           TextColor="Black" />
+        <Grid Margin="20">
+            <material:MaterialCard Elevation="10">
+                <StackLayout>
+                    <Grid Margin="-20,-20,-20,10"
+                          BackgroundColor="{StaticResource Primary}" HeightRequest="50">
+                        <Label Text="WorldFest"
+                               TextColor="White"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center" />
+                    </Grid>
+                    <material:MaterialTextField Text="{Binding Login}"
+                                                Placeholder="Введите логин"
+                                                InputType="Text"
+                                                MaxLength="50"
+                                                LeadingIcon="login"
+                                                AlwaysShowUnderline="True" />
+                    <material:MaterialTextField Text="{Binding Password}"
+                                                Placeholder="Введите пароль"
+                                                InputType="Password"
+                                                MaxLength="50"
+                                                LeadingIcon="password"
+                                                AlwaysShowUnderline="True" />
+                    <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
+                                               Text="Запомнить" />
+                    <Grid ColumnDefinitions="*,*"
+                          VerticalOptions="EndAndExpand">
+                        <material:MaterialButton Command="{Binding AuthenticateCommand}"
+                                                 Text="Войти"
+                                                 Style="{StaticResource BaseButton}">
+                            <material:MaterialButton.Triggers>
+                                <DataTrigger TargetType="material:MaterialButton"
+                                             Binding="{Binding IsBusy}"
+                                             Value="True">
+                                    <Setter Property="IsEnabled"
+                                            Value="False" />
+                                </DataTrigger>
+                            </material:MaterialButton.Triggers>
+                        </material:MaterialButton>
+                        <material:MaterialButton Command="{Binding ExitCommand}"
+                                                 Text="Выйти"
+                                                 Style="{StaticResource BackgroundButton}"
+                                                 Grid.Column="1" />
+                    </Grid>
                 </StackLayout>
-            </StackLayout>
-            <material:MaterialTextField Text="{Binding Login}"
-                                        Placeholder="Введите логин"
-                                        InputType="Text"
-                                        MaxLength="50"
-                                        LeadingIcon="login"
-                                        AlwaysShowUnderline="True" />
-            <material:MaterialTextField Text="{Binding Password}"
-                                        Placeholder="Введите пароль"
-                                        InputType="Password"
-                                        MaxLength="50"
-                                        LeadingIcon="password"
-                                        AlwaysShowUnderline="True" />
-            <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
-                                       Text="Запомнить" />
-            <Grid ColumnDefinitions="*,*"
-                  VerticalOptions="EndAndExpand">
-                <material:MaterialButton Command="{Binding AuthenticateCommand}"
-                                         Text="Войти"
-                                         Style="{StaticResource BaseButton}">
-                    <material:MaterialButton.Triggers>
-                        <DataTrigger TargetType="material:MaterialButton"
-                                     Binding="{Binding IsBusy}"
-                                     Value="True">
-                            <Setter Property="IsEnabled"
-                                    Value="False" />
-                        </DataTrigger>
-                    </material:MaterialButton.Triggers>
-                </material:MaterialButton>
-                <material:MaterialButton Command="{Binding ExitCommand}"
-                                         Text="Выйти"
-                                         Style="{StaticResource BackgroundButton}"
-                                         Grid.Column="1" />
-            </Grid>
-        </StackLayout>
+            </material:MaterialCard>
+        </Grid>
     </RefreshView>
 </ContentPage>
