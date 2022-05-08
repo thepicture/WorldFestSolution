@@ -46,7 +46,7 @@ namespace WorldFestSolution.XamarinApp.Services
             }
 
             string jsonUser = JsonConvert.SerializeObject(user);
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.BaseAddress = new Uri(Api.BaseUrl);
                 try

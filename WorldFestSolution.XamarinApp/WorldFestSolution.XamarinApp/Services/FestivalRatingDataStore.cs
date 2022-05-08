@@ -52,7 +52,7 @@ namespace WorldFestSolution.XamarinApp.Services
             }
 
             string jsonFestivalRating = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",

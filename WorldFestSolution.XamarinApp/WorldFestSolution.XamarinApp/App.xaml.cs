@@ -1,4 +1,5 @@
-﻿using WorldFestSolution.XamarinApp.Models;
+﻿using System.Net.Http;
+using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Essentials;
@@ -11,6 +12,16 @@ namespace WorldFestSolution.XamarinApp
         public static string Role { get; set; }
         public static User User { get; set; }
         public static string AuthorizationValue { get; set; }
+        public static HttpClientHandler ClientHandler
+        {
+            get
+            {
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback +=
+                    (_, __, ___, ____) => true;
+                return handler;
+            }
+        }
 
         public App()
         {

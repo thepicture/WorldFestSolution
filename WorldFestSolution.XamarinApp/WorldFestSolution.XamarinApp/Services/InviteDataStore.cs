@@ -28,7 +28,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 requestInvite.Id = item.Id;
             }
             string jsonRequestInvite = JsonConvert.SerializeObject(requestInvite);
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",

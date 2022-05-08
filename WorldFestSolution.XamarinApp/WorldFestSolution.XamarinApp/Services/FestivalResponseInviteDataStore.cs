@@ -26,7 +26,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<IEnumerable<ResponseInvite>> GetItemAsync(string id)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

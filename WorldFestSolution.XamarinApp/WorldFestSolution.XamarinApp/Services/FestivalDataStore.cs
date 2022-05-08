@@ -40,7 +40,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
             string jsonFestival = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",
@@ -90,7 +90,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 return false;
             }
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",
@@ -128,7 +128,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<Festival> GetItemAsync(string id)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",
@@ -165,7 +165,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<IEnumerable<Festival>> GetItemsAsync(bool forceRefresh = false)
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

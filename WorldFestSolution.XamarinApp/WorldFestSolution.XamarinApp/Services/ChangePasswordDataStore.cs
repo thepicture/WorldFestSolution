@@ -41,7 +41,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
             string jsonPasswordCredentials = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.BaseAddress = new Uri(Api.BaseUrl);
                 try
