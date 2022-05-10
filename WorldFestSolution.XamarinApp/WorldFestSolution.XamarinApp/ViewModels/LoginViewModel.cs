@@ -103,5 +103,27 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 Environment.Exit(0);
             }
         }
+
+        private Command changeApiUrlCommand;
+
+        public ICommand ChangeApiUrlCommand
+        {
+            get
+            {
+                if (changeApiUrlCommand == null)
+                    changeApiUrlCommand = new Command(ChangeApiUrlAsync);
+
+                return changeApiUrlCommand;
+            }
+        }
+
+        private async void ChangeApiUrlAsync()
+        {
+            string newBaseUrl = await App.Current.MainPage
+                   .DisplayPromptAsync("Изменить путь к API",
+                                       "Введите путь к API",
+                                       initialValue: Api.BaseUrl);
+            Models.Api.BaseUrl = newBaseUrl;
+        }
     }
 }

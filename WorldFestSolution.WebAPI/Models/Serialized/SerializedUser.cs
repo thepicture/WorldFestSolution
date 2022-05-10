@@ -29,10 +29,13 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             {
                 Rating = 0;
             }
-            IsRated = user.UserRating.Any(r =>
+            if (HttpContext.Current.User != null)
             {
-                return r.User1.Login == HttpContext.Current.User.Identity.Name;
-            });
+                IsRated = user.UserRating.Any(r =>
+                {
+                    return r.User1.Login == HttpContext.Current.User.Identity.Name;
+                });
+            }
         }
 
         public int Id { get; set; }
