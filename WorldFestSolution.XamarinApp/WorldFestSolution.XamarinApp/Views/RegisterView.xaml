@@ -13,12 +13,56 @@
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
-            <Grid Margin="20">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup>
+                        <VisualState x:Name="LandscapeState">
+                            <VisualState.StateTriggers>
+                                <OrientationStateTrigger Orientation="Landscape" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="Margin"
+                                        Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="PortraitState">
+                            <VisualState.StateTriggers>
+                                <OrientationStateTrigger Orientation="Portrait" />
+                            </VisualState.StateTriggers>
+                            <VisualState.Setters>
+                                <Setter Property="Margin"
+                                        Value="20" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
                 <material:MaterialCard Elevation="10">
                     <StackLayout>
                         <Grid Margin="-20,-20,-20,0"
                               BackgroundColor="{StaticResource Primary}"
                               HeightRequest="125">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState x:Name="LandscapeState">
+                                        <VisualState.StateTriggers>
+                                            <OrientationStateTrigger Orientation="Landscape" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="IsVisible"
+                                                    Value="False" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="PortraitState">
+                                        <VisualState.StateTriggers>
+                                            <OrientationStateTrigger Orientation="Portrait" />
+                                        </VisualState.StateTriggers>
+                                        <VisualState.Setters>
+                                            <Setter Property="IsVisible"
+                                                    Value="True" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
                             <Label Text="Создать аккаунт"
                                    TextColor="White"
                                    FontSize="Medium"
