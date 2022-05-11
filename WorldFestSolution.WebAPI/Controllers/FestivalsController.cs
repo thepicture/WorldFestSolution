@@ -224,6 +224,43 @@ namespace WorldFestSolution.WebAPI.Controllers
             }
         }
 
+        // GET: api/festivalParticipants?festivalId=1
+        [HttpGet]
+        [ResponseType(typeof(List<User>))]
+        [Authorize(Roles = "Организатор")]
+        [Route("api/festivalParticipants")]
+        public async Task<IHttpActionResult> GetFestivalParticipants(int festivalId)
+        {
+            Festival festival = await db.Festival.FindAsync(festivalId);
+            if (festival == null)
+            {
+                return NotFound();
+            }
+
+            List<SerializedUser> serializedUsers = festival.User
+                .Where(u => u.UserType.Title == "Участник")
+                .ToList()
+                .ConvertAll(u => new SerializedUser(u));
+            return Ok(serializedUsers);
+        }
+
+        // GET: api/Festivals/1/users
+        [HttpDelete]
+        [ResponseType(typeof(List<User>))]
+        [Authorize(Roles = "Организатор")]
+        [Route("api/deleteParticipant")]
+        public async Task<IHttpActionResult> DeleteParticipant(int participantId, int festivalId)
+        {
+            Festival festival = await db.Festival.FindAsync(festivalId);
+            if (festival == null)
+            {
+                return NotFound();
+            }
+            festival.User.Remove(festival.User.First(u => u.Id == participantId));
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

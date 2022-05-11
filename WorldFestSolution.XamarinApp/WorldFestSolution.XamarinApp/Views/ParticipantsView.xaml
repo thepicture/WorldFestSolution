@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             x:DataType="viewmodels:ParticipantsViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.ParticipantsView"
+             Title="Управление участниками"
+             x:Name="Page">
+    <ContentView>
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <StackLayout BindableLayout.ItemsSource="{Binding Participants}">
+                    <BindableLayout.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label VerticalOptions="CenterAndExpand"
+                                   HorizontalTextAlignment="Center"
+                                   Text="Участников не найдено">
+                                <Label.IsVisible>
+                                    <Binding Path="BindingContext.IsRefreshing"
+                                             Source="{Reference Page}">
+                                        <Binding.Converter>
+                                            <converters:BooleanInvertValueConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Label.IsVisible>
+                            </Label>
+                        </DataTemplate>
+                    </BindableLayout.EmptyViewTemplate>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="serialized:ParticipantUser">
+                            <material:MaterialCard Elevation="5"
+                                                   Margin="10"
+                                                   CornerRadius="25">
+                                <Grid RowDefinitions="*,auto,auto,auto,auto"
+                                      ColumnDefinitions="auto,*">
+                                    <Frame CornerRadius="60"
+                                           VerticalOptions="Start"
+                                           Padding="0"
+                                           WidthRequest="60"
+                                           HeightRequest="60"
+                                           HasShadow="False">
+                                        <Image Aspect="AspectFill">
+                                            <Image.Source>
+                                                <Binding Path="ImageSource">
+                                                    <Binding.TargetNullValue>
+                                                        login
+                                                    </Binding.TargetNullValue>
+                                                </Binding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Frame>
+                                    <StackLayout Grid.Column="1">
+                                    <Label Text="{Binding FullName}"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1" />
+                                        <Label Text="{Binding Rating, StringFormat='Рейтинг: {0:F1}'}"
+                                               Grid.Column="1" />
+                                    </StackLayout>
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
+                                                                                        Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, 
+                                                                               Path=BindingContext.DeleteParticipantCommand}"
+                                                             Text="Исключить"
+                                                             Style="{StaticResource BaseButton}"
+                                                             BackgroundColor="Red"
+                                                             Grid.Row="2"
+                                                             Grid.ColumnSpan="2" />
+                                </Grid>
+                            </material:MaterialCard>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </ContentView>
+</ContentPage>

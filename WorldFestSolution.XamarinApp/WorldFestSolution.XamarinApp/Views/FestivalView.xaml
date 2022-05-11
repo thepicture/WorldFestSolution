@@ -123,6 +123,14 @@
                                                  Text="Пригласить участников"
                                                  Style="{StaticResource BaseButton}"
                                                  IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
+                        <material:MaterialButton Command="{Binding GoToParticipantsViewCommand}"
+                                                 Text="Управление участниками"
+                                                 Style="{StaticResource BaseButton}"
+                                                 IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}" />
+                        <material:MaterialButton Command="{Binding GoToOrganizerAccountViewCommand}"
+                                                 Text="Оценить организатора"
+                                                 Style="{StaticResource BaseButton}"
+                                                 IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
                     </StackLayout>
                 </Grid>
             </ScrollView>

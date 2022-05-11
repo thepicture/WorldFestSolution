@@ -205,5 +205,48 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             await FestivalRatingDataStore.AddItemAsync(festivalRating);
             IsRefreshing = true;
         }
+
+        private Command goToParticipantsViewCommand;
+
+        public ICommand GoToParticipantsViewCommand
+        {
+            get
+            {
+                if (goToParticipantsViewCommand == null)
+                    goToParticipantsViewCommand = new Command(GoToParticipantsViewAsync);
+
+                return goToParticipantsViewCommand;
+            }
+        }
+
+        private async void GoToParticipantsViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+               new ParticipantsView(
+                   new ParticipantsViewModel(FestivalId)));
+        }
+
+        private Command goToOrganizerAccountViewCommand;
+
+        public ICommand GoToOrganizerAccountViewCommand
+        {
+            get
+            {
+                if (goToOrganizerAccountViewCommand == null)
+                    goToOrganizerAccountViewCommand = new Command(GoToOrganizerAccountViewAsync);
+
+                return goToOrganizerAccountViewCommand;
+            }
+        }
+
+        private async void GoToOrganizerAccountViewAsync()
+        {
+            Festival festivalFromDataStore =
+                await FestivalDataStore.GetItemAsync(
+                    FestivalId.ToString());
+            await Shell.Current.Navigation.PushAsync(
+                new AccountView(
+                    new AccountViewModel(festivalFromDataStore.OrganizerId)));
+        }
     }
 }

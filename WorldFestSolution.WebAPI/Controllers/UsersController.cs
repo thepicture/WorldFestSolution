@@ -123,7 +123,7 @@ namespace WorldFestSolution.WebAPI.Controllers
         // GET: api/Users/Authenticate
         [ResponseType(typeof(SerializedUser))]
         [Route("api/users/authenticate")]
-        [Authorize(Roles = "Организатор, Участник")]
+        [Authorize]
         [HttpGet]
         public async Task<IHttpActionResult> Authenticate()
         {

@@ -19,6 +19,9 @@
     <Compile Update="Views\AddEditProgramView.xaml.cs">
       <DependentUpon>AddEditProgramView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ParticipantsView.xaml.cs">
+      <DependentUpon>ParticipantsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +38,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CommentsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ParticipantsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\FestivalsPopularityChartView.xaml">
