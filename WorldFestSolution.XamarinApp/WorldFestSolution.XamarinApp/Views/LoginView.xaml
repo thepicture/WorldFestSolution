@@ -10,12 +10,56 @@
         <viewmodels:LoginViewModel />
     </ContentPage.BindingContext>
     <RefreshView IsRefreshing="{Binding IsRefreshing}">
-        <Grid Margin="20">
+        <Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="LandscapeState">
+                        <VisualState.StateTriggers>
+                            <OrientationStateTrigger Orientation="Landscape" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="Margin"
+                                    Value="0" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PortraitState">
+                        <VisualState.StateTriggers>
+                            <OrientationStateTrigger Orientation="Portrait" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Property="Margin"
+                                    Value="20" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
             <material:MaterialCard Elevation="10">
                 <StackLayout>
                     <Grid Margin="-20,-20,-20,10"
                           BackgroundColor="{StaticResource Primary}"
                           HeightRequest="50">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState x:Name="LandscapeState">
+                                    <VisualState.StateTriggers>
+                                        <OrientationStateTrigger Orientation="Landscape" />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible"
+                                                Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PortraitState">
+                                    <VisualState.StateTriggers>
+                                        <OrientationStateTrigger Orientation="Portrait" />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible"
+                                                Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Label Text="Войти в аккаунт"
                                TextColor="White"
                                FontSize="Medium"
@@ -34,10 +78,13 @@
                                                 MaxLength="50"
                                                 LeadingIcon="password"
                                                 AlwaysShowUnderline="True" />
-                    <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
-                                               Text="Запомнить" />
-                    <Button Command="{Binding ChangeApiUrlCommand}"
-                            Opacity="0"/>
+                    <Grid ColumnDefinitions="*,*">
+                        <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
+                                                   Text="Запомнить" />
+                        <Button Command="{Binding ChangeApiUrlCommand}"
+                                Opacity="0"
+                                Grid.Column="1" />
+                    </Grid>
                     <Grid ColumnDefinitions="*,*"
                           VerticalOptions="EndAndExpand">
                         <material:MaterialButton Command="{Binding AuthenticateCommand}"
