@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Controls;
+using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
 
@@ -72,10 +74,36 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void DeleteParticipantAsync(ParticipantUser user)
         {
-            if(await FestivalUsersDataStore.DeleteItemAsync(FestivalId + "," + user.Id))
+            if (await FestivalUsersDataStore.DeleteItemAsync(FestivalId + "," + user.Id))
             {
                 IsRefreshing = true;
             }
+        }
+
+        private Command<SelfSendableRatingBar> rateUserCommand;
+
+        public Command<SelfSendableRatingBar> RateUserCommand
+        {
+            get
+            {
+                if (rateUserCommand == null)
+                    rateUserCommand = new Command<SelfSendableRatingBar>(RateUserAsync);
+
+                return rateUserCommand;
+            }
+        }
+
+        private async void RateUserAsync(SelfSendableRatingBar ratingBar)
+        {
+            UserRating rating = new UserRating
+            {
+                RaterId = Identity.Id,
+                UserId = (ratingBar.BindingContext as ParticipantUser).Id,
+                CountOfStars = ratingBar.SelectedStarValue,
+                IsRated = (ratingBar.BindingContext as ParticipantUser).IsRated
+            };
+            await UserRatingDataStore.AddItemAsync(rating);
+            IsRefreshing = true;
         }
     }
 }

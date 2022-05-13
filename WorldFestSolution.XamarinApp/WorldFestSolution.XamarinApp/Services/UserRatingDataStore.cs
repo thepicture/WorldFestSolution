@@ -17,7 +17,7 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(UserRating item)
         {
-            if (item.RaterId == Identity.Id)
+            if (item.UserId == Identity.Id)
             {
                 await DependencyService
                             .Get<IAlertService>()

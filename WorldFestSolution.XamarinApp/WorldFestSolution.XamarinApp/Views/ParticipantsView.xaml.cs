@@ -1,4 +1,6 @@
-﻿using WorldFestSolution.XamarinApp.ViewModels;
+﻿using RatingBarControl;
+using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
