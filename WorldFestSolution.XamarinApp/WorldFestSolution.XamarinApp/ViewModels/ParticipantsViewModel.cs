@@ -4,6 +4,7 @@ using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Controls;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
+using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
@@ -104,6 +105,29 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             };
             await UserRatingDataStore.AddItemAsync(rating);
             IsRefreshing = true;
+        }
+
+        private Command<ParticipantUser> goToAccountViewCommand;
+
+        public Command<ParticipantUser> GoToAccountViewCommand
+        {
+            get
+            {
+                if (goToAccountViewCommand == null)
+                {
+                    goToAccountViewCommand =
+                        new Command<ParticipantUser>(GoToAccountViewAsync);
+                }
+
+                return goToAccountViewCommand;
+            }
+        }
+
+        private async void GoToAccountViewAsync(ParticipantUser user)
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new AccountView(
+                    new AccountViewModel(user.Id)));
         }
     }
 }

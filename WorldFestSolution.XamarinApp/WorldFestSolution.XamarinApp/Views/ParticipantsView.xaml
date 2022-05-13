@@ -35,7 +35,10 @@
                         <DataTemplate x:DataType="serialized:ParticipantUser">
                             <material:MaterialCard Elevation="5"
                                                    Margin="10"
-                                                   CornerRadius="25">
+                                                   CornerRadius="25"
+                                                   IsClickable="True"
+                                                   ClickCommandParameter="{Binding .}"
+                                                   ClickCommand="{Binding BindingContext.GoToAccountViewCommand, Source={Reference Page}}">
                                 <Grid RowDefinitions="*,auto,auto,auto,auto"
                                       ColumnDefinitions="auto,*">
                                     <Frame CornerRadius="60"
