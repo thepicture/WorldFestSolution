@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              x:DataType="viewmodels:FestivalsPopularityChartViewModel"
-             Title="Популярность моих фестивалей"
+             Title="Популярность фестивалей"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsPopularityChartView">
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
