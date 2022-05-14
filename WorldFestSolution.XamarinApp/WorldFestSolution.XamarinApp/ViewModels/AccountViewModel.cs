@@ -56,8 +56,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        private ImageSource imageSource;
-
         private async void RefreshAsync()
         {
             User userFromDatabase = await UserDataStore.GetItemAsync(
@@ -67,7 +65,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 CurrentUser = userFromDatabase;
                 CurrentUser.Rating = countOfStars;
-                ImageSource = userFromDatabase.ImageSource;
             }
             IsRefreshing = false;
         }
@@ -86,12 +83,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
                 return goToChangePasswordViewCommand;
             }
-        }
-
-        public ImageSource ImageSource
-        {
-            get => imageSource;
-            set => SetProperty(ref imageSource, value);
         }
 
         private async void GoToChangePasswordView()

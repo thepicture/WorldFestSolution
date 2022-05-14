@@ -17,7 +17,7 @@
                         <Image Aspect="AspectFill"
                                HeightRequest="1">
                             <Image.Source>
-                                <Binding Path="ImageSource">
+                                <Binding Path="CurrentUser.ImageSource">
                                     <Binding.TargetNullValue>
                                         login
                                     </Binding.TargetNullValue>
