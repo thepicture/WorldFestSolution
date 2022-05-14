@@ -48,7 +48,7 @@ namespace WorldFestSolution.XamarinApp.Controls
 
         public static readonly BindableProperty StarWidthRequestProperty = BindableProperty.Create("StarWidthRequest", typeof(double), typeof(SelfSendableRatingBar), 30.0, BindingMode.TwoWay, null, StarWidthRequestPropertyChanged);
 
-        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(decimal), typeof(SelfSendableRatingBar), default(decimal), BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
+        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(double), typeof(SelfSendableRatingBar), default(double), BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
 
         public new static readonly BindableProperty FlowDirectionProperty = BindableProperty.Create("FlowDirection", typeof(FlowDirectionEnum), typeof(SelfSendableRatingBar), FlowDirectionEnum.LeftToRight, BindingMode.OneWay, null, FlowDirectionPropertyChanged);
 
@@ -121,11 +121,11 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
         }
 
-        public decimal SelectedStarValue
+        public double SelectedStarValue
         {
             get
             {
-                return (decimal)GetValue(SelectedStarValueProperty);
+                return (double)GetValue(SelectedStarValueProperty);
             }
             set
             {
@@ -261,7 +261,7 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
         }
 
-        private static void fillStar(decimal selectedValue, SelfSendableRatingBar obj)
+        private static void fillStar(double selectedValue, SelfSendableRatingBar obj)
         {
             obj.SelectedStarValue = selectedValue;
             if (obj.FlowDirection == FlowDirectionEnum.RightToLeft)
@@ -410,7 +410,7 @@ namespace WorldFestSolution.XamarinApp.Controls
         private static void SelectedStarValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            SelfSendableRatingBar.SelectedStarValue = (decimal)newValue;
+            SelfSendableRatingBar.SelectedStarValue = (double)newValue;
             if (SelfSendableRatingBar != null && !string.IsNullOrEmpty(SelfSendableRatingBar.fillStarImage) && !string.IsNullOrEmpty(SelfSendableRatingBar.emptyStarImage))
             {
                 fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);

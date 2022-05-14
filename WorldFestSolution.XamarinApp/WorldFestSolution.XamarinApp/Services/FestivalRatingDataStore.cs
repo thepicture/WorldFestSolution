@@ -24,33 +24,6 @@ namespace WorldFestSolution.XamarinApp.Services
                     .InformError("Вы уже оценили этот фестиваль");
                 return false;
             }
-            if (item.CountOfStars == 0)
-            {
-                string result = await DependencyService
-                    .Get<IAlertService>()
-                    .Prompt("Введите количество звёзд от 1 до 5",
-                            maxLength: 1,
-                            Keyboard.Numeric);
-                if (string.IsNullOrWhiteSpace(result))
-                {
-                    await DependencyService
-                        .Get<IAlertService>()
-                        .InformError("Вы не указали оценку");
-                    return false;
-                }
-                if (!int.TryParse(result, out int starsCount)
-                    || starsCount < 1
-                    || starsCount > 5)
-                {
-                    await DependencyService
-                        .Get<IAlertService>()
-                        .InformError("Количество звёзд - "
-                                     + "это положительное число от 1 до 5");
-                    return await AddItemAsync(item);
-                }
-                item.CountOfStars = starsCount;
-            }
-
             string jsonFestivalRating = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient(App.ClientHandler))
             {

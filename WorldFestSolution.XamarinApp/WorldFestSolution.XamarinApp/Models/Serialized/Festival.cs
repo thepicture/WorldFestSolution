@@ -8,6 +8,7 @@ using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models.Serialized
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class Festival
     {
         public int Id { get; set; }

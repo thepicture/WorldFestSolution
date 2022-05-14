@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Controls;
 using WorldFestSolution.XamarinApp.Models.Filters;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
@@ -92,10 +93,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             items = SelectedFilter.Accept(items);
             foreach (Festival festival in items)
             {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Festivals.Add(festival);
-                });
+                Festivals.Add(festival);
                 await Task.Delay(50);
             }
             IsRefreshing = false;
@@ -186,32 +184,33 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        private Command<Festival> rateFestivalCommand;
+        private Command<SelfSendableRatingBar> rateFestivalCommand;
 
-        public Command<Festival> RateFestivalCommand
+        public Command<SelfSendableRatingBar> RateFestivalCommand
         {
             get
             {
                 if (rateFestivalCommand == null)
                 {
                     rateFestivalCommand =
-                        new Command<Festival>(RateFestivalAsync);
+                        new Command<SelfSendableRatingBar>(RateFestivalAsync);
                 }
 
                 return rateFestivalCommand;
             }
         }
 
-        private async void RateFestivalAsync(Festival festival)
+        private async void RateFestivalAsync(SelfSendableRatingBar ratingBar)
         {
+            Festival festival = ratingBar.BindingContext as Festival;
             FestivalRating festivalRating = new FestivalRating
             {
-                FestivalId = festival.Id
+                FestivalId = festival.Id,
+                CountOfStars = (int)festival.Rating,
+                IsRated = festival.IsRated
             };
-            if (await FestivalRatingDataStore.AddItemAsync(festivalRating))
-            {
-                IsRefreshing = true;
-            }
+            await FestivalRatingDataStore.AddItemAsync(festivalRating);
+            IsRefreshing = true;
         }
 
         private IFilter selectedFilter;

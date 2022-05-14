@@ -8,7 +8,6 @@
              xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
              xmlns:app="clr-namespace:WorldFestSolution.XamarinApp"
-             xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              xmlns:filters="clr-namespace:WorldFestSolution.XamarinApp.Models.Filters"
              x:DataType="viewmodels:FestivalsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsView"
@@ -129,42 +128,32 @@
                                                    VerticalTextAlignment="Center"
                                                    LineBreakMode="TailTruncation"
                                                    WidthRequest="60" />
-                                            <Label Text="{Binding Path=Rating,
-                                                              StringFormat='{}Рейтинг фестиваля: {0}'}"
-                                                   FontSize="Micro"
-                                                   HorizontalTextAlignment="End"
-                                                   VerticalTextAlignment="Center"
-                                                   IsVisible="False"
-                                                   LineBreakMode="TailTruncation"
-                                                   Grid.Column="1">
-                                                <Label.Triggers>
-                                                    <DataTrigger TargetType="Label"
-                                                                 Binding="{Binding Rating}"
-                                                                 Value="0">
-                                                        <Setter Property="Text"
-                                                                Value="Оценок нет" />
-                                                        <Setter Property="IsVisible"
-                                                                Value="True" />
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-                                            <rating:RatingBar SelectedStarValue="{Binding Rating}"
-                                                              EmptyStarImage="empty_star"
-                                                              FillStarImage="filled_star"
-                                                              StarHeightRequest="16"
-                                                              InputTransparent="True"
-                                                              HorizontalOptions="End"
-                                                              Margin="5"
-                                                              Grid.Column="1">
-                                                <rating:RatingBar.Triggers>
-                                                    <DataTrigger TargetType="rating:RatingBar"
-                                                                 Binding="{Binding Rating}"
-                                                                 Value="0">
-                                                        <Setter Property="IsVisible"
+                                            <StackLayout Grid.Column="1" HorizontalOptions="Center">
+                                            <Label Text="{Binding Rating, StringFormat='{}Рейтинг: {0:F2}'}"
+                                                   FontSize="Small"
+                                                   HorizontalTextAlignment="Center"/>
+                                            <controls:SelfSendableRatingBar SelectedStarValue="{Binding Rating}"
+                                                                            SelectedStarCommand="{Binding BindingContext.RateFestivalCommand, Source={Reference Page}}"
+                                                                            EmptyStarImage="empty_star"
+                                                                            FillStarImage="filled_star"
+                                                                            StarHeightRequest="16"
+                                                                            HorizontalOptions="End"
+                                                                            InputTransparent="True"
+                                                                            Margin="5">
+                                                <controls:SelfSendableRatingBar.Triggers>
+                                                    <MultiTrigger TargetType="{x:Type controls:SelfSendableRatingBar}">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding Source={Static models:Identity.IsParticipant}}"
+                                                                              Value="True" />
+                                                            <BindingCondition Binding="{Binding IsFinished}"
+                                                                              Value="True" />
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="InputTransparent"
                                                                 Value="False" />
-                                                    </DataTrigger>
-                                                </rating:RatingBar.Triggers>
-                                            </rating:RatingBar>
+                                                    </MultiTrigger>
+                                                </controls:SelfSendableRatingBar.Triggers>
+                                            </controls:SelfSendableRatingBar>
+                                            </StackLayout>
                                         </Grid>
                                         <BoxView Color="WhiteSmoke"
                                                  Grid.Row="1" />
@@ -233,30 +222,6 @@
                                                              Style="{StaticResource BaseButton}"
                                                              Grid.Row="1"
                                                              Grid.ColumnSpan="2" />
-                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
-                                                                                        Path=BindingContext}"
-                                                             Command="{Binding Source={x:Reference Page}, 
-                                                                               Path=BindingContext.RateFestivalCommand}"
-                                                             Text="Оценить"
-                                                             Style="{StaticResource BaseButton}"
-                                                             IsVisible="False"
-                                                             Grid.Row="2"
-                                                             Grid.ColumnSpan="2">
-                                        <material:MaterialButton.Triggers>
-                                            <MultiTrigger TargetType="material:MaterialButton">
-                                                <MultiTrigger.Conditions>
-                                                    <BindingCondition Binding="{Binding IsRated}"
-                                                                      Value="False" />
-                                                    <BindingCondition Binding="{Binding Source={Static models:Identity.IsParticipant}}"
-                                                                      Value="True" />
-                                                    <BindingCondition Binding="{Binding IsFinished}"
-                                                                      Value="True" />
-                                                </MultiTrigger.Conditions>
-                                                <Setter Property="IsVisible"
-                                                        Value="True" />
-                                            </MultiTrigger>
-                                        </material:MaterialButton.Triggers>
-                                    </material:MaterialButton>
                                     <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
                                                                                         Path=BindingContext}"
                                                              Command="{Binding Source={x:Reference Page}, 
