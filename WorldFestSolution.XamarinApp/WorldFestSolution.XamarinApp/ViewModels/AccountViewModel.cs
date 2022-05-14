@@ -8,6 +8,7 @@ using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class AccountViewModel : BaseViewModel
     {
 
@@ -59,13 +60,14 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
-            CurrentUser = await UserDataStore.GetItemAsync(
+            User userFromDatabase = await UserDataStore.GetItemAsync(
                 UserId.ToString());
-            if (CurrentUser != null)
+            double countOfStars = userFromDatabase.Rating;
+            if (userFromDatabase != null)
             {
-                ImageSource = CurrentUser.ImageSource;
-                OnPropertyChanged(
-                    nameof(CurrentUser.Rating));
+                CurrentUser = userFromDatabase;
+                CurrentUser.Rating = countOfStars;
+                ImageSource = userFromDatabase.ImageSource;
             }
             IsRefreshing = false;
         }

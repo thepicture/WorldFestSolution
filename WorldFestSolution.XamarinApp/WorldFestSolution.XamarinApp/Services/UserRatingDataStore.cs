@@ -20,15 +20,15 @@ namespace WorldFestSolution.XamarinApp.Services
             if (item.UserId == Identity.Id)
             {
                 await DependencyService
-                            .Get<IAlertService>()
-                            .InformError("Вы не можете оценить самого себя");
+                    .Get<IAlertService>()
+                    .InformError("Вы не можете оценить самого себя");
                 return false;
             }
             if (item.IsRated)
             {
                 await DependencyService
-                            .Get<IAlertService>()
-                            .InformError("Вы уже оценили этого пользователя");
+                    .Get<IAlertService>()
+                    .InformError("Вы уже оценили этого пользователя");
                 return false;
             }
             string jsonFestivalRating = JsonConvert.SerializeObject(item);

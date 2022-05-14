@@ -13,7 +13,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 {
     public class UserRatingsController : ApiController
     {
-        private WorldFestBaseEntities db = new WorldFestBaseEntities();
+        private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
 
         // GET: api/UserRatings
         public IQueryable<UserRating> GetUserRating()
@@ -78,7 +78,7 @@ namespace WorldFestSolution.WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            User rater = db.User.First(u =>
+            User rater = await db.User.FirstAsync(u =>
               u.Login == HttpContext.Current.User.Identity.Name);
             userRating.RaterId = rater.Id;
 
