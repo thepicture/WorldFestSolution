@@ -164,7 +164,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 await imageStream.CopyToAsync(memoryStream);
                 if (await UserImageDataStore.AddItemAsync(
-                    memoryStream.ToArray()))
+                        ImageTransformService.Transform(
+                            memoryStream.ToArray(), 500, 500, 50)))
                 {
                     IsRefreshing = true;
                 }

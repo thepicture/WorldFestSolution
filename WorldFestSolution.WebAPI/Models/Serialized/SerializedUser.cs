@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Web;
 using WorldFestSolution.WebAPI.Models.Entities;
-using WorldFestSolution.WebAPI.Services;
 
 namespace WorldFestSolution.WebAPI.Models.Serialized
 {
@@ -19,7 +18,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             LastName = user.LastName;
             Patronymic = user.Patronymic;
             UserTypeId = user.UserTypeId;
-            Image = ImageResizerService.Resize(user.Image);
+            Image = user.Image;
             Is18OrMoreYearsOld = user.Is18OrMoreYearsOld;
             if (user.UserRating.Count > 0)
             {

@@ -227,7 +227,6 @@
     <Compile Include="Models\Serialized\SerializedUserOfFestival.cs" />
     <Compile Include="Models\Serialized\SerializedUserRating.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ImageResizerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
