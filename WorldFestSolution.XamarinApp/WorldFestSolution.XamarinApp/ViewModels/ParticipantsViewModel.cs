@@ -100,7 +100,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 RaterId = Identity.Id,
                 UserId = (ratingBar.BindingContext as ParticipantUser).Id,
-                CountOfStars = ratingBar.SelectedStarValue,
+                CountOfStars = (int)ratingBar.SelectedStarValue,
                 IsRated = (ratingBar.BindingContext as ParticipantUser).IsRated
             };
             await UserRatingDataStore.AddItemAsync(rating);

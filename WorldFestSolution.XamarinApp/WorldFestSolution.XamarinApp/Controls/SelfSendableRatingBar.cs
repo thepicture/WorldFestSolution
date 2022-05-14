@@ -48,7 +48,7 @@ namespace WorldFestSolution.XamarinApp.Controls
 
         public static readonly BindableProperty StarWidthRequestProperty = BindableProperty.Create("StarWidthRequest", typeof(double), typeof(SelfSendableRatingBar), 30.0, BindingMode.TwoWay, null, StarWidthRequestPropertyChanged);
 
-        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(int), typeof(SelfSendableRatingBar), 0, BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
+        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(decimal), typeof(SelfSendableRatingBar), default(decimal), BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
 
         public new static readonly BindableProperty FlowDirectionProperty = BindableProperty.Create("FlowDirection", typeof(FlowDirectionEnum), typeof(SelfSendableRatingBar), FlowDirectionEnum.LeftToRight, BindingMode.OneWay, null, FlowDirectionPropertyChanged);
 
@@ -121,11 +121,11 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
         }
 
-        public int SelectedStarValue
+        public decimal SelectedStarValue
         {
             get
             {
-                return (int)GetValue(SelectedStarValueProperty);
+                return (decimal)GetValue(SelectedStarValueProperty);
             }
             set
             {
@@ -261,12 +261,12 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
         }
 
-        private static void fillStar(int selectedValue, SelfSendableRatingBar obj)
+        private static void fillStar(decimal selectedValue, SelfSendableRatingBar obj)
         {
             obj.SelectedStarValue = selectedValue;
             if (obj.FlowDirection == FlowDirectionEnum.RightToLeft)
             {
-                switch (selectedValue)
+                switch ((int)selectedValue)
                 {
                     case 1:
                         obj.star1.Source = obj.emptyStarImage;
@@ -307,7 +307,7 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
             else
             {
-                switch (selectedValue)
+                switch ((int)selectedValue)
                 {
                     case 1:
                         obj.star1.Source = obj.fillStarImage;
@@ -410,7 +410,7 @@ namespace WorldFestSolution.XamarinApp.Controls
         private static void SelectedStarValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            SelfSendableRatingBar.SelectedStarValue = (int)newValue;
+            SelfSendableRatingBar.SelectedStarValue = (decimal)newValue;
             if (SelfSendableRatingBar != null && !string.IsNullOrEmpty(SelfSendableRatingBar.fillStarImage) && !string.IsNullOrEmpty(SelfSendableRatingBar.emptyStarImage))
             {
                 fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);
