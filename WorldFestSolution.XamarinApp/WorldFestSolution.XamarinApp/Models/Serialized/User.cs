@@ -1,18 +1,54 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel;
 using System.IO;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Models.Serialized
 {
     [PropertyChanged.AddINotifyPropertyChangedInterface]
-    public class User
+    public class User : BindableObject
     {
+        private string login;
+        private string password;
+        private string firstName;
+        private string lastName;
+
         public int Id { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Login
+        {
+            get => login;
+            set
+            {
+                login = value;
+                OnPropertyChanged(nameof(RegistrationUser.IsLoginHasErrors));
+            }
+        }
+        public string Password
+        {
+            get => password;
+            set
+            {
+                password = value;
+                OnPropertyChanged(nameof(RegistrationUser.IsPasswordHasErrors));
+            }
+        }
+        public string FirstName
+        {
+            get => firstName;
+            set
+            {
+                firstName = value;
+                OnPropertyChanged(nameof(RegistrationUser.IsFirstNameHasErrors));
+            }
+        }
+        public string LastName
+        {
+            get => lastName;
+            set
+            {
+                lastName = value;
+                OnPropertyChanged(nameof(RegistrationUser.IsLastNameHasErrors));
+            }
+        }
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }

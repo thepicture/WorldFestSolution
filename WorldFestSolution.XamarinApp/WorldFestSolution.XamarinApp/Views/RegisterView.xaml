@@ -98,6 +98,8 @@
                                     </Picker.ItemsSource>
                                 </Picker>
                                 <material:MaterialTextField Text="{Binding RegistrationUser.Login}"
+                                                            HasError="{Binding RegistrationUser.IsLoginHasErrors}"
+                                                            ErrorText="{Binding RegistrationUser.LoginErrorText}"
                                                             Placeholder="Введите логин"
                                                             LeadingIcon="login"
                                                             InputType="Text"
@@ -105,6 +107,8 @@
                                                             AlwaysShowUnderline="True"
                                                             HelperText="* Обязательно" />
                                 <material:MaterialTextField Text="{Binding RegistrationUser.Password}"
+                                                            HasError="{Binding RegistrationUser.IsPasswordHasErrors}"
+                                                            ErrorText="{Binding RegistrationUser.PasswordErrorText}"
                                                             Placeholder="Введите пароль"
                                                             LeadingIcon="password"
                                                             InputType="Password"
@@ -112,6 +116,8 @@
                                                             AlwaysShowUnderline="True"
                                                             HelperText="* Обязательно" />
                                 <material:MaterialTextField Text="{Binding RegistrationUser.LastName}"
+                                                            HasError="{Binding RegistrationUser.IsLastNameHasErrors}"
+                                                            ErrorText="{Binding RegistrationUser.LastNameErrorText}"
                                                             Placeholder="Введите фамилию"
                                                             LeadingIcon="name"
                                                             InputType="Text"
@@ -119,6 +125,8 @@
                                                             AlwaysShowUnderline="True"
                                                             HelperText="* Обязательно" />
                                 <material:MaterialTextField Text="{Binding RegistrationUser.FirstName}"
+                                                            HasError="{Binding RegistrationUser.IsFirstNameHasErrors}"
+                                                            ErrorText="{Binding RegistrationUser.FirstNameErrorText}"
                                                             Placeholder="Введите имя"
                                                             LeadingIcon="name"
                                                             InputType="Text"
