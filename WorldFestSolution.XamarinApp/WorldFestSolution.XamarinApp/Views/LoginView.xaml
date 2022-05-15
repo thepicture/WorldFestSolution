@@ -66,20 +66,20 @@
                                HorizontalTextAlignment="Center"
                                VerticalTextAlignment="Center" />
                     </Grid>
-                    <material:MaterialTextField Text="{Binding Login}"
+                    <material:MaterialTextField Text="{Binding LoginUser.Login}"
                                                 Placeholder="Введите логин"
                                                 InputType="Text"
                                                 MaxLength="50"
                                                 LeadingIcon="login"
                                                 AlwaysShowUnderline="True" />
-                    <material:MaterialTextField Text="{Binding Password}"
+                    <material:MaterialTextField Text="{Binding LoginUser.Password}"
                                                 Placeholder="Введите пароль"
                                                 InputType="Password"
                                                 MaxLength="50"
                                                 LeadingIcon="password"
                                                 AlwaysShowUnderline="True" />
                     <Grid ColumnDefinitions="*,*">
-                        <material:MaterialCheckbox IsSelected="{Binding IsRememberMe}"
+                        <material:MaterialCheckbox IsSelected="{Binding LoginUser.IsRememberMe}"
                                                    Text="Запомнить" />
                         <Button Command="{Binding ChangeApiUrlCommand}"
                                 Opacity="0"

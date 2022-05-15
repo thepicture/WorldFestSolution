@@ -23,6 +23,8 @@ namespace WorldFestSolution.XamarinApp
             }
         }
 
+        public static string Json = "application/json";
+
         public App()
         {
             InitializeComponent();
@@ -46,7 +48,7 @@ namespace WorldFestSolution.XamarinApp
 
             DependencyService.Register<CredentialsService>();
             DependencyService.Register<AndroidAlertService>();
-            DependencyService.Register<HttpClientAuthenticationService>();
+            DependencyService.Register<LoginUserDataStore>();
             DependencyService.Register<HttpClientRegistrationService>();
             DependencyService.Register<FestivalDataStore>();
             DependencyService.Register<CommentDataStore>();

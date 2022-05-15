@@ -5,9 +5,9 @@ using System.Text;
 
 namespace WorldFestSolution.WebAPI.Models.Security
 {
-    public class PasswordHashGenerator
+    public static class PasswordHashGenerator
     {
-        public byte[] Encrypt(string plainPassword, byte[] salt)
+        public static byte[] Encrypt(string plainPassword, byte[] salt)
         {
             List<byte> passwordBytesAndHash = Encoding.UTF8
                 .GetBytes(plainPassword)

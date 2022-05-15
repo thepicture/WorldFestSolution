@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using WorldFestSolution.WebAPI.Models.Entities;
 
 namespace WorldFestSolution.WebAPI.Models.Security
@@ -24,10 +23,7 @@ namespace WorldFestSolution.WebAPI.Models.Security
                 {
                     return false;
                 }
-                PasswordHashGenerator passwordHashGenerator =
-                    new PasswordHashGenerator();
-                byte[] passwordHash = passwordHashGenerator
-                    .Encrypt(password, user.Salt);
+                byte[] passwordHash = PasswordHashGenerator.Encrypt(password, user.Salt);
                 return Enumerable.SequenceEqual(user.PasswordHash, passwordHash);
             }
         }

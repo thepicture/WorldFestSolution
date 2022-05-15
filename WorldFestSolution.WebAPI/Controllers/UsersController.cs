@@ -120,18 +120,34 @@ namespace WorldFestSolution.WebAPI.Controllers
             return db.User.Count(e => e.Id == id) > 0;
         }
 
-        // GET: api/Users/Authenticate
+        // POST: api/Users/login
         [ResponseType(typeof(SerializedUser))]
-        [Route("api/users/authenticate")]
-        [Authorize]
-        [HttpGet]
-        public async Task<IHttpActionResult> Authenticate()
+        [Route("api/users/login")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IHttpActionResult> LogIn(SerializedUser loginUser)
         {
-            string login = HttpContext.Current.User.Identity.Name;
-            User user = await db.User.FirstAsync(u =>
-                u.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
-            return Ok(
-                new SerializedUser(user));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            User user = await db.User.FirstOrDefaultAsync(u =>
+                u.Login.Equals(loginUser.Login, StringComparison.OrdinalIgnoreCase));
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            if (Enumerable.SequenceEqual(user.PasswordHash,
+                                         PasswordHashGenerator.Encrypt(loginUser.Password,
+                                                                       user.Salt)))
+            {
+                return Ok(
+                    new SerializedUser(user));
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         // POST: api/Users/Register
@@ -155,12 +171,10 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return Conflict();
             }
 
-            PasswordHashGenerator passwordHashGenerator =
-                new PasswordHashGenerator();
             byte[] salt = Guid.NewGuid()
                     .ToByteArray();
-            byte[] passwordHash = passwordHashGenerator
-                .Encrypt(serializedUser.Password, salt);
+            byte[] passwordHash = PasswordHashGenerator.Encrypt(serializedUser.Password,
+                                                                salt);
             User user = new User
             {
                 Login = serializedUser.Login,
@@ -196,12 +210,8 @@ namespace WorldFestSolution.WebAPI.Controllers
             string login = credentials.Login;
             User user = await db.User.FirstAsync(u =>
                 u.Login.Equals(login, StringComparison.OrdinalIgnoreCase));
-            PasswordHashGenerator passwordHashGenerator =
-                new PasswordHashGenerator();
-
-            byte[] oldPasswordHash = passwordHashGenerator.Encrypt(
-                credentials.OldPassword,
-                user.Salt);
+            byte[] oldPasswordHash = PasswordHashGenerator.Encrypt(credentials.OldPassword,
+                                                                   user.Salt);
             if (!Enumerable.SequenceEqual(oldPasswordHash, user.PasswordHash))
             {
                 return Content(
@@ -211,8 +221,8 @@ namespace WorldFestSolution.WebAPI.Controllers
 
             byte[] salt = Guid.NewGuid()
                   .ToByteArray();
-            byte[] passwordHash = passwordHashGenerator
-               .Encrypt(credentials.NewPassword, salt);
+            byte[] passwordHash = PasswordHashGenerator.Encrypt(credentials.NewPassword,
+                                                                salt);
 
             user.PasswordHash = passwordHash;
             user.Salt = salt;
