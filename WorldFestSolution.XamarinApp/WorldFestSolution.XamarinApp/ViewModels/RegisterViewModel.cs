@@ -6,31 +6,10 @@ using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class RegisterViewModel : BaseViewModel
     {
-        private UserType userType;
-
-        public UserType UserType
-        {
-            get => userType;
-            set => SetProperty(ref userType, value);
-        }
-
-        private string login;
-
-        public string Login
-        {
-            get => login;
-            set => SetProperty(ref login, value);
-        }
-
-        private string password;
-
-        public string Password
-        {
-            get => password;
-            set => SetProperty(ref password, value);
-        }
+        public RegistrationUser RegistrationUser { get; set; }
 
         private Command registerCommand;
 
@@ -49,52 +28,20 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RegisterAsync()
         {
-            User user = new User
-            {
-                Login = Login,
-                Password = Password,
-                FirstName = FirstName,
-                LastName = LastName,
-                Patronymic = Patronymic,
-                UserTypeId = UserType == null ? 0 : UserType.Id,
-                Image = ImageBytes,
-                Is18OrMoreYearsOldAsString = Is18OrMoreYearsOldAsString
-            };
-
-            IsBusy = true;
             IsRefreshing = true;
-            if (await RegistrationService.RegisterAsync(user))
+            if (await RegistrationUserDataStore.AddItemAsync(RegistrationUser))
             {
                 AppShell.LoadLoginAndRegisterShell();
             }
             IsRefreshing = false;
-            IsBusy = false;
-        }
-
-        private Command refreshCommand;
-
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                if (refreshCommand == null)
-                {
-                    refreshCommand = new Command(RefreshAsync);
-                }
-
-                return refreshCommand;
-            }
-        }
-
-        private void RefreshAsync()
-        {
-            if (IsNotBusy)
-            {
-                IsRefreshing = false;
-            }
         }
 
         private Command getImageCommand;
+
+        public RegisterViewModel()
+        {
+            RegistrationUser = new RegistrationUser();
+        }
 
         public ICommand GetImageCommand
         {
@@ -116,62 +63,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 {
                     Title = "Выберите фото профиля"
                 });
+            if (result == null) return;
             Stream imageStream = await result.OpenReadAsync();
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 await imageStream.CopyToAsync(memoryStream);
-                ImageBytes = memoryStream.ToArray();
+                RegistrationUser.Image = memoryStream.ToArray();
             }
-            Image = ImageSource.FromStream(() =>
-            {
-                return new MemoryStream(ImageBytes);
-            });
-        }
-
-        private string lastName;
-
-        public string LastName
-        {
-            get => lastName;
-            set => SetProperty(ref lastName, value);
-        }
-
-        private string firstName;
-
-        public string FirstName
-        {
-            get => firstName;
-            set => SetProperty(ref firstName, value);
-        }
-
-        private string patronymic;
-
-        public string Patronymic
-        {
-            get => patronymic;
-            set => SetProperty(ref patronymic, value);
-        }
-
-        private ImageSource image;
-        private byte[] imageBytes;
-
-        public ImageSource Image
-        {
-            get => image;
-            set => SetProperty(ref image, value);
-        }
-        public byte[] ImageBytes
-        {
-            get => imageBytes;
-            set => SetProperty(ref imageBytes, value);
-        }
-
-        private string age;
-
-        public string Is18OrMoreYearsOldAsString
-        {
-            get => age;
-            set => SetProperty(ref age, value);
         }
     }
 }

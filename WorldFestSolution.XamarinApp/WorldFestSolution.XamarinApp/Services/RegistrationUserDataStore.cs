@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -11,32 +11,32 @@ using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.Services
 {
-    public class HttpClientRegistrationService : IRegistrationService
+    public class RegistrationUserDataStore : IDataStore<RegistrationUser>
     {
-        public async Task<bool> RegisterAsync(User user)
+        public async Task<bool> AddItemAsync(RegistrationUser item)
         {
             StringBuilder validationErrors = new StringBuilder();
-            if (user.UserTypeId == 0)
+            if (item.UserTypeId == 0)
             {
                 _ = validationErrors.AppendLine("Укажите роль");
             }
-            if (string.IsNullOrWhiteSpace(user.Is18OrMoreYearsOldAsString))
+            if (!item.Is18OrMoreYearsOld.HasValue)
             {
                 _ = validationErrors.AppendLine("Укажите ваш возраст");
             }
-            if (string.IsNullOrWhiteSpace(user.Login))
+            if (string.IsNullOrWhiteSpace(item.Login))
             {
                 _ = validationErrors.AppendLine("Введите логин");
             }
-            if (string.IsNullOrWhiteSpace(user.Password))
+            if (string.IsNullOrWhiteSpace(item.Password))
             {
                 _ = validationErrors.AppendLine("Введите пароль");
             }
-            if (string.IsNullOrWhiteSpace(user.LastName))
+            if (string.IsNullOrWhiteSpace(item.LastName))
             {
                 _ = validationErrors.AppendLine("Введите фамилию");
             }
-            if (string.IsNullOrWhiteSpace(user.FirstName))
+            if (string.IsNullOrWhiteSpace(item.FirstName))
             {
                 _ = validationErrors.AppendLine("Введите имя");
             }
@@ -49,20 +49,18 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
 
-            user.Is18OrMoreYearsOld =
-                user.Is18OrMoreYearsOldAsString == "Мне уже есть 18";
-
-            string jsonUser = JsonConvert.SerializeObject(user);
+            string jsonUser = JsonConvert.SerializeObject(item);
             using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.BaseAddress = new Uri(Api.BaseUrl);
                 try
                 {
+                    StringContent content = new StringContent(jsonUser,
+                                                              Encoding.UTF8,
+                                                              App.Json);
                     HttpResponseMessage response = await client
                      .PostAsync("users/register",
-                                new StringContent(jsonUser,
-                                                  Encoding.UTF8,
-                                                  "application/json"));
+                                content);
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         await DependencyService
@@ -71,7 +69,6 @@ namespace WorldFestSolution.XamarinApp.Services
                     }
                     else
                     {
-                        Debug.WriteLine(response);
                         await DependencyService
                             .Get<IAlertService>()
                             .InformError(response);
@@ -80,13 +77,32 @@ namespace WorldFestSolution.XamarinApp.Services
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
                     await DependencyService
                         .Get<IAlertService>()
                         .InformError(ex);
                     return false;
                 }
             }
+        }
+
+        public Task<bool> DeleteItemAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RegistrationUser> GetItemAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<RegistrationUser>> GetItemsAsync(bool forceRefresh = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateItemAsync(RegistrationUser item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

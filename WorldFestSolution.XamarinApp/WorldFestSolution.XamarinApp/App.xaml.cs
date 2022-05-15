@@ -49,7 +49,7 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<CredentialsService>();
             DependencyService.Register<AndroidAlertService>();
             DependencyService.Register<LoginUserDataStore>();
-            DependencyService.Register<HttpClientRegistrationService>();
+            DependencyService.Register<RegistrationUserDataStore>();
             DependencyService.Register<FestivalDataStore>();
             DependencyService.Register<CommentDataStore>();
             DependencyService.Register<ChangePasswordDataStore>();

@@ -16,8 +16,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             DependencyService.Get<IAlertService>();
         public IDataStore<LoginUser> LoginUserDataStore =>
             DependencyService.Get<IDataStore<LoginUser>>();
-        public IRegistrationService RegistrationService =>
-            DependencyService.Get<IRegistrationService>();
+        public IDataStore<RegistrationUser> RegistrationUserDataStore =>
+            DependencyService.Get<IDataStore<RegistrationUser>>();
         public IDataStore<Festival> FestivalDataStore =>
             DependencyService.Get<IDataStore<Festival>>();
         public IDataStore<Comment> CommentDataStore =>

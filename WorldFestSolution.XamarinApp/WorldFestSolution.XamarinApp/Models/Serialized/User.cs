@@ -21,6 +21,10 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         {
             get
             {
+                if (Image == null)
+                {
+                    return null;
+                }
                 return ImageSource.FromStream(() =>
                 {
                     return new MemoryStream(Image);
@@ -34,8 +38,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
 
         public double Rating { get; set; }
         public bool IsRated { get; set; }
-        public bool Is18OrMoreYearsOld { get; set; }
-        [JsonIgnore]
-        public string Is18OrMoreYearsOldAsString { get; set; }
+        public bool? Is18OrMoreYearsOld { get; set; }
     }
 }
