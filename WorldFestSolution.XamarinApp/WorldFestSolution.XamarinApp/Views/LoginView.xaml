@@ -67,17 +67,23 @@
                                VerticalTextAlignment="Center" />
                     </Grid>
                     <material:MaterialTextField Text="{Binding LoginUser.Login}"
+                                                HasError="{Binding IsLoginHasError}"
+                                                ErrorText="{Binding LoginErrorText}"
                                                 Placeholder="Введите логин"
                                                 InputType="Text"
                                                 MaxLength="50"
                                                 LeadingIcon="login"
-                                                AlwaysShowUnderline="True" />
+                                                AlwaysShowUnderline="True"
+                                                TextChanged="OnLoginChanged" />
                     <material:MaterialTextField Text="{Binding LoginUser.Password}"
+                                                HasError="{Binding IsPasswordHasError}"
+                                                ErrorText="{Binding PasswordErrorText}"
                                                 Placeholder="Введите пароль"
                                                 InputType="Password"
                                                 MaxLength="50"
                                                 LeadingIcon="password"
-                                                AlwaysShowUnderline="True" />
+                                                AlwaysShowUnderline="True"
+                                                TextChanged="OnPasswordChanged" />
                     <Grid ColumnDefinitions="*,*">
                         <material:MaterialCheckbox IsSelected="{Binding LoginUser.IsRememberMe}"
                                                    Text="Запомнить" />
@@ -89,6 +95,7 @@
                           VerticalOptions="EndAndExpand">
                         <material:MaterialButton Command="{Binding AuthenticateCommand}"
                                                  Text="Войти"
+                                                 IsEnabled="{Binding IsCanAuthenticateAsyncExecute}"
                                                  Style="{StaticResource BaseButton}">
                             <material:MaterialButton.Triggers>
                                 <DataTrigger TargetType="material:MaterialButton"
