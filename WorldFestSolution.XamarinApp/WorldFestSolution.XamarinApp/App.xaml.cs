@@ -9,6 +9,10 @@ namespace WorldFestSolution.XamarinApp
 {
     public partial class App : Application
     {
+        public static int ImageWidth = 500;
+        public static int ImageHeight = 500;
+        public static int ImageQuality = 50;
+
         public static string Role { get; set; }
         public static User User { get; set; }
         public static string AuthorizationValue { get; set; }

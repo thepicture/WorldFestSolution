@@ -68,7 +68,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 await imageStream.CopyToAsync(memoryStream);
-                RegistrationUser.Image = memoryStream.ToArray();
+                RegistrationUser.Image = ImageTransformService
+                    .Transform(
+                        memoryStream.ToArray(),
+                        App.ImageWidth,
+                        App.ImageHeight,
+                        App.ImageQuality);
             }
         }
     }
