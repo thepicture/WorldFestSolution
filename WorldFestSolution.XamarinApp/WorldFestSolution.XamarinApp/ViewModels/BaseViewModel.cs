@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
@@ -86,6 +87,53 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             get => isRefreshing;
             set => SetProperty(ref isRefreshing, value);
+        }
+
+
+        private Command changeApiUrlCommand;
+
+        public ICommand ChangeApiUrlCommand
+        {
+            get
+            {
+                if (changeApiUrlCommand == null)
+                    changeApiUrlCommand = new Command(ChangeApiUrlAsync);
+
+                return changeApiUrlCommand;
+            }
+        }
+
+        private async void ChangeApiUrlAsync()
+        {
+            string newBaseUrl = await App.Current.MainPage
+                   .DisplayPromptAsync("Изменить путь к API",
+                                       "Введите путь к API",
+                                       initialValue: Api.BaseUrl);
+            Models.Api.BaseUrl = newBaseUrl;
+        }
+
+
+        private Command exitCommand;
+
+        public ICommand ExitCommand
+        {
+            get
+            {
+                if (exitCommand == null)
+                {
+                    exitCommand = new Command(ExitAsync);
+                }
+
+                return exitCommand;
+            }
+        }
+
+        private async void ExitAsync()
+        {
+            if (await AlertService.Ask("Выключить приложение?"))
+            {
+                Environment.Exit(0);
+            }
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
