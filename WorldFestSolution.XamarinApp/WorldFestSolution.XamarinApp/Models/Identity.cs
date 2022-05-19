@@ -70,5 +70,7 @@ namespace WorldFestSolution.XamarinApp.Models
                 _ = SecureStorage.SetAsync("AuthorizationValue", value);
             }
         }
+
+        public static bool IsLoggedIn => AuthorizationValue != null;
     }
 }

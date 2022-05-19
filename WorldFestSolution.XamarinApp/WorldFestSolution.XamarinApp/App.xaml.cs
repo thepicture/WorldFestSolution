@@ -1,4 +1,9 @@
-﻿using System.Net.Http;
+﻿using Plugin.LocalNotification;
+using Plugin.LocalNotification.AndroidOption;
+using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
@@ -27,7 +32,13 @@ namespace WorldFestSolution.XamarinApp
             }
         }
 
-        public static string Json = "application/json";
+        public int LastCountOfMyInvites
+        {
+            get => Preferences.Get(nameof(LastCountOfMyInvites), 0);
+            set => Preferences.Set(nameof(LastCountOfMyInvites), value);
+        }
+
+        public static readonly string Json = "application/json";
 
         public App()
         {
@@ -69,8 +80,47 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<UserRatingDataStore>();
             DependencyService.Register<FestivalUsersDataStore>();
             DependencyService.Register<ImageTransformService>();
+            DependencyService.Register<CountOfMyInvitesDataStore>();
 
             MainPage = new AppShell();
+            LastCountOfMyInvites = 0;
+            Device.StartTimer(
+                TimeSpan.FromSeconds(5),
+                ShowNotificationsAndContinueIfHasMore);
+        }
+
+        private bool ShowNotificationsAndContinueIfHasMore()
+        {
+            Task.Run(async () =>
+            {
+                if (Identity.IsLoggedIn && Identity.IsParticipant)
+                {
+                    int countOfMyInvites = await DependencyService
+                        .Get<IDataStore<int>>()
+                        .GetItemAsync("");
+                    if (countOfMyInvites > LastCountOfMyInvites)
+                    {
+                        Debug.WriteLine("Notify");
+                        var notification = new NotificationRequest
+                        {
+                            NotificationId = 100,
+                            Title = "У вас новые приглашения",
+                            Description = "Зайдите в свои приглашения для просмотра",
+                            Android =
+                            {
+                                Priority = AndroidNotificationPriority.High,
+                                VibrationPattern = new long[] {0, 500 }
+                            }
+                        };
+                        await NotificationCenter.Current.Show(notification);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            LastCountOfMyInvites = countOfMyInvites;
+                        });
+                    }
+                }
+            });
+            return true;
         }
 
         protected override void OnStart()

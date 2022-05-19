@@ -263,5 +263,25 @@ namespace WorldFestSolution.WebAPI.Controllers
             db.SaveChanges();
             return StatusCode(HttpStatusCode.NoContent);
         }
+
+        // GET: api/Users/myInvites
+        [HttpGet]
+        [Route("api/users/myInvites")]
+        [Authorize]
+        [ResponseType(typeof(int))]
+        public IHttpActionResult GetCountOfMyInvites()
+        {
+            User user = db.User.FirstOrDefault(u =>
+                u.Login == HttpContext.Current.User.Identity.Name);
+            if (user != null)
+            {
+                int countOfMyInvites = user.ParticipantInvite.Count;
+                return Ok(countOfMyInvites);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

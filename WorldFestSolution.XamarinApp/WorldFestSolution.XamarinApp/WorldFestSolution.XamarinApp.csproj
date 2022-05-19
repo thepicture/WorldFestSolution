@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microcharts.Forms" Version="0.9.5.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Plugin.LocalNotification" Version="9.2.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.4.0" />
     <PackageReference Include="RatingBarControl" Version="1.0.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2401" />  
