@@ -37,10 +37,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        internal void OnAppearing()
-        {
-            IsRefreshing = true;
-        }
 
         private async void ToggleMyParticipateStateOfFestivalAsync()
         {
@@ -55,6 +51,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 IsRefreshing = true;
             }
             IsBusy = false;
+        }
+
+        internal void OnAppearing()
+        {
+            IsRefreshing = true;
         }
 
         private Command refreshCommand;

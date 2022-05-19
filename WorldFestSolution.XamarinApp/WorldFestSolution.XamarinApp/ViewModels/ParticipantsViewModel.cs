@@ -75,7 +75,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void DeleteParticipantAsync(ParticipantUser user)
         {
-            if (await FestivalUsersDataStore.DeleteItemAsync(FestivalId + "," + user.Id))
+            if (await FestivalUsersDataStore
+                    .DeleteItemAsync(FestivalId + "," + user.Id))
             {
                 IsRefreshing = true;
             }
