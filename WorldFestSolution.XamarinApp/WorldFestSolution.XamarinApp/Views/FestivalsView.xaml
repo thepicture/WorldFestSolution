@@ -85,7 +85,7 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <templates:NoItemsTemplate />
+                            <templates:NoItemsTemplate Reason="Фестивалей нет или по запросу ничего не найдено"/>
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                     <BindableLayout.ItemTemplate>

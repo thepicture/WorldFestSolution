@@ -6,6 +6,7 @@
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             xmlns:templates="clr-namespace:WorldFestSolution.XamarinApp.Views.Templates"
              x:DataType="viewmodels:CommentsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.CommentsView"
              x:Name="Page"
@@ -19,86 +20,12 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding Comments}">
                         <BindableLayout.EmptyViewTemplate>
                             <DataTemplate>
-                                <Label VerticalOptions="CenterAndExpand"
-                                       HorizontalTextAlignment="Center"
-                                       Text="Комментариев не найдено">
-                                    <Label.IsVisible>
-                                        <Binding Path="BindingContext.IsRefreshing"
-                                                 Source="{Reference Page}">
-                                            <Binding.Converter>
-                                                <converters:BooleanInvertValueConverter />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </Label.IsVisible>
-                                </Label>
+                                <templates:NoItemsTemplate Reason="Комментариев не найдено. Будьте первым, кто оставит отзыв!"/>
                             </DataTemplate>
                         </BindableLayout.EmptyViewTemplate>
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="serialized:Comment">
-                                <material:MaterialCard Elevation="5"
-                                                       Margin="10"
-                                                       CornerRadius="25"
-                                                       IsClickable="True"
-                                                       ClickCommandParameter="{Binding Source={RelativeSource Self}, 
-                                                                                       Path=BindingContext}"
-                                                       ClickCommand="{Binding Source={Reference Page}, 
-                                                                              Path=BindingContext.GoToAccountViewCommand}">
-                                    <Grid RowDefinitions="*,auto"
-                                          ColumnDefinitions="auto,*">
-                                        <Frame CornerRadius="60"
-                                               VerticalOptions="Start"
-                                               Padding="0"
-                                               WidthRequest="60"
-                                               HeightRequest="60"
-                                               HasShadow="False">
-                                            <Image Aspect="AspectFill">
-                                                <Image.Source>
-                                                    <Binding Path="UserImageSource">
-                                                        <Binding.TargetNullValue>
-                                                            login
-                                                        </Binding.TargetNullValue>
-                                                    </Binding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Frame>
-                                        <Grid RowDefinitions="auto,auto,*,auto"
-                                              Grid.Column="1">
-                                            <Label Text="{Binding UserFullName}"
-                                                   FontAttributes="Bold" />
-                                            <Label Text="{Binding Path=CreationDateTime, 
-                                                                  StringFormat='{0:dd/MM/yyyy hh:mm}'}"
-                                                   FontSize="Caption"
-                                                   Grid.Row="1" />
-                                            <Label Text="{Binding Text}"
-                                                   Grid.Row="2" />
-                                        </Grid>
-                                        <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
-                                                                                            Path=BindingContext}"
-                                                                 Command="{Binding Source={Reference Page}, 
-                                                                                   Path=BindingContext.DeleteCommentCommand}"
-                                                                 Text="Удалить"
-                                                                 Style="{StaticResource BaseButton}"
-                                                                 BackgroundColor="Red"
-                                                                 IsVisible="False"
-                                                                 Grid.Row="1"
-                                                                 Grid.ColumnSpan="2">
-                                            <material:MaterialButton.Triggers>
-                                                <DataTrigger TargetType="material:MaterialButton"
-                                                             Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
-                                                             Value="True">
-                                                    <Setter Property="IsVisible"
-                                                            Value="True" />
-                                                </DataTrigger>
-                                                <DataTrigger TargetType="material:MaterialButton"
-                                                             Binding="{Binding UserId}"
-                                                             Value="{Static models:Identity.Id}">
-                                                    <Setter Property="IsVisible"
-                                                            Value="True" />
-                                                </DataTrigger>
-                                            </material:MaterialButton.Triggers>
-                                        </material:MaterialButton>
-                                    </Grid>
-                                </material:MaterialCard>
+                                <templates:CommentsTemplate />
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
                     </StackLayout>

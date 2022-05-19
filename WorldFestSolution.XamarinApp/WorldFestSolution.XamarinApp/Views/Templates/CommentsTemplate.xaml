@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             x:DataType="serialized:Comment"
+             x:Class="WorldFestSolution.XamarinApp.Views.Templates.CommentsTemplate">
+    <ContentView>
+        <material:MaterialCard Elevation="5"
+                               Margin="10"
+                               CornerRadius="25"
+                               IsClickable="True"
+                               ClickCommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                               ClickCommand="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.GoToAccountViewCommand}">
+            <Grid RowDefinitions="*,auto"
+                  ColumnDefinitions="auto,*">
+                <Frame CornerRadius="60"
+                       VerticalOptions="Start"
+                       Padding="0"
+                       WidthRequest="60"
+                       HeightRequest="60"
+                       HasShadow="False">
+                    <Image Aspect="AspectFill">
+                        <Image.Source>
+                            <Binding Path="UserImageSource">
+                                <Binding.TargetNullValue>
+                                    login
+                                </Binding.TargetNullValue>
+                            </Binding>
+                        </Image.Source>
+                    </Image>
+                </Frame>
+                <Grid RowDefinitions="auto,auto,*,auto"
+                      Grid.Column="1">
+                    <Label Text="{Binding UserFullName}"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Path=CreationDateTime, StringFormat='{0:dd/MM/yyyy hh:mm}'}"
+                           FontSize="Caption"
+                           Grid.Row="1" />
+                    <Label Text="{Binding Text}"
+                           Grid.Row="2" />
+                </Grid>
+                <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                         Command="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.DeleteCommentCommand}"
+                                         Text="Удалить"
+                                         Style="{StaticResource BaseButton}"
+                                         BackgroundColor="Red"
+                                         IsVisible="False"
+                                         Grid.Row="1"
+                                         Grid.ColumnSpan="2">
+                    <material:MaterialButton.Triggers>
+                        <DataTrigger TargetType="material:MaterialButton"
+                                     Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="material:MaterialButton"
+                                     Binding="{Binding UserId}"
+                                     Value="{Static models:Identity.Id}">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </material:MaterialButton.Triggers>
+                </material:MaterialButton>
+            </Grid>
+        </material:MaterialCard>
+    </ContentView>
+</ContentView>

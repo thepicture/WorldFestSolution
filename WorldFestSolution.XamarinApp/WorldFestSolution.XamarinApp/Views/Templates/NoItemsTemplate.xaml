@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
              x:Class="WorldFestSolution.XamarinApp.Views.Templates.NoItemsTemplate"
-             VerticalOptions="CenterAndExpand">
+             VerticalOptions="CenterAndExpand"
+             x:Name="Template">
     <Label HorizontalTextAlignment="Center"
-           Text="Ничего не найдено">
+           Text="{Binding Source={Reference Template}, Path=Reason}"
+           LineBreakMode="WordWrap">
         <Label.IsVisible>
             <Binding Path="BindingContext.IsRefreshing"
                      Source="{RelativeSource AncestorType={Type ContentPage}}">

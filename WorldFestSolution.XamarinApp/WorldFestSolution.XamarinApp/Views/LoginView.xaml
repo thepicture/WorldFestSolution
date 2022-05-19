@@ -84,7 +84,7 @@
                                                 LeadingIcon="password"
                                                 AlwaysShowUnderline="True"
                                                 TextChanged="OnPasswordChanged" />
-                    <Grid ColumnDefinitions="auto,*">
+                    <Grid ColumnDefinitions="2*,*">
                         <material:MaterialCheckbox IsSelected="{Binding LoginUser.IsRememberMe}"
                                                    Text="Запомнить" />
                         <Button Command="{Binding ChangeApiUrlCommand}"
