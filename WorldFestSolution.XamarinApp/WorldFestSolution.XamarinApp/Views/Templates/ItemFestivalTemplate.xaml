@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             x:DataType="serialized:Festival"
+             x:Class="WorldFestSolution.XamarinApp.Views.Templates.ItemFestivalTemplate">
+    <ContentView>
+        <material:MaterialCard Elevation="5"
+                               Margin="10"
+                               CornerRadius="25">
+            <Grid ColumnDefinitions="60, *"
+                  RowDefinitions="230,auto,auto,auto">
+                <Frame CornerRadius="60"
+                       VerticalOptions="Start"
+                       Padding="0"
+                       HasShadow="False">
+                    <Image Aspect="AspectFill">
+                        <Image.Source>
+                            <Binding Path="ImageSource">
+                                <Binding.TargetNullValue>
+                                    icon_circle
+                                </Binding.TargetNullValue>
+                            </Binding>
+                        </Image.Source>
+                    </Image>
+                </Frame>
+                <Grid RowDefinitions="50,1,50,1,50,1,30"
+                      Grid.Column="1">
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               FontSize="Small"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="TailTruncation"
+                               WidthRequest="60" />
+                        <StackLayout Grid.Column="1"
+                                     HorizontalOptions="Center">
+                            <Label Text="{Binding Rating, StringFormat='{}Рейтинг: {0:F2}'}"
+                                   FontSize="Small"
+                                   HorizontalTextAlignment="Center" />
+                            <controls:SelfSendableRatingBar SelectedStarValue="{Binding Rating}"
+                                                            SelectedStarCommand="{Binding BindingContext.RateFestivalCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
+                                                            EmptyStarImage="empty_star"
+                                                            FillStarImage="filled_star"
+                                                            StarHeightRequest="16"
+                                                            HorizontalOptions="End"
+                                                            InputTransparent="True"
+                                                            Margin="5">
+                                <controls:SelfSendableRatingBar.Triggers>
+                                    <MultiTrigger TargetType="{x:Type controls:SelfSendableRatingBar}">
+                                        <MultiTrigger.Conditions>
+                                            <BindingCondition Binding="{Binding Source={Static models:Identity.IsParticipant}}"
+                                                              Value="True" />
+                                            <BindingCondition Binding="{Binding IsFinished}"
+                                                              Value="True" />
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="InputTransparent"
+                                                Value="False" />
+                                    </MultiTrigger>
+                                </controls:SelfSendableRatingBar.Triggers>
+                            </controls:SelfSendableRatingBar>
+                        </StackLayout>
+                    </Grid>
+                    <BoxView Color="WhiteSmoke"
+                             Grid.Row="1" />
+                    <Label Text="{Binding Path=Description, StringFormat='{}Описание: {0}'}"
+                           LineBreakMode="TailTruncation"
+                           VerticalTextAlignment="Center"
+                           Grid.Row="2" />
+                    <BoxView Color="WhiteSmoke"
+                             Grid.Row="3" />
+                    <Label Text="{Binding Path=FromDateTime, StringFormat='{}Начинается в {0:dd-MM-yyyy hh:mm}'}"
+                           VerticalTextAlignment="Center"
+                           Grid.Row="4">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsLive}"
+                                         Value="True">
+                                <Setter Property="Text"
+                                        Value="Идет прямо сейчас" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsFinished}"
+                                         Value="True">
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}Закончился в {0:dd-MM-yyyy hh:mm}">
+                                            <Binding Path="ToDateTime" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <BoxView Color="WhiteSmoke"
+                             Grid.Row="5" />
+                    <Grid ColumnDefinitions="*,*,*"
+                          Grid.Row="6">
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="participants"
+                                   HeightRequest="30" />
+                            <Label Text="{Binding CountOfUsers}"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal"
+                                     Grid.Column="1">
+                            <Image Source="programs"
+                                   HeightRequest="30" />
+                            <Label Text="{Binding CountOfPrograms}"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal"
+                                     Grid.Column="2">
+                            <Image Source="comments"
+                                   HeightRequest="30" />
+                            <Label Text="{Binding CountOfComments}"
+                                   VerticalOptions="Center" />
+                        </StackLayout>
+                    </Grid>
+                </Grid>
+                <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                         Command="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.GoToFestivalViewCommand}"
+                                         Text="Подробнее"
+                                         Style="{StaticResource BaseButton}"
+                                         Grid.Row="1"
+                                         Grid.ColumnSpan="2" />
+                <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                         Command="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.DeleteFestivalCommand}"
+                                         Text="Удалить"
+                                         Style="{StaticResource BackgroundButton}"
+                                         IsVisible="False"
+                                         Grid.Row="3"
+                                         Grid.ColumnSpan="2">
+                    <material:MaterialButton.Triggers>
+                        <DataTrigger TargetType="material:MaterialButton"
+                                     Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                                     Value="True">
+                            <Setter Property="IsVisible"
+                                    Value="True" />
+                        </DataTrigger>
+                    </material:MaterialButton.Triggers>
+                </material:MaterialButton>
+            </Grid>
+        </material:MaterialCard>
+    </ContentView>
+</ContentView>

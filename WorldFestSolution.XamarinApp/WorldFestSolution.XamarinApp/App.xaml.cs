@@ -83,7 +83,6 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<CountOfMyInvitesDataStore>();
 
             MainPage = new AppShell();
-            LastCountOfMyInvites = 0;
             Device.StartTimer(
                 TimeSpan.FromSeconds(5),
                 ShowNotificationsAndContinueIfHasMore);

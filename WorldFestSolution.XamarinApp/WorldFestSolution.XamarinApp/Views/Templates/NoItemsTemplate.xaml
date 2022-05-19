@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             x:Class="WorldFestSolution.XamarinApp.Views.Templates.NoItemsTemplate"
+             VerticalOptions="CenterAndExpand">
+    <Label HorizontalTextAlignment="Center"
+           Text="Ничего не найдено">
+        <Label.IsVisible>
+            <Binding Path="BindingContext.IsRefreshing"
+                     Source="{RelativeSource AncestorType={Type ContentPage}}">
+                <Binding.Converter>
+                    <converters:BooleanInvertValueConverter />
+                </Binding.Converter>
+            </Binding>
+        </Label.IsVisible>
+    </Label>
+</ContentView>
