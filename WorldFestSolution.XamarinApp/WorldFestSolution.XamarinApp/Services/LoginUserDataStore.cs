@@ -45,11 +45,11 @@ namespace WorldFestSolution.XamarinApp.Services
                         .PostAsync("users/login", content);
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        User user = JsonConvert
-                            .DeserializeObject<User>(
-                                await response.Content.ReadAsStringAsync());
+                        User user = JsonConvert.DeserializeObject<User>(
+                            await response.Content.ReadAsStringAsync());
                         string encodedLoginAndPassword =
-                            DependencyService.Get<ILoginPasswordEncoder>()
+                            DependencyService
+                                .Get<ILoginPasswordEncoder>()
                                 .Encode(item.Login, item.Password);
                         if (item.IsRememberMe)
                         {
