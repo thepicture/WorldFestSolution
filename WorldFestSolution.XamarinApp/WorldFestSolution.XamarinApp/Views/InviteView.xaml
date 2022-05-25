@@ -7,6 +7,7 @@
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
              x:DataType="viewmodels:InviteViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.InviteView"
              x:Name="Page"
@@ -55,15 +56,36 @@
                                             </Image.Source>
                                         </Image>
                                     </Frame>
-                                    <Label Text="{Binding VisibleFullName}"
-                                           FontAttributes="Bold"
-                                           Grid.Column="1" />
+                                    <StackLayout Grid.Column="1">
+                                        <Grid ColumnDefinitions="*,*">
+
+                                            <Label Text="{Binding VisibleFullName}"
+                                                   FontAttributes="Bold"
+                                                   LineBreakMode="TailTruncation" />
+                                            <controls:SelfSendableRatingBar SelectedStarValue="{Binding Organizer.Rating}"
+                                                                            EmptyStarImage="empty_star"
+                                                                            StarHeightRequest="20"
+                                                                            FillStarImage="filled_star"
+                                                                            Grid.Column="1" 
+                                                                            InputTransparent="True"/>
+                                        </Grid>
+                                        <Label Text="{Binding Organizer.Rating, StringFormat='{}Рейтинг: {0:F2}'}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Organizer.Rating}"
+                                                             Value="0">
+                                                    <Setter Property="Text"
+                                                            Value="Пользователя пока не оценивали" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </StackLayout>
                                     <Label Text="{Binding FestivalTitle, 
                                                           StringFormat='Фестиваль: {0}'}"
                                            IsVisible="{Binding FestivalTitle, TargetNullValue=false}"
                                            Grid.ColumnSpan="2"
                                            HorizontalOptions="Center"
-                                           Grid.Row="1"/>
+                                           Grid.Row="1" />
                                     <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, 
                                                                                         Path=BindingContext}"
                                                              Command="{Binding Source={Reference Page}, 
