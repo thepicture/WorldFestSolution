@@ -35,7 +35,7 @@
                     </Grid>
                     <Label Text="{Binding Festival.Title}"
                            VerticalOptions="End"
-                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
                            TextColor="White"
                            FontSize="50"
                            Margin="10" />
