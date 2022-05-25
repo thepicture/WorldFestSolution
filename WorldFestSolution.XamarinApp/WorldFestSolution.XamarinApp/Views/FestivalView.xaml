@@ -90,7 +90,8 @@
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
-                                          HorizontalOptions="Center" />
+                                          HorizontalOptions="Center" 
+                                          InputTransparent="{Binding Source={Static models:Identity.IsOrganizer}}"/>
                         <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
                                                  Grid.Row="1"
                                                  IsEnabled="{Binding IsNotBusy}"
