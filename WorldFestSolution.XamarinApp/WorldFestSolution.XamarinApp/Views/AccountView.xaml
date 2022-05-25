@@ -85,7 +85,16 @@
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
-                                          HorizontalOptions="Center" />
+                                          HorizontalOptions="Center">
+                            <rating:RatingBar.Triggers>
+                                <DataTrigger TargetType="rating:RatingBar"
+                                             Binding="{Binding IsSelf}"
+                                             Value="True">
+                                    <Setter Property="InputTransparent"
+                                            Value="True" />
+                                </DataTrigger>
+                            </rating:RatingBar.Triggers>
+                        </rating:RatingBar>
                         <StackLayout IsVisible="False">
                             <StackLayout.Triggers>
                                 <DataTrigger TargetType="StackLayout"

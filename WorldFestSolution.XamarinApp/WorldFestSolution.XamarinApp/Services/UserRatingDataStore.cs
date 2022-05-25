@@ -17,13 +17,6 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(UserRating item)
         {
-            if (item.UserId == Identity.Id)
-            {
-                await DependencyService
-                    .Get<IAlertService>()
-                    .InformError("Вы не можете оценить самого себя");
-                return false;
-            }
             if (item.IsRated)
             {
                 await DependencyService

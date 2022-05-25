@@ -65,6 +65,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 CurrentUser = userFromDatabase;
                 CurrentUser.Rating = countOfStars;
+                IsSelf = CurrentUser.Id == Identity.Id;
             }
             IsRefreshing = false;
         }
@@ -200,5 +201,9 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             await UserRatingDataStore.AddItemAsync(rating);
             IsRefreshing = true;
         }
+
+        private bool isSelf = true;
+
+        public bool IsSelf { get => isSelf; set => SetProperty(ref isSelf, value); }
     }
 }
