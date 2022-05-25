@@ -80,8 +80,15 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
         private async void RefreshAsync()
         {
-            Festival = await FestivalDataStore.GetItemAsync(
+            Festival festivalFromDatabase = await FestivalDataStore.GetItemAsync(
                 FestivalId.ToString());
+            if (festivalFromDatabase != null)
+            {
+                Festival = festivalFromDatabase;
+                double rating = festivalFromDatabase.Rating;
+                Festival.Rating = rating;
+                MessagingCenter.Instance.Send(this, "UpdateRatingBar", rating);
+            }
             IsRefreshing = false;
         }
 

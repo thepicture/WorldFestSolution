@@ -67,12 +67,10 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Label Text="{Binding Path=Festival.OrganizerFullName, 
-                                  StringFormat='{}Создан организатором {0}'}"
+                        <Label Text="{Binding Path=Festival.OrganizerFullName, StringFormat='{}Создан организатором {0}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Path=Festival.Rating,
-                                  StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
+                        <Label Text="{Binding Path=Festival.Rating, Mode=TwoWay, StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
@@ -85,7 +83,6 @@
                             </Label.Triggers>
                         </Label>
                         <rating:RatingBar x:Name="FestivalRatingBar"
-                                          SelectedStarValue="{Binding Festival.Rating, Mode=TwoWay}"
                                           SelectedStarCommand="{Binding RateFestivalCommand}"
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
