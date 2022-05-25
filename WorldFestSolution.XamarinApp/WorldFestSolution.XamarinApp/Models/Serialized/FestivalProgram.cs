@@ -21,6 +21,21 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
             get => durationInMinutes;
             set => SetProperty(ref durationInMinutes, value);
         }
+        public string FormattedDuration
+        {
+            get
+            {
+                if (DurationInMinutes < 60)
+                {
+                    return $"{DurationInMinutes} мин.";
+                }
+                else
+                {
+                    return $"{DurationInMinutes / 60} ч. {DurationInMinutes - DurationInMinutes / 60 * 60} мин.";
+                }
+            }
+        }
+
         public string Title
         {
             get => title;

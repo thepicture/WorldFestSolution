@@ -22,15 +22,12 @@
                                        HorizontalTextAlignment="Center" />
                                 <BoxView Color="WhiteSmoke"
                                          HeightRequest="1" />
-                                <Label Text="{Binding Path=Description,
-                                                          StringFormat='Описание: {0}',
-                                                          TargetNullValue='Описания программы нет'}"
+                                <Label Text="{Binding Description, StringFormat='Описание: {0}', TargetNullValue='Описания программы нет'}"
                                        FontSize="Medium"
                                        HorizontalTextAlignment="Center" />
                                 <BoxView Color="WhiteSmoke"
                                          HeightRequest="1" />
-                                <Label Text="{Binding Path=DurationInMinutes,
-                                                          StringFormat='Длится {0} мин.'}"
+                                <Label Text="{Binding FormattedDuration, StringFormat='Длится {0}'}"
                                        FontSize="Medium"
                                        HorizontalTextAlignment="Center" />
                             </StackLayout>
