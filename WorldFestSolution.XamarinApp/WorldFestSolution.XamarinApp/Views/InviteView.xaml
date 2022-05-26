@@ -62,7 +62,7 @@
                                             <Label Text="{Binding VisibleFullName}"
                                                    FontAttributes="Bold"
                                                    LineBreakMode="TailTruncation" />
-                                            <controls:SelfSendableRatingBar SelectedStarValue="{Binding Organizer.Rating}"
+                                            <controls:ExtendedRatingBar SelectedStarValue="{Binding Organizer.Rating}"
                                                                             EmptyStarImage="empty_star"
                                                                             StarHeightRequest="20"
                                                                             FillStarImage="filled_star"

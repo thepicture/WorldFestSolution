@@ -11,8 +11,8 @@ using Xamarin.Forms.Xaml.Internals;
 namespace WorldFestSolution.XamarinApp.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [XamlFilePath("SelfSendableRatingBar.xaml")]
-    public class SelfSendableRatingBar : StackLayout
+    [XamlFilePath("ExtendedRatingBarRatingBar.xaml")]
+    public class ExtendedRatingBar : StackLayout
     {
         public string emptyStarImage = string.Empty;
 
@@ -38,19 +38,19 @@ namespace WorldFestSolution.XamarinApp.Controls
 
         private int commandParameterForStar5 = 5;
 
-        public static readonly BindableProperty SelectedStarCommandProperty = BindableProperty.Create("SelectedStarCommand", typeof(ICommand), typeof(SelfSendableRatingBar));
+        public static readonly BindableProperty SelectedStarCommandProperty = BindableProperty.Create("SelectedStarCommand", typeof(ICommand), typeof(ExtendedRatingBar));
 
-        public static readonly BindableProperty EmptyStarImageProperty = BindableProperty.Create("EmptyStarImage", typeof(string), typeof(SelfSendableRatingBar), "", BindingMode.TwoWay, null, EmptyStarImagePropertyChanged);
+        public static readonly BindableProperty EmptyStarImageProperty = BindableProperty.Create("EmptyStarImage", typeof(string), typeof(ExtendedRatingBar), "", BindingMode.TwoWay, null, EmptyStarImagePropertyChanged);
 
-        public static readonly BindableProperty FillStarImageProperty = BindableProperty.Create("FillStarImage", typeof(string), typeof(SelfSendableRatingBar), "", BindingMode.TwoWay, null, FillStarImagePropertyChanged);
+        public static readonly BindableProperty FillStarImageProperty = BindableProperty.Create("FillStarImage", typeof(string), typeof(ExtendedRatingBar), "", BindingMode.TwoWay, null, FillStarImagePropertyChanged);
 
-        public static readonly BindableProperty StarHeightRequestProperty = BindableProperty.Create("StarHeightRequest", typeof(double), typeof(SelfSendableRatingBar), 30.0, BindingMode.TwoWay, null, StarHeightRequestPropertyChanged);
+        public static readonly BindableProperty StarHeightRequestProperty = BindableProperty.Create("StarHeightRequest", typeof(double), typeof(ExtendedRatingBar), 30.0, BindingMode.TwoWay, null, StarHeightRequestPropertyChanged);
 
-        public static readonly BindableProperty StarWidthRequestProperty = BindableProperty.Create("StarWidthRequest", typeof(double), typeof(SelfSendableRatingBar), 30.0, BindingMode.TwoWay, null, StarWidthRequestPropertyChanged);
+        public static readonly BindableProperty StarWidthRequestProperty = BindableProperty.Create("StarWidthRequest", typeof(double), typeof(ExtendedRatingBar), 30.0, BindingMode.TwoWay, null, StarWidthRequestPropertyChanged);
 
-        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(double), typeof(SelfSendableRatingBar), default(double), BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
+        public static readonly BindableProperty SelectedStarValueProperty = BindableProperty.Create("SelectedStarValue", typeof(double), typeof(ExtendedRatingBar), default(double), BindingMode.TwoWay, null, SelectedStarValuePropertyChanged);
 
-        public new static readonly BindableProperty FlowDirectionProperty = BindableProperty.Create("FlowDirection", typeof(FlowDirectionEnum), typeof(SelfSendableRatingBar), FlowDirectionEnum.LeftToRight, BindingMode.OneWay, null, FlowDirectionPropertyChanged);
+        public new static readonly BindableProperty FlowDirectionProperty = BindableProperty.Create("FlowDirection", typeof(FlowDirectionEnum), typeof(ExtendedRatingBar), FlowDirectionEnum.LeftToRight, BindingMode.OneWay, null, FlowDirectionPropertyChanged);
 
         [GeneratedCode("Xamarin.Forms.Build.Tasks.XamlG", "2.0.0.0")]
         private StackLayout stkRattingbar;
@@ -149,7 +149,7 @@ namespace WorldFestSolution.XamarinApp.Controls
         {
         };
 
-        public SelfSendableRatingBar()
+        public ExtendedRatingBar()
         {
             InitializeComponent();
             star1 = new Image();
@@ -261,13 +261,20 @@ namespace WorldFestSolution.XamarinApp.Controls
             }
         }
 
-        private static void fillStar(double selectedValue, SelfSendableRatingBar obj)
+        private static void fillStar(double selectedValue, ExtendedRatingBar obj)
         {
             obj.SelectedStarValue = selectedValue;
             if (obj.FlowDirection == FlowDirectionEnum.RightToLeft)
             {
                 switch ((int)selectedValue)
                 {
+                    case 0:
+                        obj.star1.Source = obj.emptyStarImage;
+                        obj.star2.Source = obj.emptyStarImage;
+                        obj.star3.Source = obj.emptyStarImage;
+                        obj.star4.Source = obj.emptyStarImage;
+                        obj.star5.Source = obj.emptyStarImage;
+                        break;
                     case 1:
                         obj.star1.Source = obj.emptyStarImage;
                         obj.star2.Source = obj.emptyStarImage;
@@ -309,6 +316,13 @@ namespace WorldFestSolution.XamarinApp.Controls
             {
                 switch ((int)selectedValue)
                 {
+                    case 0:
+                        obj.star1.Source = obj.emptyStarImage;
+                        obj.star2.Source = obj.emptyStarImage;
+                        obj.star3.Source = obj.emptyStarImage;
+                        obj.star4.Source = obj.emptyStarImage;
+                        obj.star5.Source = obj.emptyStarImage;
+                        break;
                     case 1:
                         obj.star1.Source = obj.fillStarImage;
                         obj.star2.Source = obj.emptyStarImage;
@@ -350,125 +364,125 @@ namespace WorldFestSolution.XamarinApp.Controls
 
         private static void EmptyStarImagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            if (SelfSendableRatingBar != null)
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            if (ExtendedRatingBar != null)
             {
-                SelfSendableRatingBar.emptyStarImage = (string)newValue;
-                SelfSendableRatingBar.star1.Source = SelfSendableRatingBar.emptyStarImage;
-                SelfSendableRatingBar.star2.Source = SelfSendableRatingBar.emptyStarImage;
-                SelfSendableRatingBar.star3.Source = SelfSendableRatingBar.emptyStarImage;
-                SelfSendableRatingBar.star4.Source = SelfSendableRatingBar.emptyStarImage;
-                SelfSendableRatingBar.star5.Source = SelfSendableRatingBar.emptyStarImage;
-                if (!string.IsNullOrEmpty(SelfSendableRatingBar.fillStarImage))
+                ExtendedRatingBar.emptyStarImage = (string)newValue;
+                ExtendedRatingBar.star1.Source = ExtendedRatingBar.emptyStarImage;
+                ExtendedRatingBar.star2.Source = ExtendedRatingBar.emptyStarImage;
+                ExtendedRatingBar.star3.Source = ExtendedRatingBar.emptyStarImage;
+                ExtendedRatingBar.star4.Source = ExtendedRatingBar.emptyStarImage;
+                ExtendedRatingBar.star5.Source = ExtendedRatingBar.emptyStarImage;
+                if (!string.IsNullOrEmpty(ExtendedRatingBar.fillStarImage))
                 {
-                    fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);
+                    fillStar(ExtendedRatingBar.SelectedStarValue, ExtendedRatingBar);
                 }
             }
         }
 
         private static void FillStarImagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            if (SelfSendableRatingBar != null)
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            if (ExtendedRatingBar != null)
             {
-                SelfSendableRatingBar.fillStarImage = (string)newValue;
-                if (!string.IsNullOrEmpty(SelfSendableRatingBar.emptyStarImage))
+                ExtendedRatingBar.fillStarImage = (string)newValue;
+                if (!string.IsNullOrEmpty(ExtendedRatingBar.emptyStarImage))
                 {
-                    fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);
+                    fillStar(ExtendedRatingBar.SelectedStarValue, ExtendedRatingBar);
                 }
             }
         }
 
         private static void StarHeightRequestPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            if (SelfSendableRatingBar != null && newValue != null)
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            if (ExtendedRatingBar != null && newValue != null)
             {
                 double heightRequest = (double)newValue;
-                SelfSendableRatingBar.star1.HeightRequest = heightRequest;
-                SelfSendableRatingBar.star2.HeightRequest = heightRequest;
-                SelfSendableRatingBar.star3.HeightRequest = heightRequest;
-                SelfSendableRatingBar.star4.HeightRequest = heightRequest;
-                SelfSendableRatingBar.star5.HeightRequest = heightRequest;
+                ExtendedRatingBar.star1.HeightRequest = heightRequest;
+                ExtendedRatingBar.star2.HeightRequest = heightRequest;
+                ExtendedRatingBar.star3.HeightRequest = heightRequest;
+                ExtendedRatingBar.star4.HeightRequest = heightRequest;
+                ExtendedRatingBar.star5.HeightRequest = heightRequest;
             }
         }
 
         private static void StarWidthRequestPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            if (SelfSendableRatingBar != null && newValue != null)
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            if (ExtendedRatingBar != null && newValue != null)
             {
                 double widthRequest = (double)newValue;
-                SelfSendableRatingBar.star1.WidthRequest = widthRequest;
-                SelfSendableRatingBar.star2.WidthRequest = widthRequest;
-                SelfSendableRatingBar.star3.WidthRequest = widthRequest;
-                SelfSendableRatingBar.star4.WidthRequest = widthRequest;
-                SelfSendableRatingBar.star5.WidthRequest = widthRequest;
+                ExtendedRatingBar.star1.WidthRequest = widthRequest;
+                ExtendedRatingBar.star2.WidthRequest = widthRequest;
+                ExtendedRatingBar.star3.WidthRequest = widthRequest;
+                ExtendedRatingBar.star4.WidthRequest = widthRequest;
+                ExtendedRatingBar.star5.WidthRequest = widthRequest;
             }
         }
 
         private static void SelectedStarValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            SelfSendableRatingBar.SelectedStarValue = (double)newValue;
-            if (SelfSendableRatingBar != null && !string.IsNullOrEmpty(SelfSendableRatingBar.fillStarImage) && !string.IsNullOrEmpty(SelfSendableRatingBar.emptyStarImage))
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            ExtendedRatingBar.SelectedStarValue = (double)newValue;
+            if (ExtendedRatingBar != null && !string.IsNullOrEmpty(ExtendedRatingBar.fillStarImage) && !string.IsNullOrEmpty(ExtendedRatingBar.emptyStarImage))
             {
-                fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);
+                fillStar(ExtendedRatingBar.SelectedStarValue, ExtendedRatingBar);
             }
         }
 
         private static void FlowDirectionPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            SelfSendableRatingBar SelfSendableRatingBar = (SelfSendableRatingBar)bindable;
-            if (SelfSendableRatingBar != null)
+            ExtendedRatingBar ExtendedRatingBar = (ExtendedRatingBar)bindable;
+            if (ExtendedRatingBar != null)
             {
                 if ((FlowDirectionEnum)newValue == FlowDirectionEnum.RightToLeft)
                 {
-                    SelfSendableRatingBar.star1.GestureRecognizers.Clear();
-                    SelfSendableRatingBar.star2.GestureRecognizers.Clear();
-                    SelfSendableRatingBar.star3.GestureRecognizers.Clear();
-                    SelfSendableRatingBar.star4.GestureRecognizers.Clear();
-                    SelfSendableRatingBar.star5.GestureRecognizers.Clear();
-                    SelfSendableRatingBar.commandParameterForStar1 = 5;
-                    SelfSendableRatingBar.commandParameterForStar2 = 4;
-                    SelfSendableRatingBar.commandParameterForStar3 = 3;
-                    SelfSendableRatingBar.commandParameterForStar4 = 2;
-                    SelfSendableRatingBar.commandParameterForStar5 = 1;
-                    SelfSendableRatingBar.star1.GestureRecognizers.Add(new TapGestureRecognizer
+                    ExtendedRatingBar.star1.GestureRecognizers.Clear();
+                    ExtendedRatingBar.star2.GestureRecognizers.Clear();
+                    ExtendedRatingBar.star3.GestureRecognizers.Clear();
+                    ExtendedRatingBar.star4.GestureRecognizers.Clear();
+                    ExtendedRatingBar.star5.GestureRecognizers.Clear();
+                    ExtendedRatingBar.commandParameterForStar1 = 5;
+                    ExtendedRatingBar.commandParameterForStar2 = 4;
+                    ExtendedRatingBar.commandParameterForStar3 = 3;
+                    ExtendedRatingBar.commandParameterForStar4 = 2;
+                    ExtendedRatingBar.commandParameterForStar5 = 1;
+                    ExtendedRatingBar.star1.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = SelfSendableRatingBar.ItemTappedCommand,
-                        CommandParameter = SelfSendableRatingBar.commandParameterForStar1
+                        Command = ExtendedRatingBar.ItemTappedCommand,
+                        CommandParameter = ExtendedRatingBar.commandParameterForStar1
                     });
-                    SelfSendableRatingBar.star2.GestureRecognizers.Add(new TapGestureRecognizer
+                    ExtendedRatingBar.star2.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = SelfSendableRatingBar.ItemTappedCommand,
-                        CommandParameter = SelfSendableRatingBar.commandParameterForStar2
+                        Command = ExtendedRatingBar.ItemTappedCommand,
+                        CommandParameter = ExtendedRatingBar.commandParameterForStar2
                     });
-                    SelfSendableRatingBar.star3.GestureRecognizers.Add(new TapGestureRecognizer
+                    ExtendedRatingBar.star3.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = SelfSendableRatingBar.ItemTappedCommand,
-                        CommandParameter = SelfSendableRatingBar.commandParameterForStar3
+                        Command = ExtendedRatingBar.ItemTappedCommand,
+                        CommandParameter = ExtendedRatingBar.commandParameterForStar3
                     });
-                    SelfSendableRatingBar.star4.GestureRecognizers.Add(new TapGestureRecognizer
+                    ExtendedRatingBar.star4.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = SelfSendableRatingBar.ItemTappedCommand,
-                        CommandParameter = SelfSendableRatingBar.commandParameterForStar4
+                        Command = ExtendedRatingBar.ItemTappedCommand,
+                        CommandParameter = ExtendedRatingBar.commandParameterForStar4
                     });
-                    SelfSendableRatingBar.star5.GestureRecognizers.Add(new TapGestureRecognizer
+                    ExtendedRatingBar.star5.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Command = SelfSendableRatingBar.ItemTappedCommand,
-                        CommandParameter = SelfSendableRatingBar.commandParameterForStar5
+                        Command = ExtendedRatingBar.ItemTappedCommand,
+                        CommandParameter = ExtendedRatingBar.commandParameterForStar5
                     });
-                    SelfSendableRatingBar.stkRattingbar.Children.Add(SelfSendableRatingBar.star1);
-                    SelfSendableRatingBar.stkRattingbar.Children.Add(SelfSendableRatingBar.star2);
-                    SelfSendableRatingBar.stkRattingbar.Children.Add(SelfSendableRatingBar.star3);
-                    SelfSendableRatingBar.stkRattingbar.Children.Add(SelfSendableRatingBar.star4);
-                    SelfSendableRatingBar.stkRattingbar.Children.Add(SelfSendableRatingBar.star5);
+                    ExtendedRatingBar.stkRattingbar.Children.Add(ExtendedRatingBar.star1);
+                    ExtendedRatingBar.stkRattingbar.Children.Add(ExtendedRatingBar.star2);
+                    ExtendedRatingBar.stkRattingbar.Children.Add(ExtendedRatingBar.star3);
+                    ExtendedRatingBar.stkRattingbar.Children.Add(ExtendedRatingBar.star4);
+                    ExtendedRatingBar.stkRattingbar.Children.Add(ExtendedRatingBar.star5);
                 }
 
-                if (!string.IsNullOrEmpty(SelfSendableRatingBar.fillStarImage) && !string.IsNullOrEmpty(SelfSendableRatingBar.emptyStarImage))
+                if (!string.IsNullOrEmpty(ExtendedRatingBar.fillStarImage) && !string.IsNullOrEmpty(ExtendedRatingBar.emptyStarImage))
                 {
-                    fillStar(SelfSendableRatingBar.SelectedStarValue, SelfSendableRatingBar);
+                    fillStar(ExtendedRatingBar.SelectedStarValue, ExtendedRatingBar);
                 }
             }
         }
@@ -478,8 +492,8 @@ namespace WorldFestSolution.XamarinApp.Controls
         {
             if (ResourceLoader.IsEnabled && ResourceLoader.CanProvideContentFor(new ResourceLoader.ResourceLoadingQuery
             {
-                AssemblyName = typeof(SelfSendableRatingBar).GetTypeInfo().Assembly.GetName(),
-                ResourcePath = "SelfSendableRatingBar.xaml",
+                AssemblyName = typeof(ExtendedRatingBar).GetTypeInfo().Assembly.GetName(),
+                ResourcePath = "ExtendedRatingBar.xaml",
                 Instance = this
             }))
             {
@@ -493,24 +507,24 @@ namespace WorldFestSolution.XamarinApp.Controls
                 return;
             }
 
-            SelfSendableRatingBar SelfSendableRatingBar;
-            VisualDiagnostics.RegisterSourceInfo(SelfSendableRatingBar = this, new Uri("SelfSendableRatingBar.xaml" + ";assembly=" + "SelfSendableRatingBarControl", UriKind.RelativeOrAbsolute), 2, 2);
-            NameScope nameScope = (NameScope)(NameScope.GetNameScope(SelfSendableRatingBar) ?? new NameScope());
-            NameScope.SetNameScope(SelfSendableRatingBar, nameScope);
-            ((INameScope)nameScope).RegisterName("stkRattingbar", (object)SelfSendableRatingBar);
-            if (SelfSendableRatingBar.StyleId == null)
+            ExtendedRatingBar ExtendedRatingBar;
+            VisualDiagnostics.RegisterSourceInfo(ExtendedRatingBar = this, new Uri("ExtendedRatingBar.xaml" + ";assembly=" + "ExtendedRatingBarControl", UriKind.RelativeOrAbsolute), 2, 2);
+            NameScope nameScope = (NameScope)(NameScope.GetNameScope(ExtendedRatingBar) ?? new NameScope());
+            NameScope.SetNameScope(ExtendedRatingBar, nameScope);
+            ((INameScope)nameScope).RegisterName("stkRattingbar", (object)ExtendedRatingBar);
+            if (ExtendedRatingBar.StyleId == null)
             {
-                SelfSendableRatingBar.StyleId = "stkRattingbar";
+                ExtendedRatingBar.StyleId = "stkRattingbar";
             }
 
-            stkRattingbar = SelfSendableRatingBar;
-            SelfSendableRatingBar.SetValue(View.HorizontalOptionsProperty, LayoutOptions.StartAndExpand);
-            SelfSendableRatingBar.SetValue(StackLayout.OrientationProperty, StackOrientation.Horizontal);
+            stkRattingbar = ExtendedRatingBar;
+            ExtendedRatingBar.SetValue(View.HorizontalOptionsProperty, LayoutOptions.StartAndExpand);
+            ExtendedRatingBar.SetValue(StackLayout.OrientationProperty, StackOrientation.Horizontal);
         }
 
         private void __InitComponentRuntime()
         {
-            this.LoadFromXaml(typeof(SelfSendableRatingBar));
+            this.LoadFromXaml(typeof(ExtendedRatingBar));
             stkRattingbar = this.FindByName<StackLayout>("stkRattingbar");
         }
     }

@@ -41,27 +41,23 @@
                             <Label Text="{Binding Rating, StringFormat='{}Рейтинг: {0:F2}'}"
                                    FontSize="Small"
                                    HorizontalTextAlignment="Center" />
-                            <controls:SelfSendableRatingBar SelectedStarValue="{Binding Rating}"
-                                                            SelectedStarCommand="{Binding BindingContext.RateFestivalCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
-                                                            EmptyStarImage="empty_star"
-                                                            FillStarImage="filled_star"
-                                                            StarHeightRequest="16"
-                                                            HorizontalOptions="End"
-                                                            InputTransparent="True"
-                                                            Margin="5">
-                                <controls:SelfSendableRatingBar.Triggers>
-                                    <MultiTrigger TargetType="{x:Type controls:SelfSendableRatingBar}">
-                                        <MultiTrigger.Conditions>
-                                            <BindingCondition Binding="{Binding Source={Static models:Identity.IsParticipant}}"
-                                                              Value="True" />
-                                            <BindingCondition Binding="{Binding IsFinished}"
-                                                              Value="True" />
-                                        </MultiTrigger.Conditions>
+                            <controls:ExtendedRatingBar SelectedStarValue="{Binding Rating}"
+                                                        SelectedStarCommand="{Binding BindingContext.RateFestivalCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
+                                                        EmptyStarImage="empty_star"
+                                                        FillStarImage="filled_star"
+                                                        StarHeightRequest="16"
+                                                        HorizontalOptions="End"
+                                                        InputTransparent="True"
+                                                        Margin="5">
+                                <controls:ExtendedRatingBar.Triggers>
+                                    <DataTrigger TargetType="{x:Type controls:ExtendedRatingBar}"
+                                                 Binding="{Binding Source={Static models:Identity.IsParticipant}}"
+                                                 Value="True">
                                         <Setter Property="InputTransparent"
                                                 Value="False" />
-                                    </MultiTrigger>
-                                </controls:SelfSendableRatingBar.Triggers>
-                            </controls:SelfSendableRatingBar>
+                                    </DataTrigger>
+                                </controls:ExtendedRatingBar.Triggers>
+                            </controls:ExtendedRatingBar>
                         </StackLayout>
                     </Grid>
                     <BoxView Color="WhiteSmoke"

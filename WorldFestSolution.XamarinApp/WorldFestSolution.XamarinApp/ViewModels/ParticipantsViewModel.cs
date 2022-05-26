@@ -82,20 +82,20 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        private Command<SelfSendableRatingBar> rateUserCommand;
+        private Command<ExtendedRatingBar> rateUserCommand;
 
-        public Command<SelfSendableRatingBar> RateUserCommand
+        public Command<ExtendedRatingBar> RateUserCommand
         {
             get
             {
                 if (rateUserCommand == null)
-                    rateUserCommand = new Command<SelfSendableRatingBar>(RateUserAsync);
+                    rateUserCommand = new Command<ExtendedRatingBar>(RateUserAsync);
 
                 return rateUserCommand;
             }
         }
 
-        private async void RateUserAsync(SelfSendableRatingBar ratingBar)
+        private async void RateUserAsync(ExtendedRatingBar ratingBar)
         {
             UserRating rating = new UserRating
             {

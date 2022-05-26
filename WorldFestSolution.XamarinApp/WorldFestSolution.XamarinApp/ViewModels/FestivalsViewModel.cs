@@ -184,23 +184,23 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        private Command<SelfSendableRatingBar> rateFestivalCommand;
+        private Command<ExtendedRatingBar> rateFestivalCommand;
 
-        public Command<SelfSendableRatingBar> RateFestivalCommand
+        public Command<ExtendedRatingBar> RateFestivalCommand
         {
             get
             {
                 if (rateFestivalCommand == null)
                 {
                     rateFestivalCommand =
-                        new Command<SelfSendableRatingBar>(RateFestivalAsync);
+                        new Command<ExtendedRatingBar>(RateFestivalAsync);
                 }
 
                 return rateFestivalCommand;
             }
         }
 
-        private async void RateFestivalAsync(SelfSendableRatingBar ratingBar)
+        private async void RateFestivalAsync(ExtendedRatingBar ratingBar)
         {
             Festival festival = ratingBar.BindingContext as Festival;
             FestivalRating festivalRating = new FestivalRating
