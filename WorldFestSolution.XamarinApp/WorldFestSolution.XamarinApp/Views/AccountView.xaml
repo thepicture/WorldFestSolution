@@ -29,31 +29,24 @@
                         <Grid.Background>
                             <LinearGradientBrush StartPoint="0,0"
                                                  EndPoint="0,1">
-                                <GradientStop Offset="0.5" />
+                                <GradientStop Offset="0" />
                                 <GradientStop Offset="1"
                                               Color="Black" />
                             </LinearGradientBrush>
                         </Grid.Background>
                     </Grid>
+                    <Label Text="{Binding CurrentUser.FullName}"
+                           VerticalOptions="End"
+                           HorizontalTextAlignment="Center"
+                           TextColor="White"
+                           FontSize="20"
+                           Margin="10" />
                     <StackLayout Grid.Row="1"
                                  VerticalOptions="Start">
                         <Label Text="{Binding Path=CurrentUser.Login,
                                               StringFormat='{}Логин: {0}'}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
-                        <Label HorizontalTextAlignment="Center">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span Text="{Binding CurrentUser.LastName}" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding CurrentUser.FirstName}" />
-                                        <Span Text=" " />
-                                        <Span Text="{Binding CurrentUser.Patronymic}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
                         <Label Text="{Binding Source={Static models:Identity.Role},
                                               StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
