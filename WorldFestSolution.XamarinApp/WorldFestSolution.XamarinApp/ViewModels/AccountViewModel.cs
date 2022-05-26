@@ -60,12 +60,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             User userFromDatabase = await UserDataStore.GetItemAsync(
                 UserId.ToString());
-            double countOfStars = userFromDatabase.Rating;
             if (userFromDatabase != null)
             {
+                double countOfStars = userFromDatabase.Rating;
                 CurrentUser = userFromDatabase;
                 CurrentUser.Rating = countOfStars;
                 IsSelf = CurrentUser.Id == Identity.Id;
+                MessagingCenter.Instance.Send(this, "UpdateRatingBar", countOfStars);
             }
             IsRefreshing = false;
         }

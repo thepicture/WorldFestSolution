@@ -14,7 +14,27 @@ namespace WorldFestSolution.XamarinApp.Views
         public AccountView(AccountViewModel accountViewModel)
         {
             InitializeComponent();
+            MessagingCenter
+              .Subscribe<AccountViewModel, double>(this,
+                                                    nameof(UpdateRatingBar),
+                                                    UpdateRatingBar);
             BindingContext = _viewModel = accountViewModel;
+        }
+
+        private void UpdateRatingBar(AccountViewModel _, double value)
+        {
+            if (value == 0)
+            {
+                AccountRatingBar.star1.Source = AccountRatingBar.EmptyStarImage;
+                AccountRatingBar.star2.Source = AccountRatingBar.EmptyStarImage;
+                AccountRatingBar.star3.Source = AccountRatingBar.EmptyStarImage;
+                AccountRatingBar.star4.Source = AccountRatingBar.EmptyStarImage;
+                AccountRatingBar.star5.Source = AccountRatingBar.EmptyStarImage;
+            }
+            else
+            {
+                AccountRatingBar.SelectedStarValue = (int)value;
+            }
         }
 
         protected override void OnAppearing()
