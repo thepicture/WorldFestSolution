@@ -117,10 +117,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void GoToAddFestivalViewAsync()
         {
-            await Shell.Current.Navigation.PushAsync(
-                new AddEditFestivalView(
-                    new AddEditFestivalViewModel(
-                        new Festival())));
+            Festival addedFestival = new Festival();
+            AddEditFestivalViewModel addedFestivalViewModel = new AddEditFestivalViewModel(addedFestival);
+            AddEditFestivalView addedFestivalView = new AddEditFestivalView(addedFestivalViewModel);
+            await Shell.Current.Navigation.PushAsync(addedFestivalView);
         }
 
         private Command<Festival> goToFestivalViewCommand;
@@ -142,7 +142,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         private async void GoToFestivalViewAsync(Festival festival)
         {
             await Shell.Current.Navigation.PushAsync(
-                new FestivalView(new FestivalViewModel(festival.Id)));
+                new FestivalView(
+                    new FestivalViewModel(festival.Id)));
         }
 
         private Command<Festival> deleteFestivalCommand;

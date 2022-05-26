@@ -22,6 +22,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             CountOfComments = festival.FestivalComment.Count;
             CountOfPrograms = festival.FestivalProgram.Count;
             CountOfUsers = festival.User.Count;
+            IsMinorPeopleAllowed = festival.IsMinorPeopleAllowed;
             if (festival.FestivalRating.Count > 0)
             {
                 Rating = festival.FestivalRating
@@ -78,5 +79,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public List<SerializedFestivalProgram> FestivalProgram { get; set; }
         public bool IsActual { get; set; }
         public bool IsRated { get; set; }
+        public bool IsMinorPeopleAllowed { get; set; }
     }
 }

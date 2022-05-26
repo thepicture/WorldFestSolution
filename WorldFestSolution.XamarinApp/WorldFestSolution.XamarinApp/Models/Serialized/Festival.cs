@@ -82,5 +82,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
             }
         }
         public bool IsRated { get; set; }
+        public bool IsMinorPeopleAllowed { get; set; }
     }
 }

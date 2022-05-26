@@ -34,16 +34,9 @@
                                             LeadingIcon="icon_about"
                                             AlwaysShowUnderline="True" />
                 <Label Text="Укажите дату и время начала" />
-                <controls:DateTimePicker DateTime="{Binding Festival.FromDateTime}">
-                    <controls:DateTimePicker.Triggers>
-                        <DataTrigger TargetType="controls:DateTimePicker"
-                                     Binding="{Binding Festival.FromDateTime}"
-                                     Value="{Static system:DateTime.MinValue}">
-                            <Setter Property="DateTime"
-                                    Value="{Static system:DateTime.Now}" />
-                        </DataTrigger>
-                    </controls:DateTimePicker.Triggers>
-                </controls:DateTimePicker>
+                <controls:DateTimePicker DateTime="{Binding Festival.FromDateTime}" />
+                <material:MaterialCheckbox Text="Разрешить просмотр участникам до 18 лет"
+                                           IsSelected="{Binding Festival.IsMinorPeopleAllowed}" />
                 <Label Text="Выберите главное фото (можно оставить пустым)" />
                 <Frame CornerRadius="200"
                        Padding="0"
@@ -51,8 +44,7 @@
                        HeightRequest="300"
                        HasShadow="False"
                        HorizontalOptions="Center">
-                    <Image Source="{Binding Path=ImageSource, 
-                                            TargetNullValue='icon_circle'}"
+                    <Image Source="{Binding Path=ImageSource, TargetNullValue='icon_circle'}"
                            Aspect="AspectFill" />
                 </Frame>
                 <material:MaterialButton Command="{Binding GetImageCommand}"
@@ -99,27 +91,20 @@
                                            HorizontalTextAlignment="Center" />
                                     <BoxView Color="WhiteSmoke"
                                              HeightRequest="1" />
-                                    <Label Text="{Binding Path=Description,
-                                                          StringFormat='Описание: {0}',
-                                                          TargetNullValue='Описания программы нет'}"
+                                    <Label Text="{Binding Path=Description, StringFormat='Описание: {0}', TargetNullValue='Описания программы нет'}"
                                            FontSize="Medium"
                                            HorizontalTextAlignment="Center" />
                                     <BoxView Color="WhiteSmoke"
                                              HeightRequest="1" />
-                                    <Label Text="{Binding Path=DurationInMinutes,
-                                                          StringFormat='Длится {0} мин.'}"
+                                    <Label Text="{Binding Path=DurationInMinutes, StringFormat='Длится {0} мин.'}"
                                            FontSize="Medium"
                                            HorizontalTextAlignment="Center" />
-                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
-                                                                                        Path=BindingContext}"
-                                                             Command="{Binding Source={Reference Page}, 
-                                                                               Path=BindingContext.GoToEditProgramViewCommand}"
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, Path=BindingContext.GoToEditProgramViewCommand}"
                                                              Text="Редактировать"
                                                              Style="{StaticResource BackgroundButton}" />
-                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self},
-                                                                                        Path=BindingContext}"
-                                                             Command="{Binding Source={Reference Page}, 
-                                                                               Path=BindingContext.DeleteProgramCommand}"
+                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                                             Command="{Binding Source={Reference Page}, Path=BindingContext.DeleteProgramCommand}"
                                                              Text="Удалить"
                                                              Style="{StaticResource BaseButton}"
                                                              BackgroundColor="Red" />
@@ -128,7 +113,6 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>
-
                 <material:MaterialButton Command="{Binding SaveChangesCommand}"
                                          Text="Сохранить"
                                          VerticalOptions="EndAndExpand"

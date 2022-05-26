@@ -21,6 +21,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                     return new MemoryStream(Festival.Image);
                 });
             }
+            else
+            {
+                Festival.FromDateTime = System.DateTime.Now.AddDays(1);
+            }
         }
 
         public Festival Festival
@@ -83,7 +87,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                });
             if (result == null)
             {
-                await AlertService.Inform("Вы не выбрали фото");
+                await AlertService.Warn("Вы не выбрали фото");
                 return;
             }
             Stream imageStream = await result.OpenReadAsync();
