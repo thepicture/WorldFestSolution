@@ -20,7 +20,7 @@
             <ScrollView>
                 <Grid RowDefinitions="*,auto">
                     <Frame Padding="0">
-                        <Image Source="{Binding Festival.ImageSource}"
+                        <Image Source="{Binding Festival.ImageSource, TargetNullValue='icon_circle'}"
                                Aspect="AspectFill" />
                     </Frame>
                     <Grid Opacity=".8">
@@ -87,8 +87,8 @@
                                           EmptyStarImage="empty_star"
                                           FillStarImage="filled_star"
                                           StarHeightRequest="32"
-                                          HorizontalOptions="Center" 
-                                          InputTransparent="{Binding Source={Static models:Identity.IsOrganizer}}"/>
+                                          HorizontalOptions="Center"
+                                          InputTransparent="{Binding Source={Static models:Identity.IsOrganizer}}" />
                         <material:MaterialButton Command="{Binding ToggleMyParticipateStateOfFestivalCommand}"
                                                  Grid.Row="1"
                                                  IsEnabled="{Binding IsNotBusy}"

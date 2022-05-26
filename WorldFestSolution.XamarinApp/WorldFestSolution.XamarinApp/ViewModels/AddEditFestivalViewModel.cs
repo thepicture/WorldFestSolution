@@ -16,10 +16,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             Festival = festival;
             if (Festival.Id != 0)
             {
-                ImageSource = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(Festival.Image);
-                });
+                ImageSource = Festival.ImageSource;
             }
             else
             {
