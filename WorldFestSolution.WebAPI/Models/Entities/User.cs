@@ -35,7 +35,7 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
-        public bool IsWantInvites { get; set; }
+        public bool IsWantsInvites { get; set; }
         public bool Is18OrMoreYearsOld { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

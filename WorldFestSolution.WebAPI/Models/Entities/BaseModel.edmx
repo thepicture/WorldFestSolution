@@ -14,6 +14,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="FromDateTime" Type="datetime" Nullable="false" />
           <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="IsMinorPeopleAllowed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="FestivalComment">
           <Key>
@@ -68,7 +69,7 @@
           <Property Name="Patronymic" Type="nvarchar" MaxLength="100" />
           <Property Name="UserTypeId" Type="int" Nullable="false" />
           <Property Name="Image" Type="varbinary(max)" />
-          <Property Name="IsWantInvites" Type="bit" Nullable="false" />
+          <Property Name="IsWantsInvites" Type="bit" Nullable="false" />
           <Property Name="Is18OrMoreYearsOld" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserOfFestival">
@@ -393,6 +394,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FromDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsMinorPeopleAllowed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FestivalComment" Relationship="WorldFestBaseModel.FK_FestivalComment_Festival" FromRole="Festival" ToRole="FestivalComment" />
           <NavigationProperty Name="FestivalProgram" Relationship="WorldFestBaseModel.FK_FestivalProgram_Festival" FromRole="Festival" ToRole="FestivalProgram" />
           <NavigationProperty Name="FestivalRating" Relationship="WorldFestBaseModel.FK_FestivalRating_Festival" FromRole="Festival" ToRole="FestivalRating" />
@@ -460,7 +462,7 @@
           <Property Name="Patronymic" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="UserTypeId" Type="Int32" Nullable="false" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="IsWantInvites" Type="Boolean" Nullable="false" />
+          <Property Name="IsWantsInvites" Type="Boolean" Nullable="false" />
           <Property Name="Is18OrMoreYearsOld" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="FestivalComment" Relationship="WorldFestBaseModel.FK_FestivalComment_User" FromRole="User" ToRole="FestivalComment" />
           <NavigationProperty Name="FestivalRating" Relationship="WorldFestBaseModel.FK_FestivalRating_User" FromRole="User" ToRole="FestivalRating" />
@@ -641,6 +643,7 @@
           <EntitySetMapping Name="Festival">
             <EntityTypeMapping TypeName="WorldFestBaseModel.Festival">
               <MappingFragment StoreEntitySet="Festival">
+                <ScalarProperty Name="IsMinorPeopleAllowed" ColumnName="IsMinorPeopleAllowed" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="FromDateTime" ColumnName="FromDateTime" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -697,7 +700,7 @@
             <EntityTypeMapping TypeName="WorldFestBaseModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Is18OrMoreYearsOld" ColumnName="Is18OrMoreYearsOld" />
-                <ScalarProperty Name="IsWantInvites" ColumnName="IsWantInvites" />
+                <ScalarProperty Name="IsWantsInvites" ColumnName="IsWantsInvites" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
                 <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />

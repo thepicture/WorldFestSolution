@@ -20,5 +20,6 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         [JsonIgnore]
         public ImageSource VisibleImageSource => Organizer?.ImageSource
             ?? Participant.ImageSource;
+        public bool IsParticipantWantsInvites { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
@@ -66,9 +67,46 @@ namespace WorldFestSolution.XamarinApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateItemAsync(User item)
+        public async Task<bool> UpdateItemAsync(User item)
         {
-            throw new NotImplementedException();
+            string jsonUser = JsonConvert.SerializeObject(item);
+            using (HttpClient client = new HttpClient(App.ClientHandler))
+            {
+                client.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Basic",
+                                                  Identity.AuthorizationValue);
+                client.BaseAddress = new Uri(Api.BaseUrl);
+                try
+                {
+                    HttpResponseMessage response = await client
+                     .PutAsync("users",
+                                new StringContent(jsonUser,
+                                                  Encoding.UTF8,
+                                                  "application/json"));
+                    if (response.StatusCode == HttpStatusCode.NoContent)
+                    {
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .Inform("Профиль обновлён");
+                    }
+                    else
+                    {
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
+                    }
+                    return response.StatusCode == HttpStatusCode.NoContent;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                    return false;
+                }
+            }
         }
     }
 }

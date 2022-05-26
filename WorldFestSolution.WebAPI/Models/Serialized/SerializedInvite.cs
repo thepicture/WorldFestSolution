@@ -11,5 +11,6 @@
         public SerializedUser Organizer { get; set; }
         public SerializedUser Participant { get; set; }
         public string FestivalTitle { get; set; }
+        public bool IsParticipantWantsInvites { get; set; }
     }
 }

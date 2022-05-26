@@ -39,7 +39,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                         !u.Festival.Select(f => f.Id)
                                    .Contains(festivalId))
                     .Where(u => u.UserType.Title == "Участник")
-                    .Where(u => u.IsWantInvites)
+                    .Where(u => u.IsWantsInvites)
                     .Where(u => u.Login != HttpContext.Current.User.Identity.Name)
                     .ToList();
                 invites = users.ConvertAll(u =>
@@ -61,6 +61,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                                      && exitingInvite.IsAccepted,
                         IsSent = exitingInvite != null,
                         Participant = serializedUser,
+                        IsParticipantWantsInvites = u.IsWantsInvites
                     };
                 });
             }

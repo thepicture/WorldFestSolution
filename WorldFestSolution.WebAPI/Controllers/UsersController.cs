@@ -75,6 +75,21 @@ namespace WorldFestSolution.WebAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // PUT: api/Users
+        [ResponseType(typeof(void))]
+        [Authorize(Roles = "Участник")]
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateUser(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            db.User.Find(user.Id).IsWantsInvites = user.IsWantsInvites;
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         // POST: api/Users
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> PostUser(User user)

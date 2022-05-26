@@ -20,6 +20,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             UserTypeId = user.UserTypeId;
             Image = user.Image;
             Is18OrMoreYearsOld = user.Is18OrMoreYearsOld;
+            IsWantsInvites = user.IsWantsInvites;
             if (user.UserRating.Count > 0)
             {
                 Rating = user.UserRating.Average(ur => ur.CountOfStars);
@@ -45,5 +46,6 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public double Rating { get; set; }
         public bool IsRated { get; set; }
         public bool? Is18OrMoreYearsOld { get; set; }
+        public bool IsWantsInvites { get; set; }
     }
 }

@@ -105,6 +105,10 @@
                                             Value="True" />
                                 </DataTrigger>
                             </StackLayout.Triggers>
+                            <material:MaterialCheckbox Text="Хочу получать приглашения"
+                                                       IsSelected="{Binding IsWantsInvites}"
+                                                       SelectedChangeCommand="{Binding InviteStateChangedCommand}"
+                                                       IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
                             <material:MaterialButton Text="Мои приглашения"
                                                      Command="{Binding GoToMyInvitesViewCommand}"
                                                      Style="{StaticResource BaseButton}"

@@ -56,6 +56,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
+        public bool IsWantsInvites
+        {
+            get => isWantsInvites;
+            set => SetProperty(ref isWantsInvites, value);
+        }
+
         private async void RefreshAsync()
         {
             User userFromDatabase = await UserDataStore.GetItemAsync(
@@ -64,6 +70,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 double countOfStars = userFromDatabase.Rating;
                 CurrentUser = userFromDatabase;
+                IsWantsInvites = userFromDatabase.IsWantsInvites;
                 CurrentUser.Rating = countOfStars;
                 IsSelf = CurrentUser.Id == Identity.Id;
                 MessagingCenter.Instance.Send(this, "UpdateRatingBar", countOfStars);
@@ -119,10 +126,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         private Command changeImageCommand;
         private User currentUser;
 
-        public AccountViewModel()
-        {
-            UserId = User.Id;
-        }
+        public AccountViewModel() : this(Identity.Id) { }
         public AccountViewModel(int userId)
         {
             UserId = userId;
@@ -204,7 +208,33 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
 
         private bool isSelf = true;
+        private bool isWantsInvites;
 
         public bool IsSelf { get => isSelf; set => SetProperty(ref isSelf, value); }
+
+        private Command<bool> inviteStateChangedCommand;
+
+        public Command<bool> InviteStateChangedCommand
+        {
+            get
+            {
+                if (inviteStateChangedCommand == null)
+                    inviteStateChangedCommand = new Command<bool>(OnInviteStateChanged);
+
+                return inviteStateChangedCommand;
+            }
+        }
+
+        private async void OnInviteStateChanged(bool newValue)
+        {
+            if (CurrentUser != null && CurrentUser.Id == User.Id && CurrentUser.IsWantsInvites != newValue)
+            {
+                CurrentUser.IsWantsInvites = newValue;
+                if (await UserDataStore.UpdateItemAsync(CurrentUser))
+                {
+                    IsRefreshing = true;
+                }
+            }
+        }
     }
 }

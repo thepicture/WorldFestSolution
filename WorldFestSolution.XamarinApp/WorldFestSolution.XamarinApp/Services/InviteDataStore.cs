@@ -17,6 +17,13 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(ResponseInvite item)
         {
+            if (!item.IsParticipantWantsInvites)
+            {
+                await DependencyService
+                            .Get<IAlertService>()
+                            .InformError("Участник выбрал опцию не получать приглашения");
+                return false;
+            }
             RequestInvite requestInvite = new RequestInvite
             {
                 ParticipantId = item.ParticipantId,
