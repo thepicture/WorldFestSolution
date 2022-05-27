@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace WorldFestSolution.XamarinApp.Models.Serialized
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class FestivalProgram : INotifyPropertyChanged
     {
         private string title;
@@ -18,7 +19,16 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public int FestivalId { get; set; }
         public int DurationInMinutes
         {
-            get => durationInMinutes;
+            get
+            {
+                if (string.IsNullOrWhiteSpace(DurationInMinutesAsString)
+                    || !int.TryParse(DurationInMinutesAsString, out _))
+                {
+                    return 0;
+                }
+                return durationInMinutes;
+            }
+
             set => SetProperty(ref durationInMinutes, value);
         }
         public string FormattedDuration
@@ -66,6 +76,36 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
             get => isDeletedLocally;
             set => SetProperty(ref isDeletedLocally, value);
         }
+
+        [JsonIgnore]
+        public bool IsHasTitleError
+        {
+            get
+            {
+                return Title == null || string.IsNullOrWhiteSpace(Title);
+            }
+        }
+
+        [JsonIgnore]
+        public string TitleErrorText => "Укажите название программы";
+
+        [JsonIgnore]
+        public bool IsHasDurationInMinutesError
+        {
+            get
+            {
+                return DurationInMinutesAsString == null
+                       || !int.TryParse(DurationInMinutesAsString, out int value)
+                       || value <= 0;
+            }
+        }
+
+        [JsonIgnore]
+        public string DurationInMinutesAsString { get; set; }
+
+        [JsonIgnore]
+        public string DurationInMinutesErrorText => "Укажите положительную длительность";
+
         protected bool SetProperty<T>(ref T backingStore,
                                       T value,
                                       [CallerMemberName] string propertyName = "",

@@ -18,22 +18,25 @@
         <ScrollView>
             <StackLayout>
                 <material:MaterialTextField Text="{Binding Program.Title}"
+                                            HasError="{Binding Program.IsHasTitleError}"
+                                            ErrorText="{Binding Program.TitleErrorText}"
                                             Placeholder="Введите название"
-                                            HelperText="* обязательно"
                                             InputType="Text"
                                             MaxLength="255"
                                             LeadingIcon="icon_feed"
                                             AlwaysShowUnderline="True" />
                 <material:MaterialTextField Text="{Binding Program.Description}"
                                             Placeholder="Введите описание"
+                                            HelperText="* можно оставить пустым"
                                             InputType="Text"
                                             MaxLength="1024"
                                             LeadingIcon="icon_about"
                                             AlwaysShowUnderline="True" />
                 <Label Text="Укажите длительность в минутах" />
-                <material:MaterialTextField Text="{Binding Program.DurationInMinutes}"
+                <material:MaterialTextField Text="{Binding Program.DurationInMinutesAsString}"
+                                            HasError="{Binding Program.IsHasDurationInMinutesError}"
+                                            ErrorText="{Binding Program.DurationInMinutesErrorText}"
                                             Placeholder="Введите длительность"
-                                            HelperText="* обязательно, в минутах"
                                             InputType="Numeric"
                                             MaxLength="4"
                                             LeadingIcon="clock"

@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text;
-using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class AddEditProgramViewModel : BaseViewModel
     {
         private ObservableCollection<FestivalProgram> programs;
@@ -23,6 +23,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 Program.DurationInMinutes = 30;
             }
+            Program.PropertyChanged += (_, __) => AddProgramCommand?.ChangeCanExecute();
         }
 
         public ObservableCollection<FestivalProgram> Programs
@@ -33,13 +34,16 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private Command addProgramCommand;
 
-        public ICommand AddProgramCommand
+        public Command AddProgramCommand
         {
             get
             {
                 if (addProgramCommand == null)
                 {
-                    addProgramCommand = new Command(AddProgramAsync);
+                    addProgramCommand = new Command(AddProgramAsync, () =>
+                    {
+                        return !Program.IsHasTitleError && !Program.IsHasDurationInMinutesError;
+                    });
                 }
 
                 return addProgramCommand;
