@@ -62,7 +62,7 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Label Text="{Binding CurrentUser.Rating, StringFormat='{}Рейтинг: {0:F2}', Mode=TwoWay}"
+                        <Label Text="{Binding CurrentUser.Rating, StringFormat='{}Рейтинг: {0:F2}'}"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"

@@ -70,7 +70,7 @@
                         <Label Text="{Binding Path=Festival.OrganizerFullName, StringFormat='{}Создан организатором {0}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Path=Festival.Rating, Mode=TwoWay, StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
+                        <Label Text="{Binding Path=Festival.Rating, StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
