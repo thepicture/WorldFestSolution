@@ -4,8 +4,8 @@
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:controls="clr-namespace:WorldFestSolution.XamarinApp.Controls"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:templates="clr-namespace:WorldFestSolution.XamarinApp.Views.Templates"
              x:DataType="viewmodels:AddEditFestivalViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.AddEditFestivalView"
              x:Name="Page"
@@ -44,7 +44,7 @@
                        HeightRequest="300"
                        HasShadow="False"
                        HorizontalOptions="Center">
-                    <Image Source="{Binding Path=ImageSource, TargetNullValue='icon_circle'}"
+                    <Image Source="{Binding ImageSource, TargetNullValue='icon_circle'}"
                            Aspect="AspectFill" />
                 </Frame>
                 <material:MaterialButton Command="{Binding GetImageCommand}"
@@ -66,50 +66,12 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding Festival.FestivalProgram}">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <Label HorizontalTextAlignment="Center"
-                                   VerticalOptions="CenterAndExpand"
-                                   Text="Программ нет" />
+                            <templates:NoItemsTemplate Reason="Программ не найдено. Добавьте по крайней мере одну программу для сохранения" />
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="{x:Type serialized:FestivalProgram}">
-                            <material:MaterialCard Elevation="5"
-                                                   Margin="10"
-                                                   IsClickable="True">
-                                <material:MaterialCard.Triggers>
-                                    <DataTrigger TargetType="material:MaterialCard"
-                                                 Binding="{Binding IsDeletedLocally}"
-                                                 Value="True">
-                                        <Setter Property="IsVisible"
-                                                Value="False" />
-                                    </DataTrigger>
-                                </material:MaterialCard.Triggers>
-                                <StackLayout>
-                                    <Label Text="{Binding Title}"
-                                           FontAttributes="Bold"
-                                           FontSize="Large"
-                                           HorizontalTextAlignment="Center" />
-                                    <BoxView Color="WhiteSmoke"
-                                             HeightRequest="1" />
-                                    <Label Text="{Binding Path=Description, StringFormat='Описание: {0}', TargetNullValue='Описания программы нет'}"
-                                           FontSize="Medium"
-                                           HorizontalTextAlignment="Center" />
-                                    <BoxView Color="WhiteSmoke"
-                                             HeightRequest="1" />
-                                    <Label Text="{Binding Path=DurationInMinutes, StringFormat='Длится {0} мин.'}"
-                                           FontSize="Medium"
-                                           HorizontalTextAlignment="Center" />
-                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
-                                                             Command="{Binding Source={Reference Page}, Path=BindingContext.GoToEditProgramViewCommand}"
-                                                             Text="Редактировать"
-                                                             Style="{StaticResource BackgroundButton}" />
-                                    <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
-                                                             Command="{Binding Source={Reference Page}, Path=BindingContext.DeleteProgramCommand}"
-                                                             Text="Удалить"
-                                                             Style="{StaticResource BaseButton}"
-                                                             BackgroundColor="Red" />
-                                </StackLayout>
-                            </material:MaterialCard>
+                        <DataTemplate>
+                            <templates:ProgramTemplate />
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </StackLayout>

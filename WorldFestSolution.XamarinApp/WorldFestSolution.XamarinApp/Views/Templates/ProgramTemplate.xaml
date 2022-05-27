@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:Class="WorldFestSolution.XamarinApp.Views.Templates.ProgramTemplate"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             x:DataType="serialized:FestivalProgram"
+             x:Name="Template">
+    <material:MaterialCard Elevation="5"
+                           Margin="10"
+                           IsClickable="True">
+        <material:MaterialCard.Triggers>
+            <DataTrigger TargetType="material:MaterialCard"
+                         Binding="{Binding IsDeletedLocally}"
+                         Value="True">
+                <Setter Property="IsVisible"
+                        Value="False" />
+            </DataTrigger>
+        </material:MaterialCard.Triggers>
+        <StackLayout>
+            <Label Text="{Binding Title}"
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                   HorizontalTextAlignment="Center" />
+            <BoxView Color="WhiteSmoke"
+                     HeightRequest="1" />
+            <Label Text="{Binding Description, StringFormat='Описание: {0}', TargetNullValue='Описания программы нет'}"
+                   FontSize="Medium"
+                   HorizontalTextAlignment="Center" />
+            <BoxView Color="WhiteSmoke"
+                     HeightRequest="1" />
+            <Label Text="{Binding FormattedDuration, StringFormat='Длится {0}'}"
+                   FontSize="Medium"
+                   HorizontalTextAlignment="Center" />
+            <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                     Command="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.GoToEditProgramViewCommand}"
+                                     Text="Редактировать"
+                                     Style="{StaticResource BackgroundButton}" />
+            <material:MaterialButton CommandParameter="{Binding Source={RelativeSource Self}, Path=BindingContext}"
+                                     Command="{Binding Source={RelativeSource AncestorType={Type ContentPage}}, Path=BindingContext.DeleteProgramCommand}"
+                                     Text="Удалить"
+                                     Style="{StaticResource BaseButton}"
+                                     BackgroundColor="Red" />
+        </StackLayout>
+    </material:MaterialCard>
+</ContentView>
