@@ -22,11 +22,14 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
             get
             {
                 if (string.IsNullOrWhiteSpace(DurationInMinutesAsString)
-                    || !int.TryParse(DurationInMinutesAsString, out _))
+                    || !int.TryParse(DurationInMinutesAsString, out int value))
                 {
                     return 0;
                 }
-                return durationInMinutes;
+                else
+                {
+                    return value;
+                }
             }
 
             set => SetProperty(ref durationInMinutes, value);

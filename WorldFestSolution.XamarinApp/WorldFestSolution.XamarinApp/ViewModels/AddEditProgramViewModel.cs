@@ -21,9 +21,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
             else
             {
-                Program.DurationInMinutes = 30;
+                Program.DurationInMinutesAsString = 30.ToString();
             }
-            Program.PropertyChanged += (_, __) => AddProgramCommand?.ChangeCanExecute();
+            Program.PropertyChanged += (_, __) =>
+            {
+                AddProgramCommand?.ChangeCanExecute();
+            };
         }
 
         public ObservableCollection<FestivalProgram> Programs
