@@ -49,8 +49,6 @@ namespace WorldFestSolution.XamarinApp.Controls
                 Entry
             }
             };
-            DatePicker.SetBinding(MaterialDatePicker.DateProperty, new Binding(nameof(Date)));
-            TimePicker.SetBinding(MaterialTimePicker.TimeProperty, new Binding(nameof(Time)));
             TimePicker.Unfocused += (sender, args) => Time = TimePicker.Time;
             DatePicker.Focused += (s, a) => UpdateEntryText();
 
