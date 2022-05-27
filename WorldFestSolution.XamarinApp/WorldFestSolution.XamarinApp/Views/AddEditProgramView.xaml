@@ -42,7 +42,7 @@
                                             LeadingIcon="clock"
                                             AlwaysShowUnderline="True" />
                 <material:MaterialButton Command="{Binding AddProgramCommand}"
-                                         Text="Добавить"
+                                         Text="Сохранить"
                                          VerticalOptions="EndAndExpand"
                                          Style="{StaticResource BaseButton}" />
             </StackLayout>
