@@ -22,20 +22,24 @@
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefreshing}"
                  Command="{Binding RefreshCommand}">
-        <Grid RowDefinitions="auto,auto,auto,auto,*">
+        <Grid RowDefinitions="auto,auto,auto,auto,auto,*">
             <SearchBar Text="{Binding SearchText}"
                        Placeholder="Поиск по названию" />
             <material:MaterialCheckbox Text="Показывать только актуальные"
                                        IsSelected="{Binding IsActualOnly}"
                                        Grid.Row="1" />
+            <material:MaterialCheckbox Text="Показывать только для совершеннолетних"
+                                       IsSelected="{Binding IsForMaturePeopleOnly}"
+                                       Grid.Row="2" 
+                                       IsVisible="{Binding User.Is18OrMoreYearsOld}"/>
             <Label Text="Фильтровать по"
-                   Grid.Row="2"
+                   Grid.Row="3"
                    Margin="10,0,0,10" />
             <Picker x:Name="FilterPicker"
                     SelectedItem="{Binding SelectedFilter}"
                     FontSize="Micro"
                     Title="Фильтровать по"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="10,0,0,10">
                 <Picker.ItemDisplayBinding>
                     <Binding Path="Title" />
@@ -81,11 +85,12 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
-            <ScrollView Grid.Row="4">
-                <StackLayout BindableLayout.ItemsSource="{Binding Festivals}" Padding="5">
+            <ScrollView Grid.Row="5">
+                <StackLayout BindableLayout.ItemsSource="{Binding Festivals}"
+                             Padding="5">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
-                            <templates:NoItemsTemplate Reason="Фестивалей нет или по запросу ничего не найдено"/>
+                            <templates:NoItemsTemplate Reason="Фестивалей нет или по запросу ничего не найдено" />
                         </DataTemplate>
                     </BindableLayout.EmptyViewTemplate>
                     <BindableLayout.ItemTemplate>

@@ -86,13 +86,17 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                              StringComparison.OrdinalIgnoreCase) != -1;
                 });
             }
-            if (IsActualOnly)
+            if (IsForMaturePeopleOnly)
             {
-                items = items.Where(i => i.IsStarting || i.IsLive);
+                items = items.Where(i => !i.IsMinorPeopleAllowed);
             }
             if (!User.Is18OrMoreYearsOld)
             {
-                items = items.Where(i => !i.IsMinorPeopleAllowed);
+                items = items.Where(i => i.IsMinorPeopleAllowed);
+            }
+            if (IsActualOnly)
+            {
+                items = items.Where(i => i.IsStarting || i.IsLive);
             }
             items = SelectedFilter.Accept(items);
             foreach (Festival festival in items)
@@ -233,5 +237,19 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
 
         public bool IsRelatedToMe { get; }
+
+        private bool isForMaturePeopleOnly;
+
+        public bool IsForMaturePeopleOnly
+        {
+            get => isForMaturePeopleOnly;
+            set
+            {
+                if (SetProperty(ref isForMaturePeopleOnly, value))
+                {
+                    IsRefreshing = true;
+                }
+            }
+        }
     }
 }
