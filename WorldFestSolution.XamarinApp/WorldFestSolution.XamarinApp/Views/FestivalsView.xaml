@@ -82,7 +82,7 @@
                 </Picker.ItemsSource>
             </Picker>
             <ScrollView Grid.Row="4">
-                <StackLayout BindableLayout.ItemsSource="{Binding Festivals}">
+                <StackLayout BindableLayout.ItemsSource="{Binding Festivals}" Padding="5">
                     <BindableLayout.EmptyViewTemplate>
                         <DataTemplate>
                             <templates:NoItemsTemplate Reason="Фестивалей нет или по запросу ничего не найдено"/>
