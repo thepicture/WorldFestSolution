@@ -24,7 +24,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 if (string.IsNullOrWhiteSpace(DurationInMinutesAsString)
                     || !int.TryParse(DurationInMinutesAsString, out int value))
                 {
-                    return 0;
+                    return durationInMinutes;
                 }
                 else
                 {
