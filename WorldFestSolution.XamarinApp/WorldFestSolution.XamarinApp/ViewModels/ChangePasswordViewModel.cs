@@ -10,13 +10,17 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private Command changePasswordCommand;
 
-        public ICommand ChangePasswordCommand
+        public Command ChangePasswordCommand
         {
             get
             {
                 if (changePasswordCommand == null)
                 {
-                    changePasswordCommand = new Command(ChangePasswordAsync);
+                    changePasswordCommand = new Command(ChangePasswordAsync, () =>
+                    {
+                        return !Credentials.IsNewPasswordHasError
+                               && !Credentials.IsOldPasswordHasError;
+                    });
                 }
 
                 return changePasswordCommand;
@@ -47,6 +51,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             Credentials = new ChangePasswordCredentials
             {
                 Login = Identity.User.Login,
+            };
+            Credentials.PropertyChanged += (_, __) =>
+            {
+                ChangePasswordCommand.ChangeCanExecute();
             };
         }
 
