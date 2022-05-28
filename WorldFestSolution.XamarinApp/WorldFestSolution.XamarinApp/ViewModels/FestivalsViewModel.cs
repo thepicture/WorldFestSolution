@@ -90,6 +90,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 items = items.Where(i => i.IsStarting || i.IsLive);
             }
+            if (!User.Is18OrMoreYearsOld)
+            {
+                items = items.Where(i => !i.IsMinorPeopleAllowed);
+            }
             items = SelectedFilter.Accept(items);
             foreach (Festival festival in items)
             {

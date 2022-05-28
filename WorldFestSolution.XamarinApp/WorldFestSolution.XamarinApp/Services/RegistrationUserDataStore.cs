@@ -20,10 +20,6 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 _ = validationErrors.AppendLine("Укажите роль");
             }
-            if (!item.Is18OrMoreYearsOld.HasValue)
-            {
-                _ = validationErrors.AppendLine("Укажите ваш возраст");
-            }
             if (string.IsNullOrWhiteSpace(item.Login))
             {
                 _ = validationErrors.AppendLine("Введите логин");
