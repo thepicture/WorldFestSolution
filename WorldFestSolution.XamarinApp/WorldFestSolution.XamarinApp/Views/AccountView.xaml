@@ -7,7 +7,21 @@
              xmlns:rating="clr-namespace:RatingBarControl;assembly=RatingBarControl"
              x:DataType="viewmodels:AccountViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.AccountView"
-             Title="Аккаунт">
+             Title="Загрузка...">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding CurrentUser.UserTypeId}"
+                     Value="1">
+            <Setter Property="Title"
+                    Value="Профиль участника" />
+        </DataTrigger>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding CurrentUser.UserTypeId}"
+                     Value="2">
+            <Setter Property="Title"
+                    Value="Профиль организатора" />
+        </DataTrigger>
+    </ContentPage.Triggers>
     <ContentView>
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
