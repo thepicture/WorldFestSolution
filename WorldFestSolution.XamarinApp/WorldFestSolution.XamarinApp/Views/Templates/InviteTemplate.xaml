@@ -8,7 +8,7 @@
              x:DataType="serialized:ResponseInvite"
              x:Class="WorldFestSolution.XamarinApp.Views.Templates.InviteTemplate">
     <material:MaterialCard IsClickable="True"
-                           ClickCommandParameter="{Binding OrganizerId}"
+                           ClickCommandParameter="{Binding .}"
                            ClickCommand="{Binding BindingContext.GoToAccountViewCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
                            Elevation="5"
                            Margin="10"
@@ -70,8 +70,6 @@
                     <DataTrigger TargetType="material:MaterialButton"
                                  Binding="{Binding IsSent}"
                                  Value="True">
-                        <Setter Property="IsEnabled"
-                                Value="False" />
                         <Setter Property="Text"
                                 Value="Приглашен" />
                     </DataTrigger>

@@ -17,7 +17,7 @@ namespace WorldFestSolution.XamarinApp.Services
     {
         public async Task<bool> AddItemAsync(ResponseInvite item)
         {
-            if (!item.IsParticipantWantsInvites)
+            if (item.ParticipantId != Identity.Id && !item.IsParticipantWantsInvites)
             {
                 await DependencyService
                             .Get<IAlertService>()

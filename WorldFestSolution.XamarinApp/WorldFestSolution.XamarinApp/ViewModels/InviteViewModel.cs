@@ -65,7 +65,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 if (inviteUserCommand == null)
                 {
                     inviteUserCommand =
-                        new Command<ResponseInvite>(InviteUserAsync);
+                        new Command<ResponseInvite>(InviteUserAsync,
+                                                    invite => !invite.IsSent);
                 }
 
                 return inviteUserCommand;
@@ -142,27 +143,36 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        private Command<int> goToAccountViewCommand;
+        private Command<ResponseInvite> goToAccountViewCommand;
 
-        public Command<int> GoToAccountViewCommand
+        public Command<ResponseInvite> GoToAccountViewCommand
         {
             get
             {
                 if (goToAccountViewCommand == null)
                 {
                     goToAccountViewCommand =
-                        new Command<int>(GoToAccountViewAsync);
+                        new Command<ResponseInvite>(GoToAccountViewAsync);
                 }
 
                 return goToAccountViewCommand;
             }
         }
 
-        private async void GoToAccountViewAsync(int organizerId)
+        private async void GoToAccountViewAsync(ResponseInvite invite)
         {
-            await Shell.Current.Navigation.PushAsync(
-                new AccountView(
-                    new AccountViewModel(organizerId)));
+            if (invite.ParticipantId == User.Id)
+            {
+                await Shell.Current.Navigation.PushAsync(
+                    new AccountView(
+                        new AccountViewModel(invite.OrganizerId)));
+            }
+            else
+            {
+                await Shell.Current.Navigation.PushAsync(
+                    new AccountView(
+                        new AccountViewModel(invite.ParticipantId)));
+            }
         }
     }
 }

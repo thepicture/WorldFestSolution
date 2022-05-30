@@ -70,17 +70,18 @@ namespace WorldFestSolution.WebAPI.Controllers
                 User currentParticipant = db.User.First(u => u.Login == HttpContext.Current.User.Identity.Name);
                 invites = currentParticipant
                     .ParticipantInvite
-                    .Where(pi => !pi.IsLookedByParticipant)
-                    .Select(pi =>
+                    .Where(i => !i.IsLookedByParticipant)
+                    .Select(i =>
                     {
                         return new SerializedInvite
                         {
-                            Id = pi.Id,
-                            OrganizerId = pi.OrganizerId,
-                            FestivalId = pi.FestivalId,
-                            IsAccepted = pi.IsAccepted,
-                            Organizer = new SerializedUser(pi.User1),
-                            FestivalTitle = pi.Festival.Title
+                            Id = i.Id,
+                            OrganizerId = i.OrganizerId,
+                            ParticipantId = i.ParticipantId,
+                            FestivalId = i.FestivalId,
+                            IsAccepted = i.IsAccepted,
+                            Organizer = new SerializedUser(i.User1),
+                            FestivalTitle = i.Festival.Title
                         };
                     })
                     .ToList();
