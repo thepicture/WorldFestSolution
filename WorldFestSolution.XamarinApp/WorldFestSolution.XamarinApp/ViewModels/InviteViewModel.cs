@@ -141,5 +141,28 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 IsRefreshing = true;
             }
         }
+
+        private Command<int> goToAccountViewCommand;
+
+        public Command<int> GoToAccountViewCommand
+        {
+            get
+            {
+                if (goToAccountViewCommand == null)
+                {
+                    goToAccountViewCommand =
+                        new Command<int>(GoToAccountViewAsync);
+                }
+
+                return goToAccountViewCommand;
+            }
+        }
+
+        private async void GoToAccountViewAsync(int organizerId)
+        {
+            await Shell.Current.Navigation.PushAsync(
+                new AccountView(
+                    new AccountViewModel(organizerId)));
+        }
     }
 }

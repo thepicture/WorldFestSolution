@@ -7,7 +7,10 @@
              xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
              x:DataType="serialized:ResponseInvite"
              x:Class="WorldFestSolution.XamarinApp.Views.Templates.InviteTemplate">
-    <material:MaterialCard Elevation="5"
+    <material:MaterialCard IsClickable="True"
+                           ClickCommandParameter="{Binding OrganizerId}"
+                           ClickCommand="{Binding BindingContext.GoToAccountViewCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
+                           Elevation="5"
                            Margin="10"
                            CornerRadius="25">
         <Grid RowDefinitions="*,auto,auto,auto,auto"
