@@ -37,11 +37,11 @@
                            FontAttributes="Bold"
                            LineBreakMode="TailTruncation" />
                     <controls:ExtendedRatingBar SelectedStarValue="{Binding Rating}"
-                                                    SelectedStarCommand="{Binding BindingContext.RateUserCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
-                                                    EmptyStarImage="empty_star"
-                                                    StarHeightRequest="20"
-                                                    FillStarImage="filled_star"
-                                                    Grid.Column="1" />
+                                                SelectedStarCommand="{Binding BindingContext.RateUserCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
+                                                EmptyStarImage="empty_star"
+                                                StarHeightRequest="20"
+                                                FillStarImage="filled_star"
+                                                Grid.Column="1" />
                 </Grid>
                 <Label Text="{Binding Rating, StringFormat='{}Рейтинг: {0:F2}'}">
                     <Label.Triggers>

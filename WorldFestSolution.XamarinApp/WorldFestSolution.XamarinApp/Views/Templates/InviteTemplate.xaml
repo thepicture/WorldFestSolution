@@ -31,17 +31,19 @@
                     </Image.Source>
                 </Image>
             </Frame>
-            <StackLayout Grid.Column="1">
+
+            <StackLayout Grid.Column="1"
+                         IsVisible="{Binding Source={Static models:Identity.IsParticipant}}">
                 <Grid ColumnDefinitions="*,*">
                     <Label Text="{Binding VisibleFullName}"
                            FontAttributes="Bold"
                            LineBreakMode="TailTruncation" />
                     <controls:ExtendedRatingBar SelectedStarValue="{Binding Organizer.Rating}"
+                                                SelectedStarCommand="{Binding BindingContext.RateUserCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
                                                 EmptyStarImage="empty_star"
                                                 StarHeightRequest="20"
                                                 FillStarImage="filled_star"
-                                                Grid.Column="1"
-                                                InputTransparent="True" />
+                                                Grid.Column="1" />
                 </Grid>
                 <Label Text="{Binding Organizer.Rating, StringFormat='{}Рейтинг: {0:F2}'}">
                     <Label.Triggers>
@@ -49,11 +51,37 @@
                                      Binding="{Binding Organizer.Rating}"
                                      Value="0">
                             <Setter Property="Text"
-                                    Value="Пользователя пока не оценивали" />
+                                    Value="Организатора пока не оценивали" />
                         </DataTrigger>
                     </Label.Triggers>
                 </Label>
             </StackLayout>
+
+            <StackLayout Grid.Column="1"
+                         IsVisible="{Binding Source={Static models:Identity.IsOrganizer}}">
+                <Grid ColumnDefinitions="*,*">
+                    <Label Text="{Binding VisibleFullName}"
+                           FontAttributes="Bold"
+                           LineBreakMode="TailTruncation" />
+                    <controls:ExtendedRatingBar SelectedStarValue="{Binding Participant.Rating}"
+                                                SelectedStarCommand="{Binding BindingContext.RateUserCommand, Source={RelativeSource AncestorType={Type ContentPage}}}"
+                                                EmptyStarImage="empty_star"
+                                                StarHeightRequest="20"
+                                                FillStarImage="filled_star"
+                                                Grid.Column="1" />
+                </Grid>
+                <Label Text="{Binding Participant.Rating, StringFormat='{}Рейтинг: {0:F2}'}">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label"
+                                     Binding="{Binding Participant.Rating}"
+                                     Value="0">
+                            <Setter Property="Text"
+                                    Value="Участника пока не оценивали" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </StackLayout>
+
             <Label Text="{Binding FestivalTitle, StringFormat='Фестиваль: {0}'}"
                    IsVisible="{Binding FestivalTitle, TargetNullValue=false}"
                    Grid.ColumnSpan="2"
