@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Class="WorldFestSolution.XamarinApp.Views.Templates.ProgramTemplate"
              xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
              x:DataType="serialized:FestivalProgram"
              x:Name="Template">
+    <ContentView.Triggers>
+        <DataTrigger TargetType="ContentView"
+                     Binding="{Binding IsDeletedLocally}"
+                     Value="True">
+            <Setter Property="IsVisible"
+                    Value="False" />
+        </DataTrigger>
+    </ContentView.Triggers>
     <material:MaterialCard Elevation="5"
                            Margin="10"
                            IsClickable="True">
-        <material:MaterialCard.Triggers>
-            <DataTrigger TargetType="material:MaterialCard"
-                         Binding="{Binding IsDeletedLocally}"
-                         Value="True">
-                <Setter Property="IsVisible"
-                        Value="False" />
-            </DataTrigger>
-        </material:MaterialCard.Triggers>
         <StackLayout>
             <Label Text="{Binding Title}"
                    FontAttributes="Bold"
