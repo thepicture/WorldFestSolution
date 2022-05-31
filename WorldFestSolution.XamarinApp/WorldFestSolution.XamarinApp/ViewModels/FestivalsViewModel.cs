@@ -14,19 +14,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 {
     public class FestivalsViewModel : BaseViewModel
     {
-        private string searchText;
-
-        public string SearchText
-        {
-            get => searchText;
-            set
-            {
-                if (SetProperty(ref searchText, value))
-                {
-                    IsRefreshing = true;
-                }
-            }
-        }
 
         internal void OnAppearing()
         {
@@ -41,7 +28,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             set => SetProperty(ref festivals, value);
         }
 
-        private Command refreshCommand;
 
         public FestivalsViewModel(bool isRelatedToMe)
         {
@@ -49,8 +35,47 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             IsRelatedToMe = isRelatedToMe;
         }
 
+        /// <summary>
+        /// Фоновая переменная для хранения 
+        /// текста для поиска фестиваля.
+        /// </summary>
+        private string searchText;
+
+        /// <summary>
+        /// Свойство, оборачивающее 
+        /// фоновую переменную 
+        /// для хранения 
+        /// текста для поиска фестиваля.
+        /// </summary>
+        public string SearchText
+        {
+            get => searchText;
+            set
+            {
+                // Если текст изменился, 
+                if (SetProperty(ref searchText, value))
+                {
+                    // то вызвать обновление страницы.
+                    IsRefreshing = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Фоновая переменная для хранения 
+        /// команды, вызывающейся при обновлении 
+        /// модели представления.
+        /// </summary>
+        private Command refreshCommand;
+
+        /// <summary>
+        /// Свойство, оборачивающее 
+        /// команду, вызывающуюся при обновлении 
+        /// модели представления.
+        /// </summary>
         public ICommand RefreshCommand
         {
+            // Геттер для инициализации фоновой переменной
             get
             {
                 if (refreshCommand == null)
@@ -62,22 +87,38 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Обновляет модель представления, 
+        /// применяя фильтры для поиска фестиваля.
+        /// </summary>
         private async void RefreshAsync()
         {
+            // Убрать старый набор элементов.
             Festivals.Clear();
+
+            // Получить фестивали в отношении 
+            // организатора или участника
+            // в неблокирующем потоке.
             IEnumerable<Festival> items = await Task.Run(() =>
             {
+                // Если относится к организатору,
                 if (IsRelatedToMe)
                 {
+                    // То получить фестивали организатора.
                     return UserFestivalDataStore.GetItemAsync("");
                 }
                 else
                 {
+                    // Иначе получить общий набор фестивалей.
                     return FestivalDataStore.GetItemsAsync();
                 }
             });
+
+            // Если текст поиска
+            // по названию фестиваля непустой,
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
+                // то отфильтровать фестивали.
                 items = items.Where(i =>
                 {
                     return i
@@ -86,24 +127,44 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                              StringComparison.OrdinalIgnoreCase) != -1;
                 });
             }
+            // Если требуются фестивали для совершеннолетних, 
+            // то отфильтровать выборку.
             if (IsForMaturePeopleOnly)
             {
                 items = items.Where(i => !i.IsMinorPeopleAllowed);
             }
+            // Если пользователь несовершеннолетний, 
+            // то отфильтровать выборку.
             if (!User.Is18OrMoreYearsOld)
             {
                 items = items.Where(i => i.IsMinorPeopleAllowed);
             }
+            // Если требуются актуальные фестивали, 
+            // то отфильтровать выборку.
             if (IsActualOnly)
             {
                 items = items.Where(i => i.IsStarting || i.IsLive);
             }
+            // Применить фильтр, если он существует. 
+            // Здесь применена инверсия зависимостей
+            // для избегания switch-конструкций 
+            // и if-else-if-конструкций.
             items = SelectedFilter.Accept(items);
+
+            // Для каждого фестиваля
+            // в отфильтрованных фестивалях
             foreach (Festival festival in items)
             {
+                // Добавить фестиваль
+                // в оповещаемую коллекцию.
                 Festivals.Add(festival);
+                // Создать искуственную задержку 
+                // для отсутствия подтормаживания 
+                // интерфейса.
                 await Task.Delay(50);
             }
+            
+            // Выключить обновление модели представления.
             IsRefreshing = false;
         }
 

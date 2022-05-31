@@ -212,28 +212,68 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         public bool IsSelf { get => isSelf; set => SetProperty(ref isSelf, value); }
 
+        /// <summary>
+        /// Фоновая переменная для изменения 
+        /// состояния принятия приглашений 
+        /// от организаторов.
+        /// </summary>
         private Command<bool> inviteStateChangedCommand;
 
+        /// <summary>
+        /// Свойство, оборачивающее 
+        /// фоновую переменную для изменения 
+        /// состояния принятия приглашений 
+        /// от организаторов.
+        /// </summary>
         public Command<bool> InviteStateChangedCommand
         {
+            // Геттер для инициализации 
+            // фоновой переменной.
             get
             {
                 if (inviteStateChangedCommand == null)
-                    inviteStateChangedCommand = new Command<bool>(OnInviteStateChanged);
+                    inviteStateChangedCommand = 
+                        new Command<bool>(OnInviteStateChanged);
 
                 return inviteStateChangedCommand;
             }
         }
 
+        /// <summary>
+        /// Изменяет состояние принятия 
+        /// приглашений от организаторов.
+        /// </summary>
+        /// <param name="newValue">Логическое значение, 
+        /// описывающее желание принятия 
+        /// приглашений от организаторов.</param>
         private async void OnInviteStateChanged(bool newValue)
         {
-            if (CurrentUser != null && CurrentUser.Id == User.Id && CurrentUser.IsWantsInvites != newValue)
+            /*
+             * Если текущий пользователь существует 
+             * (для предотвращения несуществующей ссылки, если 
+             * данные о пользователе не загрузились) и
+             * если текущий пользователь является 
+             * авторизованным пользователем, 
+             * при этом значение отличается от предыдущего 
+             * (чтобы не обновлять страницу без причины),
+             */
+            if (CurrentUser != null
+                && CurrentUser.Id == User.Id
+                && CurrentUser.IsWantsInvites != newValue)
             {
+                // то присвоить свойству новое значение переменной.
                 CurrentUser.IsWantsInvites = newValue;
+                
+                // Попытка сохранить новое состояние.
                 if (await UserDataStore.UpdateItemAsync(CurrentUser))
                 {
+                    // Если сохранено, то обновить страницу.
                     IsRefreshing = true;
                 }
+                // В противном случае 
+                // UserDataStore
+                // покажет обратную связь
+                // пользователю.
             }
         }
     }

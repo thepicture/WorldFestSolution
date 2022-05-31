@@ -15,23 +15,39 @@ namespace WorldFestSolution.XamarinApp.Services
 {
     public class FestivalDataStore : IDataStore<Festival>
     {
+        /// <summary>
+        /// Добавляет новый фестиваль или обновляет существующий при условии 
+        /// отсутствия ошибок валидации.
+        /// </summary>
+        /// <param name="item">Сохраняемый фестиваль.</param>
+        /// <returns><see langword="true"/>, если фестиваль сохранён, 
+        /// в противном случае <see langword="false"/>.</returns>
         public async Task<bool> AddItemAsync(Festival item)
         {
+            // Объявление списка ошибок.
             StringBuilder errors = new StringBuilder();
+
+            // Если названия нет, то фестиваль невалидный.
             if (string.IsNullOrWhiteSpace(item.Title))
             {
                 _ = errors.AppendLine("Введите название");
             }
+
+            // Если фестиваль начинается раньше сегодняшнего дня, то он невалидный.
             if (item.FromDateTime <= DateTime.Now)
             {
                 _ = errors.AppendLine("Дата начала фестиваля " +
                     "должна быть позднее текущей даты");
             }
+
+            // Если программ в фестивале нет, то он невалидный.
             if (item.FestivalProgram.Count == 0)
             {
                 _ = errors.AppendLine("Создайте хотя бы одну " +
                     "программу для фестиваля");
             }
+
+            // Если есть ошибки валидации, то покинуть метод.
             if (errors.Length > 0)
             {
                 await DependencyService
@@ -39,13 +55,19 @@ namespace WorldFestSolution.XamarinApp.Services
                     .InformError(errors);
                 return false;
             }
+
+            // Сериализация фестиваля для отправки по API.
             string jsonFestival = JsonConvert.SerializeObject(item);
+
+            // Объявление Http-клиента для связи с сервером.
             using (HttpClient client = new HttpClient(App.ClientHandler))
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",
                                                   Identity.AuthorizationValue);
                 client.BaseAddress = new Uri(Api.BaseUrl);
+
+                // Попытка сохранить фестиваль
                 try
                 {
                     HttpResponseMessage response = await client
@@ -53,12 +75,16 @@ namespace WorldFestSolution.XamarinApp.Services
                                 new StringContent(jsonFestival,
                                                   Encoding.UTF8,
                                                   "application/json"));
+
+                    // Если ответ от сервера "Получен", то фестиваль сохранён.
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         await DependencyService
                             .Get<IAlertService>()
                             .Inform("Фестиваль сохранён");
                     }
+                    
+                    // В противном случае вызов обратной связи с причиной ошибки.
                     else
                     {
                         Debug.WriteLine(response);
@@ -66,8 +92,15 @@ namespace WorldFestSolution.XamarinApp.Services
                             .Get<IAlertService>()
                             .InformError(response);
                     }
+
+                    // Метод возвращает результат значения "Сохранён ли фестиваль".
                     return response.StatusCode == HttpStatusCode.Created;
                 }
+
+                /* Показать пользователю причину ошибки, если она не распознана. 
+                 * Этот сценарий может произойти, если сертификат сервера невалидный
+                 * или превышен лимит обращений к серверу.
+                */
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex);

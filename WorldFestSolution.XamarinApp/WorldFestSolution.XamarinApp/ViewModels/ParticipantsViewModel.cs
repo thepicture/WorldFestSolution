@@ -58,34 +58,70 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
         public int FestivalId { get; }
 
+        /// <summary>
+        /// Фоновая переменная 
+        /// для хранения команды удаления 
+        /// участника.
+        /// </summary>
         private Command<ParticipantUser> deleteParticipantCommand;
 
+        /// <summary>
+        /// Оборачивает фоновую переменную 
+        /// для команды удаления участника.
+        /// </summary>
         public Command<ParticipantUser> DeleteParticipantCommand
         {
+            // Попытка получить команду.
             get
             {
+                /* Если команды нет, присвоить её фоновой 
+                 * переменной и вернуть значение последней. */
                 if (deleteParticipantCommand == null)
                 {
-                    deleteParticipantCommand = new Command<ParticipantUser>(DeleteParticipantAsync);
+                    deleteParticipantCommand =
+                        new Command<ParticipantUser>(DeleteParticipantAsync);
                 }
 
+                // Иначе просто вернуть значение фоновой переменной.
                 return deleteParticipantCommand;
             }
         }
 
+        /// <summary>
+        /// Удаляет участника из текущего фестиваля.
+        /// </summary>
+        /// <param name="user">Удаляемый участник.</param>
         private async void DeleteParticipantAsync(ParticipantUser user)
         {
+            // Если участник удалён,
             if (await FestivalUsersDataStore
                     .DeleteItemAsync(FestivalId + "," + user.Id))
             {
+                // То обновить страницу.
                 IsRefreshing = true;
             }
+            /* Иначе показать обратную связь, реализованную 
+             * в FestivalsUsersDataStore. 
+             * Это позволяет переиспользовать 
+             * DataStore без дублирования логики. */
         }
 
+        /// <summary>
+        /// Фоновая переменная 
+        /// для оценки пользователя.
+        /// </summary>
         private Command<ExtendedRatingBar> rateUserCommand;
 
+        /// <summary>
+        /// Свойство, оборачивающее 
+        /// фоновую переменную 
+        /// для оценки пользователя.
+        /// </summary>
         public Command<ExtendedRatingBar> RateUserCommand
         {
+            // Геттер 
+            // для инициализации
+            // переменной.
             get
             {
                 if (rateUserCommand == null)
@@ -95,16 +131,27 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
+        /// <summary>
+        /// Оценивает пользователя по заданному 
+        /// рейтинг-бару c контекстом.
+        /// </summary>
+        /// <param name="ratingBar">Рейтинг-бар с контекстом.</param>
         private async void RateUserAsync(ExtendedRatingBar ratingBar)
         {
+            // Инициализация рейтинга 
+            // по заданному рейтинг-бару.
             UserRating rating = new UserRating
             {
-                RaterId = Identity.Id,
-                UserId = (ratingBar.BindingContext as ParticipantUser).Id,
-                CountOfStars = (int)ratingBar.SelectedStarValue,
-                IsRated = (ratingBar.BindingContext as ParticipantUser).IsRated
+                RaterId = Identity.Id, // Кто оценивает.
+                UserId = (ratingBar.BindingContext as ParticipantUser).Id, // Кого оценить.
+                CountOfStars = (int)ratingBar.SelectedStarValue, // Число звёзд.
+                IsRated = (ratingBar.BindingContext as ParticipantUser).IsRated // Был ли оценён ранее.
             };
+            // Попытка отправить рейтинг 
+            // на сервер.
             await UserRatingDataStore.AddItemAsync(rating);
+            // Обновить страницу в любом случае
+            // (так как новое значение может быть неактуально).
             IsRefreshing = true;
         }
 

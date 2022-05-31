@@ -43,6 +43,8 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             IsRefreshing = false;
         }
 
+        public int FestivalId { get; }
+
         private ObservableCollection<ResponseInvite> invites;
 
         public ObservableCollection<ResponseInvite> Invites
@@ -51,7 +53,6 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             set => SetProperty(ref invites, value);
         }
 
-        private Command<ResponseInvite> inviteUserCommand;
 
         public InviteViewModel(int festivalId)
         {
@@ -59,8 +60,23 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             FestivalId = festivalId;
         }
 
+        /// <summary>
+        /// Фоновая переменная для приглашения участника.
+        /// </summary>
+        private Command<ResponseInvite> inviteUserCommand;
+
+        /// <summary>
+        /// Свойство, оборачивающее фоновую переменную 
+        /// для приглашения участника.
+        /// </summary>
         public Command<ResponseInvite> InviteUserCommand
         {
+            /*
+             * Если фоновая переменная 
+             * не инициализирована, 
+             * то присвоить ей значение. 
+             * В любом случае вернуть её из геттера.
+             */
             get
             {
                 if (inviteUserCommand == null)
@@ -74,18 +90,25 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-        public int FestivalId { get; }
-
+        /// <summary>
+        /// Приглашает участника по заданному 
+        /// контейнеру приглашения.
+        /// </summary>
+        /// <param name="invite">Контейнер приглашения.</param>
         private async void InviteUserAsync(ResponseInvite invite)
         {
+            // Если приглашение отправлено,
             if (await InviteDataStore.AddItemAsync(invite))
             {
+                // То обновить страницу.
                 IsRefreshing = true;
             }
+            // Если страница не обновлена, 
+            // то пользователю выводится обратная связь
+            // посредством InviteDataStore.
         }
 
         private Command<ResponseInvite> acceptInviteCommand;
-
         public Command<ResponseInvite> AcceptInviteCommand
         {
             get

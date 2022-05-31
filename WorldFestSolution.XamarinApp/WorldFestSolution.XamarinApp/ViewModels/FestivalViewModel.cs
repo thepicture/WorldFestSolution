@@ -21,10 +21,26 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             set => SetProperty(ref festival, value);
         }
 
+        /// <summary>
+        /// Фоновая переменная 
+        /// для хранения команды 
+        /// изменения состояния 
+        /// участия в фестивале.
+        /// </summary>
         private Command toggleMyParticipateStateOfFestivalCommand;
 
+        /// <summary>
+        /// Свойство, оборачивающее 
+        /// фоновую переменную 
+        /// для хранения команды 
+        /// изменения состояния 
+        /// участия в фестивале.
+        /// </summary>
         public ICommand ToggleMyParticipateStateOfFestivalCommand
         {
+            // Геттер для возвращения
+            // проинициализированной 
+            // переменной.
             get
             {
                 if (toggleMyParticipateStateOfFestivalCommand == null)
@@ -37,20 +53,37 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
         }
 
-
+        /// <summary>
+        /// Переключает состояние участия в фестивале.
+        /// </summary>
         private async void ToggleMyParticipateStateOfFestivalAsync()
         {
+            // Оповещение представления о том, что 
+            // происходит полезная работа.
             IsBusy = true;
+
+            // Создание контейнера, описывающего 
+            // участие в фестивале.
             UserOfFestival userOfFestival = new UserOfFestival
             {
                 FestivalId = FestivalId,
                 IsParticipating = Festival.IsMeParticipating
             };
+
+            // Если участие успешно обработано,
             if (await UserOfFestivalDataStore.UpdateItemAsync(userOfFestival))
             {
+                // то обновить страницу,
                 IsRefreshing = true;
             }
+            
+            // и оповестить представление о том, 
+            // что модель представления доступна.
             IsBusy = false;
+
+            // В противном случае 
+            // UserOfFestivalDataStore
+            // покажет обратную связь пользователю.
         }
 
         internal void OnAppearing()
