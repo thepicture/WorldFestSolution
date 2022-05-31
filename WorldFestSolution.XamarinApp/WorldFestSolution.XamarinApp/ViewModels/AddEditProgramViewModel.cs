@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Text;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using Xamarin.Forms;
@@ -12,9 +13,11 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         public AddEditProgramViewModel(
             ObservableCollection<FestivalProgram> programs,
+            Action notifyProgramsChangedAction,
             FestivalProgram programToEdit = null)
         {
             Programs = programs;
+            NotifyProgramsChangedAction = notifyProgramsChangedAction;
             if (programToEdit != null)
             {
                 Program = programToEdit;
@@ -34,6 +37,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get => programs;
             set => SetProperty(ref programs, value);
         }
+        public Action NotifyProgramsChangedAction { get; }
 
         private Command addProgramCommand;
 
@@ -75,10 +79,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 Program.IsAddedLocally = true;
                 Programs.Add(Program);
+                OnPropertyChanged(nameof(Festival));
             }
             await AlertService.Inform($"Программа {action} " +
                 "и будет сохранена после подтверждения " +
                 "изменений фестиваля");
+            NotifyProgramsChangedAction?.Invoke();
             await Shell.Current.GoToAsync("..");
         }
 

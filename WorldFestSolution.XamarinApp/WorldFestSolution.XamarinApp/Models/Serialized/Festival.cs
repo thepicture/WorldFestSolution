@@ -83,5 +83,17 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         }
         public bool IsRated { get; set; }
         public bool IsMinorPeopleAllowed { get; set; }
+
+        [JsonIgnore]
+        public string TitleErrorText => "Укажите название фестиваля";
+
+        [JsonIgnore]
+        public bool IsHasTitleError
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(Title);
+            }
+        }
     }
 }

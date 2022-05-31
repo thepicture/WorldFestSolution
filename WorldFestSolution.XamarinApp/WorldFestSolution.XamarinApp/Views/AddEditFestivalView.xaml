@@ -22,6 +22,8 @@
         <ScrollView>
             <StackLayout>
                 <material:MaterialTextField Text="{Binding Festival.Title}"
+                                            HasError="{Binding Festival.IsHasTitleError}"
+                                            ErrorText="{Binding Festival.TitleErrorText}"
                                             Placeholder="Введите название"
                                             InputType="Text"
                                             MaxLength="255"

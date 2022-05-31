@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
@@ -22,6 +23,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 Festival.FromDateTime = System.DateTime.Now.AddDays(1);
             }
+            Festival.PropertyChanged += (_, __) =>
+            {
+                SaveChangesCommand.ChangeCanExecute();
+            };
         }
 
         public Festival Festival
@@ -32,13 +37,17 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private Command saveChangesCommand;
 
-        public ICommand SaveChangesCommand
+        public Command SaveChangesCommand
         {
             get
             {
                 if (saveChangesCommand == null)
                 {
-                    saveChangesCommand = new Command(SaveChangesAsync);
+                    saveChangesCommand = new Command(SaveChangesAsync, () =>
+                    {
+                        return Festival.FestivalProgram
+                            .Count(p => !p.IsDeletedLocally) > 0 && !Festival.IsHasTitleError;
+                    });
                 }
 
                 return saveChangesCommand;
@@ -119,7 +128,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             await Shell.Current.Navigation.PushAsync(
                 new AddProgramView(
-                    new AddEditProgramViewModel(Festival.FestivalProgram)));
+                    new AddEditProgramViewModel(Festival.FestivalProgram, () =>
+                    {
+                        SaveChangesCommand.ChangeCanExecute();
+                    })));
         }
 
         private Command<FestivalProgram> goToEditProgramViewCommand;
@@ -143,8 +155,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             await Shell.Current.Navigation.PushAsync(
                 new AddProgramView(
-                    new AddEditProgramViewModel(Festival.FestivalProgram,
-                                                program)));
+                    new AddEditProgramViewModel(Festival.FestivalProgram, () =>
+                    {
+                        SaveChangesCommand.ChangeCanExecute();
+                    }, program)));
         }
 
         private Command<FestivalProgram> deleteProgramCommand;
@@ -168,6 +182,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (await AlertService.Ask($"Удалить программу {program.Title}?"))
             {
                 program.IsDeletedLocally = true;
+                SaveChangesCommand.ChangeCanExecute();
                 await AlertService.Warn(
                     $"Программа {program.Title} "
                     + $"будет удалена после подтверждения "
