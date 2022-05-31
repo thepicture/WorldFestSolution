@@ -14,6 +14,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public bool IsSent { get; set; }
         public User Organizer { get; set; }
         public User Participant { get; set; }
+        public Festival Festival { get; set; }
         public string FestivalTitle { get; set; }
         [JsonIgnore]
         public string VisibleFullName => Organizer?.FullName

@@ -81,7 +81,8 @@ namespace WorldFestSolution.WebAPI.Controllers
                             FestivalId = i.FestivalId,
                             IsAccepted = i.IsAccepted,
                             Organizer = new SerializedUser(i.User1),
-                            FestivalTitle = i.Festival.Title
+                            FestivalTitle = i.Festival.Title,
+                            Festival = new SerializedFestival(i.Festival)
                         };
                     })
                     .ToList();
