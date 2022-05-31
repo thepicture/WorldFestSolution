@@ -10,9 +10,8 @@
              x:DataType="viewmodels:CommentsViewModel"
              x:Class="WorldFestSolution.XamarinApp.Views.CommentsView"
              x:Name="Page"
-             Title="{Binding Path=Comments.Count, 
-                             StringFormat='{}Комментарии ({0})'}">
-    <ContentView>
+             Title="{Binding Path=Comments.Count, StringFormat='{}Комментарии ({0})'}">
+    <ContentView Margin="5">
         <RefreshView IsRefreshing="{Binding IsRefreshing}"
                      Command="{Binding RefreshCommand}">
             <Grid RowDefinitions="*, auto">
@@ -20,7 +19,7 @@
                     <StackLayout BindableLayout.ItemsSource="{Binding Comments}">
                         <BindableLayout.EmptyViewTemplate>
                             <DataTemplate>
-                                <templates:NoItemsTemplate Reason="Комментариев не найдено. Будьте первым, кто оставит отзыв!"/>
+                                <templates:NoItemsTemplate Reason="Комментариев не найдено. Напишите первым!" />
                             </DataTemplate>
                         </BindableLayout.EmptyViewTemplate>
                         <BindableLayout.ItemTemplate>
@@ -31,10 +30,19 @@
                     </StackLayout>
                 </ScrollView>
                 <StackLayout Grid.Row="1">
-                    <Editor Text="{Binding Comment.Text}"
-                            HeightRequest="120"
-                            Placeholder="Введите комментарий..."
-                            MaxLength="1024" />
+                    <material:MaterialTextField Text="{Binding Comment.Text}"
+                                                ErrorText="Текст комментария обязателен"
+                                                AlwaysShowUnderline="True"
+                                                Placeholder="Введите комментарий"
+                                                MaxLength="1024">
+                        <material:MaterialTextField.HasError>
+                            <Binding Path="Comment.Text">
+                                <Binding.Converter>
+                                    <converters:StringToHasErrorIfEmptyValueConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </material:MaterialTextField.HasError>
+                    </material:MaterialTextField>
                     <material:MaterialButton Command="{Binding PostCommentCommand}"
                                              Text="Отправить"
                                              Style="{StaticResource BaseButton}" />
