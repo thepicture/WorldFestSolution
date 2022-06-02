@@ -6,6 +6,8 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
 {
     public class SerializedUser
     {
+        private const int DefaultRating = 0;
+
         public SerializedUser()
         {
         }
@@ -27,12 +29,14 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             }
             else
             {
-                Rating = 0;
+                Rating = DefaultRating;
             }
             IsRated = user.UserRating.Any(r =>
             {
                 return r.User1?.Login == HttpContext.Current.User.Identity.Name;
             });
+            CountOfFestivals = user.Festival.Count;
+            CountOfComments = user.FestivalComment.Count;
         }
 
         public int Id { get; set; }
@@ -47,5 +51,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public bool IsRated { get; set; }
         public bool? Is18OrMoreYearsOld { get; set; }
         public bool IsWantsInvites { get; set; }
+        public int CountOfFestivals { get; set; }
+        public int CountOfComments { get; set; }
     }
 }

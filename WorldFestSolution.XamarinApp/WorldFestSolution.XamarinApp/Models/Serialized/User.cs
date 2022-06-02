@@ -76,5 +76,7 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public bool IsRated { get; set; }
         public bool Is18OrMoreYearsOld { get; set; }
         public bool IsWantsInvites { get; set; }
+        public int CountOfFestivals { get; set; }
+        public int CountOfComments { get; set; }
     }
 }

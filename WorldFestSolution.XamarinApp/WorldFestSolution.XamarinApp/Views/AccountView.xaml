@@ -103,6 +103,27 @@
                                 </DataTrigger>
                             </rating:RatingBar.Triggers>
                         </rating:RatingBar>
+                        <Grid RowDefinitions="auto,auto">
+                            <Label Text="{Binding CurrentUser.CountOfComments, StringFormat='{}Написано комментариев: {0}'}"
+                                   HorizontalTextAlignment="Center" />
+                            <Label HorizontalTextAlignment="Center"
+                                   Grid.Row="1">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding CurrentUser.UserTypeId}"
+                                                 Value="1">
+                                        <Setter Property="Text"
+                                                Value="{Binding CurrentUser.CountOfFestivals,  StringFormat='{}Участвует в фестивалях: {0}'}" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding CurrentUser.UserTypeId}"
+                                                 Value="2">
+                                        <Setter Property="Text"
+                                                Value="{Binding CurrentUser.CountOfFestivals,  StringFormat='{}Создано фестивалей: {0}'}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Grid>
                         <StackLayout IsVisible="False">
                             <StackLayout.Triggers>
                                 <DataTrigger TargetType="StackLayout"
