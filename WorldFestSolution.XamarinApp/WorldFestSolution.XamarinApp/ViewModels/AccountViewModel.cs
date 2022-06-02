@@ -34,6 +34,13 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void LogoutAsync()
         {
+            if (IsBusy)
+            {
+                await AlertService.Warn("Вы не можете "
+                                        + "выйти из аккаунта "
+                                        + "до окончания обновления страницы");
+                return;
+            }
             if (await AlertService.Ask("Выйти из аккаунта?"))
             {
                 Identity.Logout();
@@ -64,6 +71,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
 
         private async void RefreshAsync()
         {
+            IsBusy = true;
             User userFromDatabase = await UserDataStore.GetItemAsync(
                 UserId.ToString());
             if (userFromDatabase != null)
@@ -76,6 +84,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 MessagingCenter.Instance.Send(this, "UpdateRatingBar", countOfStars);
             }
             IsRefreshing = false;
+            IsBusy = false;
         }
 
         private Command goToChangePasswordViewCommand;
@@ -232,7 +241,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             get
             {
                 if (inviteStateChangedCommand == null)
-                    inviteStateChangedCommand = 
+                    inviteStateChangedCommand =
                         new Command<bool>(OnInviteStateChanged);
 
                 return inviteStateChangedCommand;
@@ -263,7 +272,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 // то присвоить свойству новое значение переменной.
                 CurrentUser.IsWantsInvites = newValue;
-                
+
                 // Попытка сохранить новое состояние.
                 if (await UserDataStore.UpdateItemAsync(CurrentUser))
                 {
