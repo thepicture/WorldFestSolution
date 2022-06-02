@@ -1,104 +1,72 @@
-﻿using Microcharts;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using WorldFestSolution.XamarinApp.Models.Filters;
 using WorldFestSolution.XamarinApp.Models.Serialized;
-using Xamarin.Forms;
 
 namespace WorldFestSolution.XamarinApp.ViewModels
 {
+    [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class FestivalsPopularityChartViewModel : BaseViewModel
     {
-        private Chart chart;
-        private ObservableCollection<ChartEntry> entries;
-        private readonly Random random = new Random();
+        private IFilter filter;
 
-        public FestivalsPopularityChartViewModel()
+        public ObservableCollection<FestivalPopularity> FestivalPopularities { get; set; }
+        public IFilter Filter
         {
-            Entries = new ObservableCollection<ChartEntry>();
-            Chart = new BarChart
+            get => filter;
+            set
             {
-                ValueLabelOrientation = Orientation.Horizontal,
-                LabelTextSize = 50,
-                LabelOrientation = Orientation.Horizontal,
-                Entries = Entries,
-            };
-        }
-
-        private async Task LoadEntriesAsync()
-        {
-            Entries.Clear();
-            IsRefreshing = true;
-            IEnumerable<FestivalPopularity> festivals
-                = await FestivalPopularityDataStore.GetItemsAsync();
-            IEnumerable<ChartEntry> festivalEntries = festivals.Select(f =>
-               {
-                   return new ChartEntry(f.CountOfUsers)
-                   {
-                       Label = f.FestivalTitle,
-                       ValueLabel = f.CountOfUsers.ToString(),
-                       Color = SkiaSharp.SKColor.Parse("#"
-                                       + random
-                                           .Next(200, 256)
-                                           .ToString("x2")
-                                       + random
-                                           .Next(200, 256)
-                                           .ToString("x2")
-                                       + random
-                                           .Next(200, 256)
-                                           .ToString("x2"))
-                   };
-               });
-            foreach (ChartEntry festivalEntry in festivalEntries)
-            {
-                Entries.Add(festivalEntry);
+                if (SetProperty(ref filter, value))
+                {
+                    LoadEntriesAsync();
+                }
             }
-            Chart.Entries = Entries;
-            OnPropertyChanged(
-                nameof(Chart));
-            EntriesChanged?.Invoke();
-            IsRefreshing = false;
         }
 
-        public event Action EntriesChanged;
+        private async void LoadEntriesAsync()
+        {
+            FestivalPopularities?.Clear();
+            IEnumerable<FestivalPopularity> currentFestivals
+                = await FestivalPopularityDataStore.GetItemsAsync();
+            if (Filters == null)
+            {
+                LoadFilters(currentFestivals);
+            }
+            if (Filter != null)
+            {
+                currentFestivals = Filter.Accept(currentFestivals);
+            }
+            FestivalPopularities =
+                new ObservableCollection<FestivalPopularity>(currentFestivals);
+        }
+
+        private void LoadFilters(IEnumerable<FestivalPopularity> currentFestivals)
+        {
+            Filters = new ObservableCollection<IFilter>();
+            int countOfFestivals = currentFestivals.Count();
+            for (int i = 1; i <= countOfFestivals; i += 5)
+            {
+                Filters.Add(new FromToFilter
+                {
+                    Title = $"с {i} по {i + 4}",
+                    From = i,
+                    To = i + 4,
+                    SortType = SortType.Descending,
+                    PropertyName = nameof(FestivalPopularity.CountOfUsers)
+                });
+            }
+            if (Filter == null)
+            {
+                Filter = Filters.FirstOrDefault();
+            }
+        }
 
         internal void OnAppearing()
         {
-            IsRefreshing = true;
+            LoadEntriesAsync();
         }
 
-        public ObservableCollection<ChartEntry> Entries
-        {
-            get => entries;
-            set => SetProperty(ref entries, value);
-        }
-        public Chart Chart
-        {
-            get => chart;
-            set => SetProperty(ref chart, value);
-        }
-
-        private Command refreshCommand;
-
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                if (refreshCommand == null)
-                {
-                    refreshCommand = new Command(RefreshAsync);
-                }
-
-                return refreshCommand;
-            }
-        }
-
-        private async void RefreshAsync()
-        {
-            await LoadEntriesAsync();
-        }
+        public ObservableCollection<IFilter> Filters { get; set; }
     }
 }

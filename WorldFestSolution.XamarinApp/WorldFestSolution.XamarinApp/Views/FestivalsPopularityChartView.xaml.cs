@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using WorldFestSolution.XamarinApp.ViewModels;
+﻿using WorldFestSolution.XamarinApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,14 +12,7 @@ namespace WorldFestSolution.XamarinApp.Views
         public FestivalsPopularityChartView()
         {
             InitializeComponent();
-            BindingContext
-                = _viewModel
-                = new FestivalsPopularityChartViewModel();
-            _viewModel.EntriesChanged += delegate
-            {
-                PopularityChart.WidthRequest = 75
-                * PopularityChart.Chart.Entries.Count();
-            };
+            BindingContext = _viewModel = new FestivalsPopularityChartViewModel();
         }
 
         protected override void OnAppearing()

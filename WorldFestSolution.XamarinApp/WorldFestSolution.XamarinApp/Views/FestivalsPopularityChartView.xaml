@@ -2,18 +2,49 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
-             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             xmlns:filters="clr-namespace:WorldFestSolution.XamarinApp.Models.Filters"
              x:DataType="viewmodels:FestivalsPopularityChartViewModel"
              Title="Популярность фестивалей"
              x:Class="WorldFestSolution.XamarinApp.Views.FestivalsPopularityChartView">
     <ContentView>
-        <RefreshView IsRefreshing="{Binding IsRefreshing}"
-                     Command="{Binding RefreshCommand}">
-            <ScrollView Orientation="Horizontal">
-                <microcharts:ChartView x:Name="PopularityChart"
-                                       Chart="{Binding Chart}"
-                                       HorizontalOptions="StartAndExpand" />
-            </ScrollView>
-        </RefreshView>
+        <Grid RowDefinitions="auto,auto,*">
+            <Label Text="Фильтровать по диапазону"
+                   Margin="10,0,0,10" />
+            <Picker x:Name="FilterPicker"
+                    ItemsSource="{Binding Filters}"
+                    SelectedItem="{Binding Filter}"
+                    FontSize="Micro"
+                    Title="Выберите диапазон"
+                    Grid.Row="1"
+                    Margin="10,0,0,10">
+                <Picker.ItemDisplayBinding>
+                    <Binding Path="Title" />
+                </Picker.ItemDisplayBinding>
+            </Picker>
+            <chart:SfChart Grid.Row="2">
+                <chart:SfChart.PrimaryAxis>
+                    <chart:CategoryAxis LabelRotationAngle="-45">
+                        <chart:CategoryAxis.Title>
+                            <chart:ChartAxisTitle Text="Название фестиваля"/>
+                        </chart:CategoryAxis.Title>
+                    </chart:CategoryAxis>
+                </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.SecondaryAxis>
+                    <chart:NumericalAxis Interval="1">
+                        <chart:NumericalAxis.Title>
+                            <chart:ChartAxisTitle Text="Количество участников"/>
+                        </chart:NumericalAxis.Title>
+                    </chart:NumericalAxis>
+                </chart:SfChart.SecondaryAxis>
+                <chart:SfChart.Series>
+                    <chart:ColumnSeries ItemsSource="{Binding FestivalPopularities}"
+                                        XBindingPath="FestivalTitle"
+                                        YBindingPath="CountOfUsers"
+                                        EnableTooltip="True"
+                                        Grid.Row="1" />
+                </chart:SfChart.Series>
+            </chart:SfChart>
+        </Grid>
     </ContentView>
 </ContentPage>
