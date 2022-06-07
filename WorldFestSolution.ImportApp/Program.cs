@@ -4,34 +4,40 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 
 namespace WorldFestSolution.ImportApp
 {
+    public static class UserRoleIds
+    {
+        public const int ParticipantId = 1;
+        public const int OrganizerId = 2;
+    }
+
     internal class Program
     {
+        private const string DefaultPlainPassword = "123";
+        private static readonly int ImageWidth = 500;
+        private static readonly int ImageHeight = 500;
+        private static readonly int ImageQuality = 50;
         private static readonly string[] firstNames = new string[]
         {
             "Иван",
             "Александр",
             "Андрей",
-            "Ивана",
-            "Александра",
-            "Андрия",
-            "Мария",
-            "Светлана",
-            "Макс"
+            "Макс",
+            "Кирилл",
+            "Николай"
         };
         private static readonly string[] lastNames = new string[]
         {
-            "Иванова",
-            "Александрова",
-            "Андреева",
-            "Иванова",
-            "Александрова",
-            "Андреева",
-            "Мариева",
-            "Светланова",
-            "Максова"
+            "Иванов",
+            "Александров",
+            "Андреев",
+            "Мариев",
+            "Светланов",
+            "Максов",
+            "Кириллов"
         };
 
         private static readonly Random random = new Random();
@@ -67,8 +73,8 @@ namespace WorldFestSolution.ImportApp
             "Прослушивание мюзикла",
             "Прогулка по парку",
             "Совместное рисование",
-            "Катание на скейтбордах",
-            "Отдых на траве"
+            "Катаемся на скейтбордах",
+            "Отдых в парке"
         };
 
         private static readonly string[] festivalProgramDescriptions = new string[]
@@ -89,20 +95,45 @@ namespace WorldFestSolution.ImportApp
             "Суперский фестиваль",
         };
 
-        private static string[] UserImages => Directory.GetFiles(
-            Path.Combine(
-                Path.GetFullPath("../.."), "UserImages"));
-        private static string[] FestivalImages => Directory.GetFiles(
-           Path.Combine(
-               Path.GetFullPath("../.."), "FestivalImages"));
+        private static string[] UserImages;
+        private static string[] FestivalImages;
 
+        private static ImageTransformService ImageTransformService;
+
+        [STAThread]
         private static void Main()
         {
-            ImportUsers(10);
-            ImportFestivalsForEachUser(3);
-            ImportProgramsForEachFestival(4, 6);
-            ImportParticipantsForEachFestival(2, 4);
-            ImportFestivalsCommentsForEachFestival(3, 5);
+            ImageTransformService = new ImageTransformService();
+            FolderBrowserDialog userImagesFolderBrowserDialog = new FolderBrowserDialog
+            {
+                Description = "Выберите папку с фотографиями пользователей"
+            };
+            if (userImagesFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                UserImages = Directory.GetFiles(userImagesFolderBrowserDialog.SelectedPath);
+            }
+            else
+            {
+                return;
+            }
+            FolderBrowserDialog festivalImagesFolderBrowserDialog = new FolderBrowserDialog
+            {
+                Description = "Выберите папку с фотографиями фестивалей"
+            };
+            if (festivalImagesFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                FestivalImages = Directory.GetFiles(festivalImagesFolderBrowserDialog.SelectedPath);
+            }
+            else
+            {
+                return;
+            }
+            ImportUsers(count: 16, roleId: UserRoleIds.ParticipantId);
+            ImportUsers(count: 2, roleId: UserRoleIds.OrganizerId);
+            ImportFestivalsForEachOrganizer(count: 2);
+            ImportProgramsForEachFestival(minCount: 2, maxCount: 3);
+            ImportParticipantsForEachFestival(minCount: 3, maxCount: 6);
+            ImportFestivalsCommentsForEachFestival(minCount: 3, maxCount: 5);
             Console.ReadKey();
         }
 
@@ -110,21 +141,21 @@ namespace WorldFestSolution.ImportApp
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
-                foreach (Festival festival in entities.Festival)
+                foreach (Festival festival in entities.Festivals)
                 {
                     for (int i = 0;
                         i < random.Next(minCount, maxCount + 1);
                         i++)
                     {
-                        festival.FestivalComment.Add(new FestivalComment
+                        festival.FestivalComments.Add(new FestivalComment
                         {
-                            UserId = festival.User
+                            UserId = festival.Users
                                 .ToList()
                                 .ElementAt(
-                                    random.Next(0, festival.User.Count())).Id,
+                                    random.Next(0, festival.Users.Count())).Id,
                             Text = festivalComments[random.Next(0, festivalComments.Length)],
-                            CreationDateTime = festival.FromDateTime
-                                               + TimeSpan.FromHours(random.Next(6, 12))
+                            CreationDateTime = festival.FromDateTime + TimeSpan.FromHours(
+                                random.Next(6, 12))
                         });
                     }
                 }
@@ -136,10 +167,10 @@ namespace WorldFestSolution.ImportApp
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
-                List<User> participants = entities.User
+                List<User> participants = entities.Users
                .Where(u => u.UserType.Title == "Участник")
                .ToList();
-                foreach (Festival festival in entities.Festival)
+                foreach (Festival festival in entities.Festivals)
                 {
                     for (int i = 0;
                         i < random.Next(minCount, maxCount + 1);
@@ -147,7 +178,7 @@ namespace WorldFestSolution.ImportApp
                     {
                         try
                         {
-                            festival.User.Add(
+                            festival.Users.Add(
                                 participants.ElementAt(
                                     random.Next(0, participants.Count)));
                         }
@@ -164,13 +195,13 @@ namespace WorldFestSolution.ImportApp
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
-                foreach (Festival festival in entities.Festival)
+                foreach (Festival festival in entities.Festivals)
                 {
                     for (int i = 0;
                         i < random.Next(minCount, maxCount + 1);
                         i++)
                     {
-                        festival.FestivalProgram.Add(new FestivalProgram
+                        festival.FestivalPrograms.Add(new FestivalProgram
                         {
                             DurationInMinutes = random.Next(30, 120),
                             Title = festivalProgramTitles[random.Next(0, festivalProgramTitles.Length)],
@@ -182,11 +213,11 @@ namespace WorldFestSolution.ImportApp
             }
         }
 
-        private static void ImportFestivalsForEachUser(int count)
+        private static void ImportFestivalsForEachOrganizer(int count)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
-                foreach (User user in entities.User
+                foreach (User user in entities.Users
                     .Where(u => u.UserType.Title == "Организатор"))
                 {
                     for (int i = 0; i < count; i++)
@@ -196,18 +227,22 @@ namespace WorldFestSolution.ImportApp
                             Title = festivalTitles[random.Next(0, festivalTitles.Length)],
                             Description = festivalDescriptions[random.Next(0, festivalDescriptions.Length)],
                             FromDateTime = DateTime.Now.AddDays(random.Next(2, 8)),
-                            Image = File.ReadAllBytes(
-                                FestivalImages[random.Next(0, FestivalImages.Length)]),
+                            Image = ImageTransformService.Transform(
+                                File.ReadAllBytes(
+                                    FestivalImages[random.Next(0, FestivalImages.Length)]),
+                                ImageWidth,
+                                ImageHeight,
+                                ImageQuality)
                         };
-                        festival.User.Add(user);
-                        entities.Festival.Add(festival);
+                        festival.Users.Add(user);
+                        entities.Festivals.Add(festival);
                     }
                 }
                 entities.SaveChanges();
             }
         }
 
-        private static void ImportUsers(int count)
+        private static void ImportUsers(int count, int roleId)
         {
             using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
             {
@@ -215,9 +250,7 @@ namespace WorldFestSolution.ImportApp
                 {
                     byte[] salt = Guid.NewGuid()
                         .ToByteArray();
-                    string password = Guid.NewGuid()
-                        .ToString()
-                        .Substring(30);
+                    string password = DefaultPlainPassword;
                     List<byte> passwordBytesAndHash = Encoding.UTF8
                         .GetBytes(password)
                         .ToList();
@@ -235,16 +268,20 @@ namespace WorldFestSolution.ImportApp
                         Salt = salt,
                         FirstName = firstNames[random.Next(0, firstNames.Length)],
                         LastName = lastNames[random.Next(0, lastNames.Length)],
-                        UserTypeId = random.Next(1, 3),
-                        Image = File.ReadAllBytes(
-                            UserImages[random.Next(0, UserImages.Length)])
+                        UserTypeId = roleId,
+                        Image = ImageTransformService.Transform(
+                            File.ReadAllBytes(
+                                UserImages[random.Next(0, UserImages.Length)]),
+                            ImageWidth,
+                            ImageHeight,
+                            ImageQuality)
                     };
                     Console.WriteLine(user.Login
                         + " : "
                         + password
                         + ", роль: "
                         + (user.UserTypeId == 1 ? "участник" : "организатор"));
-                    entities.User.Add(user);
+                    entities.Users.Add(user);
                 }
                 entities.SaveChanges();
             }

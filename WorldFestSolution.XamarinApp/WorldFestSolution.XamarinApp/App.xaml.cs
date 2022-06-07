@@ -9,6 +9,8 @@ using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using XF.Material.Forms;
+using XF.Material.Forms.Resources;
 
 namespace WorldFestSolution.XamarinApp
 {
@@ -54,12 +56,7 @@ namespace WorldFestSolution.XamarinApp
                 Models.Api.BaseUrl = newBaseUrl;
             };
 
-            XF.Material.Forms.Material.Init(this,
-                (XF
-                .Material
-                .Forms
-                .Resources
-                .MaterialConfiguration)Resources["CommonMaterial"]);
+            Material.Init(this, (MaterialConfiguration)Resources["CommonMaterial"]);
 
             DependencyService.Register<CredentialsService>();
             DependencyService.Register<AndroidAlertService>();

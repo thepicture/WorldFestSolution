@@ -25,13 +25,13 @@ namespace WorldFestSolution.ImportApp
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Festival> Festival { get; set; }
-        public virtual DbSet<FestivalComment> FestivalComment { get; set; }
-        public virtual DbSet<FestivalProgram> FestivalProgram { get; set; }
-        public virtual DbSet<FestivalRating> FestivalRating { get; set; }
-        public virtual DbSet<ParticipantInvite> ParticipantInvite { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserRating> UserRating { get; set; }
-        public virtual DbSet<UserType> UserType { get; set; }
+        public virtual DbSet<Festival> Festivals { get; set; }
+        public virtual DbSet<FestivalComment> FestivalComments { get; set; }
+        public virtual DbSet<FestivalProgram> FestivalPrograms { get; set; }
+        public virtual DbSet<FestivalRating> FestivalRatings { get; set; }
+        public virtual DbSet<ParticipantInvite> ParticipantInvites { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRating> UserRatings { get; set; }
+        public virtual DbSet<UserType> UserTypes { get; set; }
     }
 }

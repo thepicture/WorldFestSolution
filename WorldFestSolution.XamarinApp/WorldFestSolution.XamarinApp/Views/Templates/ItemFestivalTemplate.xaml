@@ -17,6 +17,7 @@
                     <Frame CornerRadius="60"
                            VerticalOptions="Start"
                            Padding="0"
+                           HeightRequest="60"
                            HasShadow="False">
                         <Image Aspect="AspectFill">
                             <Image.Source>

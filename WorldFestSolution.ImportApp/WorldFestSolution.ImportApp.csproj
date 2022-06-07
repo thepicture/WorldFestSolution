@@ -42,8 +42,10 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,6 +81,8 @@
     <Compile Include="FestivalRating.cs">
       <DependentUpon>BaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="IImageTransformService.cs" />
+    <Compile Include="ImageTransformService.cs" />
     <Compile Include="ParticipantInvite.cs">
       <DependentUpon>BaseModel.tt</DependentUpon>
     </Compile>
@@ -111,31 +115,14 @@
   <ItemGroup>
     <Content Include="BaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BaseModel.Context.cs</LastGenOutput>
       <DependentUpon>BaseModel.edmx</DependentUpon>
+      <LastGenOutput>BaseModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="BaseModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BaseModel.edmx</DependentUpon>
       <LastGenOutput>BaseModel.cs</LastGenOutput>
     </Content>
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_01.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_02.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_03.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_04.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_05.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_06.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_07.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_08.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_09.png" />
-    <Content Include="FestivalImages\ny-regular-sticker-256x256_10.png" />
-    <Content Include="UserImages\calm.png" />
-    <Content Include="UserImages\happy-1.png" />
-    <Content Include="UserImages\happy-3.png" />
-    <Content Include="UserImages\happy.png" />
-    <Content Include="UserImages\laughing-1.png" />
-    <Content Include="UserImages\laughing.png" />
-    <Content Include="UserImages\tongue.png" />
     <Content Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>

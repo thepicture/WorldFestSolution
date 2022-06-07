@@ -17,13 +17,13 @@ namespace WorldFestSolution.ImportApp
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.FestivalComment = new HashSet<FestivalComment>();
-            this.FestivalRating = new HashSet<FestivalRating>();
-            this.ParticipantInvite = new HashSet<ParticipantInvite>();
-            this.ParticipantInvite1 = new HashSet<ParticipantInvite>();
-            this.UserRating = new HashSet<UserRating>();
-            this.UserRating1 = new HashSet<UserRating>();
-            this.Festival = new HashSet<Festival>();
+            this.FestivalComments = new HashSet<FestivalComment>();
+            this.FestivalRatings = new HashSet<FestivalRating>();
+            this.ParticipantInvites = new HashSet<ParticipantInvite>();
+            this.ParticipantInvites1 = new HashSet<ParticipantInvite>();
+            this.UserRatings = new HashSet<UserRating>();
+            this.UserRatings1 = new HashSet<UserRating>();
+            this.Festivals = new HashSet<Festival>();
         }
     
         public int Id { get; set; }
@@ -35,22 +35,23 @@ namespace WorldFestSolution.ImportApp
         public string Patronymic { get; set; }
         public int UserTypeId { get; set; }
         public byte[] Image { get; set; }
-        public bool IsWantInvites { get; set; }
+        public bool IsWantsInvites { get; set; }
+        public bool Is18OrMoreYearsOld { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FestivalComment> FestivalComment { get; set; }
+        public virtual ICollection<FestivalComment> FestivalComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FestivalRating> FestivalRating { get; set; }
+        public virtual ICollection<FestivalRating> FestivalRatings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParticipantInvite> ParticipantInvite { get; set; }
+        public virtual ICollection<ParticipantInvite> ParticipantInvites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ParticipantInvite> ParticipantInvite1 { get; set; }
+        public virtual ICollection<ParticipantInvite> ParticipantInvites1 { get; set; }
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserRating> UserRating { get; set; }
+        public virtual ICollection<UserRating> UserRatings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserRating> UserRating1 { get; set; }
+        public virtual ICollection<UserRating> UserRatings1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Festival> Festival { get; set; }
+        public virtual ICollection<Festival> Festivals { get; set; }
     }
 }

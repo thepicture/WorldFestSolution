@@ -4,27 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="be2cca37dc764cb89921de850bc4fe49" Name="Diagram1">
-        <EntityTypeShape EntityType="WorldFestBaseModel.Festival" Width="1.5" PointX="0.75" PointY="8.625" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalComment" Width="1.5" PointX="5.25" PointY="5.875" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalProgram" Width="1.5" PointX="3" PointY="23.5" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalRating" Width="1.5" PointX="5.25" PointY="9" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.ParticipantInvite" Width="1.5" PointX="8.25" PointY="8.75" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.User" Width="1.5" PointX="3" PointY="7.75" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.UserRating" Width="1.5" PointX="5.25" PointY="12" />
-        <EntityTypeShape EntityType="WorldFestBaseModel.UserType" Width="1.5" PointX="0.75" PointY="5.25" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalComment_Festival" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalProgram_Festival" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_Festival" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_Festival" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalComment_User" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_User" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User1" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_User_UserType" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User" />
-        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User1" />
-        <AssociationConnector Association="WorldFestBaseModel.UserOfFestival" />
+      <Diagram DiagramId="7c48b6e6cfba41ceb6843f827b27acb5" Name="Diagram1">
+        <EntityTypeShape EntityType="WorldFestBaseModel.Festival" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalComment" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalProgram" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.FestivalRating" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.ParticipantInvite" Width="1.5" PointX="6" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.User" Width="1.5" PointX="6" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.UserRating" Width="1.5" PointX="8.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorldFestBaseModel.UserType" Width="1.5" PointX="3.75" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalComment_Festival" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalProgram_Festival" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_Festival" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_Festival" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalComment_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_FestivalRating_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_ParticipantInvite_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_User_UserType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.FK_UserRating_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="WorldFestBaseModel.UserOfFestival" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
