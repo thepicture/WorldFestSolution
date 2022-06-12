@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -26,9 +27,15 @@ namespace WorldFestSolution.WebAPI.Controllers
                 if (HttpContext.Current.User.IsInRole("Организатор"))
                 {
                     return db.User
-                        .First(u => u.Login == HttpContext.Current.User.Identity.Name)
+                        .First(u => 
+                            u.Login.Equals(HttpContext.Current.User.Identity.Name,
+                                           StringComparison.OrdinalIgnoreCase))
                         .Festival
-                        .Where(f => f.User.First().Login == HttpContext.Current.User.Identity.Name)
+                        .Where(f =>
+                        {
+                            return f.User.First().Login
+                                .Equals(HttpContext.Current.User.Identity.Name, StringComparison.OrdinalIgnoreCase);
+                        })
                         .ToList()
                         .ConvertAll(f => new SerializedFestival(f));
                 }
