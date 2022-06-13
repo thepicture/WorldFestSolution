@@ -35,7 +35,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<bool> UpdateItemAsync(UserOfFestival item)
         {
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

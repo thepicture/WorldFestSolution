@@ -17,7 +17,7 @@ namespace WorldFestSolution.XamarinApp.Services
         public async Task<bool> AddItemAsync(byte[] item)
         {
             string imageBytes = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",
@@ -62,7 +62,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<byte[]> GetItemAsync(string id)
         {
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

@@ -32,7 +32,7 @@ namespace WorldFestSolution.XamarinApp.Services
         public async Task<IEnumerable<FestivalPopularity>> GetItemsAsync(
             bool forceRefresh = false)
         {
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

@@ -25,7 +25,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
             string jsonFestivalRating = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",

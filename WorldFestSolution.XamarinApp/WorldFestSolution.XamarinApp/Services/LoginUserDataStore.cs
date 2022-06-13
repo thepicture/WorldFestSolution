@@ -32,7 +32,7 @@ namespace WorldFestSolution.XamarinApp.Services
                     .InformError(errors);
                 return false;
             }
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.BaseAddress = new Uri(Api.BaseUrl);
                 try

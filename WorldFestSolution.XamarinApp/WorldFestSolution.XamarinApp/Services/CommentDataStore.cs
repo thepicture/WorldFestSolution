@@ -25,7 +25,7 @@ namespace WorldFestSolution.XamarinApp.Services
                 return false;
             }
             string jsonComment = JsonConvert.SerializeObject(item);
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",
@@ -80,7 +80,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 return false;
             }
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",

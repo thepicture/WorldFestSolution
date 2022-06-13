@@ -60,7 +60,7 @@ namespace WorldFestSolution.XamarinApp.Services
             string jsonFestival = JsonConvert.SerializeObject(item);
 
             // Объявление Http-клиента для связи с сервером.
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Basic",
@@ -123,7 +123,7 @@ namespace WorldFestSolution.XamarinApp.Services
             {
                 return false;
             }
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",
@@ -161,7 +161,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<Festival> GetItemAsync(string id)
         {
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",
@@ -198,7 +198,7 @@ namespace WorldFestSolution.XamarinApp.Services
 
         public async Task<IEnumerable<Festival>> GetItemsAsync(bool forceRefresh = false)
         {
-            using (HttpClient client = new HttpClient(App.ClientHandler))
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
             {
                 client.DefaultRequestHeaders.Authorization =
                      new AuthenticationHeaderValue("Basic",

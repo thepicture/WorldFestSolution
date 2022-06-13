@@ -23,16 +23,6 @@ namespace WorldFestSolution.XamarinApp
         public static string Role { get; set; }
         public static User User { get; set; }
         public static string AuthorizationValue { get; set; }
-        public static HttpClientHandler ClientHandler
-        {
-            get
-            {
-                HttpClientHandler handler = new HttpClientHandler();
-                handler.ServerCertificateCustomValidationCallback +=
-                    (_, __, ___, ____) => true;
-                return handler;
-            }
-        }
 
         public int LastCountOfMyInvites
         {
@@ -58,6 +48,7 @@ namespace WorldFestSolution.XamarinApp
 
             Material.Init(this, (MaterialConfiguration)Resources["CommonMaterial"]);
 
+            DependencyService.Register<HttpContextFactory>();
             DependencyService.Register<CredentialsService>();
             DependencyService.Register<AndroidAlertService>();
             DependencyService.Register<LoginUserDataStore>();
