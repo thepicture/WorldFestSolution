@@ -22,7 +22,7 @@ namespace WorldFestSolution.XamarinApp.Services
         private static Func<HttpRequestMessage, X509Certificate2,
             X509Chain, SslPolicyErrors, bool> GetAlwaysTrueValidationCallback()
         {
-            return (_, __, ___, ____) => false;
+            return (_, __, ___, ____) => true;
         }
     }
 }

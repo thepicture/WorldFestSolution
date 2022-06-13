@@ -96,23 +96,18 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             // Убрать старый набор элементов.
             Festivals.Clear();
 
-            // Получить фестивали в отношении 
-            // организатора или участника
-            // в неблокирующем потоке.
-            IEnumerable<Festival> items = await Task.Run(() =>
+            IEnumerable<Festival> items;
+            // Если относится к пользователю,
+            if (IsRelatedToMe)
             {
-                // Если относится к пользователю,
-                if (IsRelatedToMe)
-                {
-                    // То получить фестивали пользователя.
-                    return UserFestivalDataStore.GetItemAsync("");
-                }
-                else
-                {
-                    // Иначе получить общий набор фестивалей.
-                    return FestivalDataStore.GetItemsAsync();
-                }
-            });
+                // То получить фестивали пользователя.
+                items = await UserFestivalDataStore.GetItemAsync("");
+            }
+            else
+            {
+                // Иначе получить общий набор фестивалей.
+                items = await FestivalDataStore.GetItemsAsync();
+            }
 
             // Если текст поиска
             // по названию фестиваля непустой,
@@ -163,7 +158,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 // интерфейса.
                 await Task.Delay(50);
             }
-            
+
             // Выключить обновление модели представления.
             IsRefreshing = false;
         }
