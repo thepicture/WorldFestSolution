@@ -69,16 +69,6 @@ namespace WorldFestSolution.XamarinApp
             });
             switch (Identity.Role)
             {
-                case "Организатор":
-                    TabBar.Items.Add(new ShellContent
-                    {
-                        Route = nameof(FestivalsPopularityChartView),
-                        Icon = "icon_feed",
-                        Title = "Популярность фестов",
-                        ContentTemplate = new DataTemplate(
-                            typeof(FestivalsPopularityChartView)),
-                    });
-                    break;
                 case "Участник":
                     TabBar.Items.Add(new ShellContent
                     {
@@ -95,6 +85,14 @@ namespace WorldFestSolution.XamarinApp
                 default:
                     break;
             }
+            TabBar.Items.Add(new ShellContent
+            {
+                Route = nameof(FestivalsPopularityChartView),
+                Icon = "icon_feed",
+                Title = "Популярность фестов",
+                ContentTemplate = new DataTemplate(
+                    typeof(FestivalsPopularityChartView)),
+            });
             TabBar.Items.Add(new ShellContent
             {
                 Route = nameof(AccountView),
