@@ -101,10 +101,10 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             // в неблокирующем потоке.
             IEnumerable<Festival> items = await Task.Run(() =>
             {
-                // Если относится к организатору,
+                // Если относится к пользователю,
                 if (IsRelatedToMe)
                 {
-                    // То получить фестивали организатора.
+                    // То получить фестивали пользователя.
                     return UserFestivalDataStore.GetItemAsync("");
                 }
                 else
