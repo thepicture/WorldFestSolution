@@ -156,14 +156,14 @@ namespace WorldFestSolution.WebAPI.Controllers
                 return NotFound();
             }
 
-            bool isUserIsOwnerOfComment = festivalComment.User.Login
-                                          == HttpContext.Current.User.Identity.Name;
+            bool isUserIsOwnerOfComment = festivalComment.User.Login.ToLower()
+                                          == HttpContext.Current.User.Identity.Name.ToLower();
             bool isUserOwnerOfFestivalCommentRelatedTo =
                 festivalComment
                     .Festival
                     .User
                     .First(u => u.UserType.Title == "Организатор")
-                    .Login == HttpContext.Current.User.Identity.Name;
+                    .Login.ToLower() == HttpContext.Current.User.Identity.Name.ToLower();
             if (isUserIsOwnerOfComment || isUserOwnerOfFestivalCommentRelatedTo)
             {
                 db.FestivalComment.Remove(festivalComment);
