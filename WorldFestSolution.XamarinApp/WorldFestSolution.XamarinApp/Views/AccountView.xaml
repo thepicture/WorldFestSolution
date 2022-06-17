@@ -141,6 +141,23 @@
                                                      Command="{Binding GoToMyInvitesViewCommand}"
                                                      Style="{StaticResource BaseButton}"
                                                      IsVisible="{Binding Source={Static models:Identity.IsParticipant}}" />
+                            <material:MaterialButton Command="{Binding GoToUsersPopularityViewCommand}"
+                                                     Style="{StaticResource BaseButton}">
+                                <material:MaterialButton.Triggers>
+                                    <DataTrigger TargetType="material:MaterialButton"
+                                                 Binding="{Binding Source={Static models:Identity.IsParticipant}}"
+                                                 Value="True">
+                                        <Setter Property="Text"
+                                                Value="График популярности организаторов" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="material:MaterialButton"
+                                                 Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                                                 Value="True">
+                                        <Setter Property="Text"
+                                                Value="График популярности участников" />
+                                    </DataTrigger>
+                                </material:MaterialButton.Triggers>
+                            </material:MaterialButton>
                             <material:MaterialButton Text="Изменить фото"
                                                      Command="{Binding ChangeImageCommand}"
                                                      Style="{StaticResource BackgroundButton}" />

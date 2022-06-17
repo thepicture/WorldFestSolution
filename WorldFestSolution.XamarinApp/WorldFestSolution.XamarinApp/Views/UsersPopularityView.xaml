@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:WorldFestSolution.XamarinApp.Models"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             x:DataType="viewmodels:UsersPopularityViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.UsersPopularityView">
+    <ContentPage.Triggers>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding Source={Static models:Identity.IsParticipant}}"
+                     Value="True">
+            <Setter Property="Title"
+                    Value="Рейтинг организаторов" />
+        </DataTrigger>
+        <DataTrigger TargetType="ContentPage"
+                     Binding="{Binding Source={Static models:Identity.IsOrganizer}}"
+                     Value="True">
+            <Setter Property="Title"
+                    Value="Рейтинг участников" />
+        </DataTrigger>
+    </ContentPage.Triggers>
+    <ContentView>
+        <chart:SfChart Grid.Row="2">
+            <chart:SfChart.PrimaryAxis>
+                <chart:CategoryAxis LabelRotationAngle="-45">
+                    <chart:CategoryAxis.Title>
+                        <chart:ChartAxisTitle Text="ФИО" />
+                    </chart:CategoryAxis.Title>
+                </chart:CategoryAxis>
+            </chart:SfChart.PrimaryAxis>
+            <chart:SfChart.SecondaryAxis>
+                <chart:NumericalAxis Interval="1"
+                                     Maximum="5"
+                                     Minimum="0">
+                    <chart:NumericalAxis.Title>
+                        <chart:ChartAxisTitle Text="Рейтинг" />
+                    </chart:NumericalAxis.Title>
+                </chart:NumericalAxis>
+            </chart:SfChart.SecondaryAxis>
+            <chart:SfChart.Series>
+                <chart:ColumnSeries ItemsSource="{Binding UsersPopularities}"
+                                    XBindingPath="FullName"
+                                    YBindingPath="Rating"
+                                    EnableTooltip="True"
+                                    Grid.Row="1" />
+            </chart:SfChart.Series>
+        </chart:SfChart>
+    </ContentView>
+</ContentPage>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -20,9 +21,14 @@ namespace WorldFestSolution.WebAPI.Controllers
             new WorldFestBaseEntities();
 
         // GET: api/Users
-        public IQueryable<User> GetUser()
+        [ResponseType(typeof(List<SerializedUser>))]
+        [Authorize]
+        public IHttpActionResult GetUser()
         {
-            return db.User;
+            List<SerializedUser> users = db.User
+                .ToList()
+                .ConvertAll(u => new SerializedUser(u));
+            return base.Ok(users);
         }
 
         // GET: api/Users/5

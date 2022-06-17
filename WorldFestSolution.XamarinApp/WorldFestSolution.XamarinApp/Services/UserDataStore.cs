@@ -62,9 +62,41 @@ namespace WorldFestSolution.XamarinApp.Services
             return null;
         }
 
-        public Task<IEnumerable<User>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<User>> GetItemsAsync(bool forceRefresh = false)
         {
-            throw new NotImplementedException();
+            using (HttpClient client = await DependencyService.Get<IHttpContextFactory>().GetInstance())
+            {
+                client.DefaultRequestHeaders.Authorization =
+                     new AuthenticationHeaderValue("Basic",
+                                                   Identity.AuthorizationValue);
+                client.BaseAddress = new Uri(Api.BaseUrl);
+                try
+                {
+                    HttpResponseMessage response = await client
+                        .GetAsync($"users");
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return JsonConvert
+                            .DeserializeObject<IEnumerable<User>>(
+                                await response.Content.ReadAsStringAsync());
+                    }
+                    else
+                    {
+                        Debug.WriteLine(response);
+                        await DependencyService
+                            .Get<IAlertService>()
+                            .InformError(response);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    await DependencyService
+                        .Get<IAlertService>()
+                        .InformError(ex);
+                }
+            }
+            return new List<User>();
         }
 
         public async Task<bool> UpdateItemAsync(User item)

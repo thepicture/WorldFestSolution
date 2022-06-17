@@ -285,5 +285,24 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 // пользователю.
             }
         }
+
+        private Command goToUsersPopularityViewCommand;
+
+        public ICommand GoToUsersPopularityViewCommand
+        {
+            get
+            {
+                if (goToUsersPopularityViewCommand == null)
+                    goToUsersPopularityViewCommand = new Command(GoToUsersPopularityViewAsync);
+
+                return goToUsersPopularityViewCommand;
+            }
+        }
+
+        private async void GoToUsersPopularityViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+               new UsersPopularityView());
+        }
     }
 }
