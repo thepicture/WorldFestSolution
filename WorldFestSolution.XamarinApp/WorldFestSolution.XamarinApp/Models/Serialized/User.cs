@@ -78,5 +78,21 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
         public bool IsWantsInvites { get; set; }
         public int CountOfFestivals { get; set; }
         public int CountOfComments { get; set; }
+
+        [JsonIgnore]
+        public string Type
+        {
+            get
+            {
+                if (UserTypeId == 1)
+                {
+                    return "Участник";
+                }
+                else
+                {
+                    return "Организатор";
+                }
+            }
+        }
     }
 }

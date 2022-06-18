@@ -61,15 +61,14 @@
                                               StringFormat='{}Логин: {0}'}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Source={Static models:Identity.Role},
+                        <Label Text="{Binding CurrentUser.Type},
                                               StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Text="Минор"
                                HorizontalTextAlignment="Center">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label"
-                                             Binding="{Binding Source={Static models:Identity.User}, 
-                                                               Path=Is18OrMoreYearsOld}"
+                                             Binding="{Binding CurrentUser.Is18OrMoreYearsOld}"
                                              Value="True">
                                     <Setter Property="Text"
                                             Value="Совершеннолетний" />
@@ -113,7 +112,7 @@
                                                  Binding="{Binding CurrentUser.UserTypeId}"
                                                  Value="1">
                                         <Setter Property="Text"
-                                                Value="{Binding CurrentUser.CountOfFestivals,  StringFormat='{}Участвует в фестивалях: {0}'}" />
+                                                Value="{Binding CurrentUser.CountOfFestivals, StringFormat='{}Участвует в фестивалях: {0}'}" />
                                     </DataTrigger>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding CurrentUser.UserTypeId}"
