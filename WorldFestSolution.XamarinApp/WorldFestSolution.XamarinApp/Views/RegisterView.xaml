@@ -102,7 +102,7 @@
                                                             ErrorText="{Binding RegistrationUser.LoginErrorText}"
                                                             Placeholder="Введите логин"
                                                             LeadingIcon="login"
-                                                            InputType="Text"
+                                                            InputType="Plain"
                                                             MaxLength="50"
                                                             AlwaysShowUnderline="True"
                                                             HelperText="* Обязательно" />

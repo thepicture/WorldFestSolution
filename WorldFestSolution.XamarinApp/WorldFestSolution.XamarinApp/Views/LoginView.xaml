@@ -70,7 +70,7 @@
                                                 HasError="{Binding IsLoginHasError}"
                                                 ErrorText="{Binding LoginErrorText}"
                                                 Placeholder="Введите логин"
-                                                InputType="Text"
+                                                InputType="Plain"
                                                 MaxLength="50"
                                                 LeadingIcon="login"
                                                 AlwaysShowUnderline="True"
