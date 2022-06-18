@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.ViewModels"
+             xmlns:templates="clr-namespace:WorldFestSolution.XamarinApp.Views.Templates"
+             xmlns:serialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Serialized"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:WorldFestSolution.XamarinApp.Converters"
+             x:DataType="viewmodels:UserChatViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.UserChatView"
+             Title="Чат с пользователем">
+    <ContentView Margin="5">
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <Grid RowDefinitions="*, auto">
+                <ScrollView>
+                    <StackLayout BindableLayout.ItemsSource="{Binding Messages}">
+                        <BindableLayout.EmptyViewTemplate>
+                            <DataTemplate>
+                                <templates:NoItemsTemplate Reason="Сообщений в диалоге нет" />
+                            </DataTemplate>
+                        </BindableLayout.EmptyViewTemplate>
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="serialized:UserMessage">
+                                <material:MaterialCard Elevation="5"
+                                                       Margin="10"
+                                                       CornerRadius="25"
+                                                       BackgroundColor="White">
+                                    <Grid RowDefinitions="*,auto"
+                                          ColumnDefinitions="auto,*">
+                                        <Frame CornerRadius="60"
+                                               VerticalOptions="Start"
+                                               Padding="0"
+                                               WidthRequest="60"
+                                               HeightRequest="60"
+                                               HasShadow="False">
+                                            <Image Aspect="AspectFill">
+                                                <Image.Source>
+                                                    <Binding Path="Sender.ImageSource">
+                                                        <Binding.TargetNullValue>
+                                                            login
+                                                        </Binding.TargetNullValue>
+                                                    </Binding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Frame>
+                                        <Grid RowDefinitions="auto,auto,*,auto"
+                                              Grid.Column="1">
+                                            <Label FontAttributes="Bold"
+                                                   Text="{Binding Sender.FullName}" />
+                                            <Label Text="{Binding PostDateTime, StringFormat='{0:dd/MM/yyyy hh:mm}'}"
+                                                   FontSize="Caption"
+                                                   Grid.Row="1" />
+                                            <Label Text="{Binding Message}"
+                                                   Grid.Row="2" />
+                                        </Grid>
+                                    </Grid>
+                                </material:MaterialCard>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+                <StackLayout Grid.Row="1">
+                    <material:MaterialTextField Text="{Binding Message.Message}"
+                                                ErrorText="Текст сообщения обязателен"
+                                                AlwaysShowUnderline="True"
+                                                Placeholder="Введите сообщение"
+                                                MaxLength="512">
+                        <material:MaterialTextField.HasError>
+                            <Binding Path="Message.Message">
+                                <Binding.Converter>
+                                    <converters:StringToHasErrorIfEmptyValueConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </material:MaterialTextField.HasError>
+                    </material:MaterialTextField>
+                    <material:MaterialButton Command="{Binding PostMessageCommand}"
+                                             Text="Отправить"
+                                             Style="{StaticResource BaseButton}" />
+                </StackLayout>
+            </Grid>
+        </RefreshView>
+    </ContentView>
+</ContentPage>

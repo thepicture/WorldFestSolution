@@ -21,6 +21,8 @@ namespace WorldFestSolution.WebAPI.Models.Entities
             this.FestivalRating = new HashSet<FestivalRating>();
             this.ParticipantInvite = new HashSet<ParticipantInvite>();
             this.ParticipantInvite1 = new HashSet<ParticipantInvite>();
+            this.UserMessage = new HashSet<UserMessage>();
+            this.UserMessage1 = new HashSet<UserMessage>();
             this.UserRating = new HashSet<UserRating>();
             this.UserRating1 = new HashSet<UserRating>();
             this.Festival = new HashSet<Festival>();
@@ -46,6 +48,10 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         public virtual ICollection<ParticipantInvite> ParticipantInvite { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParticipantInvite> ParticipantInvite1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserMessage> UserMessage { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserMessage> UserMessage1 { get; set; }
         public virtual UserType UserType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRating> UserRating { get; set; }

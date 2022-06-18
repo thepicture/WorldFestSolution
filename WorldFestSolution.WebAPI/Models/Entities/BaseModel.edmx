@@ -72,6 +72,16 @@
           <Property Name="IsWantsInvites" Type="bit" Nullable="false" />
           <Property Name="Is18OrMoreYearsOld" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SenderId" Type="int" Nullable="false" />
+          <Property Name="ReceiverId" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="PostDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserOfFestival">
           <Key>
             <PropertyRef Name="FestivalId" />
@@ -159,6 +169,30 @@
             </Principal>
             <Dependent Role="FestivalRating">
               <PropertyRef Name="RaterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Receiver">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserMessage" Type="Self.UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="ReceiverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Sender">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserMessage" Type="Self.UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="SenderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -267,6 +301,7 @@
           <EntitySet Name="FestivalRating" EntityType="Self.FestivalRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParticipantInvite" EntityType="Self.ParticipantInvite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMessage" EntityType="Self.UserMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserOfFestival" EntityType="Self.UserOfFestival" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRating" EntityType="Self.UserRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
@@ -289,6 +324,14 @@
           <AssociationSet Name="FK_FestivalRating_User" Association="Self.FK_FestivalRating_User">
             <End Role="User" EntitySet="User" />
             <End Role="FestivalRating" EntitySet="FestivalRating" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Receiver" Association="Self.FK_Message_Receiver">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMessage" EntitySet="UserMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Sender" Association="Self.FK_Message_Sender">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMessage" EntitySet="UserMessage" />
           </AssociationSet>
           <AssociationSet Name="FK_ParticipantInvite_Festival" Association="Self.FK_ParticipantInvite_Festival">
             <End Role="Festival" EntitySet="Festival" />
@@ -334,6 +377,7 @@
           <EntitySet Name="FestivalRating" EntityType="WorldFestBaseModel.FestivalRating" />
           <EntitySet Name="ParticipantInvite" EntityType="WorldFestBaseModel.ParticipantInvite" />
           <EntitySet Name="User" EntityType="WorldFestBaseModel.User" />
+          <EntitySet Name="UserMessage" EntityType="WorldFestBaseModel.UserMessage" />
           <EntitySet Name="UserRating" EntityType="WorldFestBaseModel.UserRating" />
           <EntitySet Name="UserType" EntityType="WorldFestBaseModel.UserType" />
           <AssociationSet Name="FK_FestivalComment_Festival" Association="WorldFestBaseModel.FK_FestivalComment_Festival">
@@ -367,6 +411,14 @@
           <AssociationSet Name="FK_ParticipantInvite_User1" Association="WorldFestBaseModel.FK_ParticipantInvite_User1">
             <End Role="User" EntitySet="User" />
             <End Role="ParticipantInvite" EntitySet="ParticipantInvite" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Receiver" Association="WorldFestBaseModel.FK_Message_Receiver">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMessage" EntitySet="UserMessage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Sender" Association="WorldFestBaseModel.FK_Message_Sender">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserMessage" EntitySet="UserMessage" />
           </AssociationSet>
           <AssociationSet Name="FK_User_UserType" Association="WorldFestBaseModel.FK_User_UserType">
             <End Role="UserType" EntitySet="UserType" />
@@ -468,10 +520,24 @@
           <NavigationProperty Name="FestivalRating" Relationship="WorldFestBaseModel.FK_FestivalRating_User" FromRole="User" ToRole="FestivalRating" />
           <NavigationProperty Name="ParticipantInvite" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User" FromRole="User" ToRole="ParticipantInvite" />
           <NavigationProperty Name="ParticipantInvite1" Relationship="WorldFestBaseModel.FK_ParticipantInvite_User1" FromRole="User" ToRole="ParticipantInvite" />
+          <NavigationProperty Name="UserMessage" Relationship="WorldFestBaseModel.FK_Message_Receiver" FromRole="User" ToRole="UserMessage" />
+          <NavigationProperty Name="UserMessage1" Relationship="WorldFestBaseModel.FK_Message_Sender" FromRole="User" ToRole="UserMessage" />
           <NavigationProperty Name="UserType" Relationship="WorldFestBaseModel.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserRating" Relationship="WorldFestBaseModel.FK_UserRating_User" FromRole="User" ToRole="UserRating" />
           <NavigationProperty Name="UserRating1" Relationship="WorldFestBaseModel.FK_UserRating_User1" FromRole="User" ToRole="UserRating" />
           <NavigationProperty Name="Festival" Relationship="WorldFestBaseModel.UserOfFestival" FromRole="User" ToRole="Festival" />
+        </EntityType>
+        <EntityType Name="UserMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SenderId" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverId" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="PostDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="WorldFestBaseModel.FK_Message_Receiver" FromRole="UserMessage" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="WorldFestBaseModel.FK_Message_Sender" FromRole="UserMessage" ToRole="User" />
         </EntityType>
         <EntityType Name="UserRating">
           <Key>
@@ -594,6 +660,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Message_Receiver">
+          <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="ReceiverId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Sender">
+          <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="WorldFestBaseModel.UserMessage" Role="UserMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserMessage">
+              <PropertyRef Name="SenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_UserType">
           <End Type="WorldFestBaseModel.UserType" Role="UserType" Multiplicity="1" />
           <End Type="WorldFestBaseModel.User" Role="User" Multiplicity="*" />
@@ -709,6 +799,17 @@
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMessage">
+            <EntityTypeMapping TypeName="WorldFestBaseModel.UserMessage">
+              <MappingFragment StoreEntitySet="UserMessage">
+                <ScalarProperty Name="PostDateTime" ColumnName="PostDateTime" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ReceiverId" ColumnName="ReceiverId" />
+                <ScalarProperty Name="SenderId" ColumnName="SenderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

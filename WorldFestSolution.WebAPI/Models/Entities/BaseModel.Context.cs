@@ -31,6 +31,7 @@ namespace WorldFestSolution.WebAPI.Models.Entities
         public virtual DbSet<FestivalRating> FestivalRating { get; set; }
         public virtual DbSet<ParticipantInvite> ParticipantInvite { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserMessage> UserMessage { get; set; }
         public virtual DbSet<UserRating> UserRating { get; set; }
         public virtual DbSet<UserType> UserType { get; set; }
     }

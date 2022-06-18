@@ -2,7 +2,6 @@
 using Plugin.LocalNotification.AndroidOption;
 using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading.Tasks;
 using WorldFestSolution.XamarinApp.Models;
 using WorldFestSolution.XamarinApp.Models.Serialized;
@@ -69,6 +68,8 @@ namespace WorldFestSolution.XamarinApp
             DependencyService.Register<FestivalUsersDataStore>();
             DependencyService.Register<ImageTransformService>();
             DependencyService.Register<CountOfMyInvitesDataStore>();
+            DependencyService.Register<UserMessageDataStore>();
+            DependencyService.Register<UserMessagesDataStore>();
 
             MainPage = new AppShell();
             Device.StartTimer(

@@ -124,6 +124,10 @@
                                 </Label.Triggers>
                             </Label>
                         </Grid>
+                        <material:MaterialButton Text="Связаться"
+                                                 Command="{Binding GoToUserChatView}"
+                                                 Style="{StaticResource BaseButton}"
+                                                 IsVisible="{Binding IsCurrentUserNotMe}" />
                         <StackLayout IsVisible="False">
                             <StackLayout.Triggers>
                                 <DataTrigger TargetType="StackLayout"

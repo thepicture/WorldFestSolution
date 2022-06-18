@@ -11,6 +11,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
     [PropertyChanged.AddINotifyPropertyChangedInterface]
     public class AccountViewModel : BaseViewModel
     {
+        public bool IsCurrentUserNotMe { get; set; }
 
         private Command logoutCommand;
 
@@ -82,6 +83,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 CurrentUser.Rating = countOfStars;
                 IsSelf = CurrentUser.Id == Identity.Id;
                 MessagingCenter.Instance.Send(this, "UpdateRatingBar", countOfStars);
+                IsCurrentUserNotMe = Identity.Id != userFromDatabase.Id;
             }
             IsRefreshing = false;
             IsBusy = false;
@@ -303,6 +305,26 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         {
             await Shell.Current.Navigation.PushAsync(
                new UsersPopularityView());
+        }
+
+        private Command goToUserChatView;
+
+        public ICommand GoToUserChatView
+        {
+            get
+            {
+                if (goToUserChatView == null)
+                    goToUserChatView = new Command(PerformGoToUserChatViewAsync);
+
+                return goToUserChatView;
+            }
+        }
+
+        private async void PerformGoToUserChatViewAsync()
+        {
+            await Shell.Current.Navigation.PushAsync(
+               new UserChatView(
+                   new UserChatViewModel(userId: CurrentUser.Id)));
         }
     }
 }
