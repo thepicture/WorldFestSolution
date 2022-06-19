@@ -60,6 +60,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             {
                 return fr.User.Login == HttpContext.Current.User.Identity.Name;
             });
+            Address = festival.Address;
         }
 
         public int Id { get; set; }
@@ -80,5 +81,7 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
         public bool IsActual { get; set; }
         public bool IsRated { get; set; }
         public bool IsMinorPeopleAllowed { get; set; }
+
+        public string Address { get; set; }
     }
 }

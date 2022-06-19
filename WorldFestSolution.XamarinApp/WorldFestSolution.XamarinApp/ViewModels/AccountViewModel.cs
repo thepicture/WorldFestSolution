@@ -78,6 +78,14 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             if (userFromDatabase != null)
             {
                 double countOfStars = userFromDatabase.Rating;
+                if (countOfStars > 0)
+                {
+                    CurrentRating = $"Рейтинг: {countOfStars:F2}";
+                }
+                else
+                {
+                    CurrentRating = "Пользователя пока не оценивали";
+                }
                 CurrentUser = userFromDatabase;
                 IsWantsInvites = userFromDatabase.IsWantsInvites;
                 CurrentUser.Rating = countOfStars;
@@ -87,6 +95,12 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             }
             IsRefreshing = false;
             IsBusy = false;
+        }
+
+        public string CurrentRating
+        {
+            get => currentRating;
+            set => SetProperty(ref currentRating, value);
         }
 
         private Command goToChangePasswordViewCommand;
@@ -308,6 +322,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
         }
 
         private Command goToUserChatView;
+        private string currentRating;
 
         public ICommand GoToUserChatView
         {

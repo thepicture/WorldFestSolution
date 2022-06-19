@@ -29,6 +29,14 @@
                                             MaxLength="255"
                                             LeadingIcon="logo"
                                             AlwaysShowUnderline="True" />
+                <material:MaterialTextField Text="{Binding Festival.Address}"
+                                            HasError="{Binding Festival.IsHasAddressError}"
+                                            ErrorText="{Binding Festival.AddressErrorText}"
+                                            Placeholder="Введите адрес"
+                                            InputType="Text"
+                                            MaxLength="512"
+                                            LeadingIcon="logo"
+                                            AlwaysShowUnderline="True" />
                 <material:MaterialTextField Text="{Binding Festival.Description}"
                                             Placeholder="Введите описание"
                                             InputType="Text"

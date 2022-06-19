@@ -33,6 +33,11 @@ namespace WorldFestSolution.XamarinApp.Services
                 _ = errors.AppendLine("Введите название");
             }
 
+            if (string.IsNullOrWhiteSpace(item.Address))
+            {
+                _ = errors.AppendLine("Введите адрес фестиваля");
+            }
+
             // Если фестиваль начинается раньше сегодняшнего дня, то он невалидный.
             if (item.FromDateTime <= DateTime.Now)
             {
@@ -83,7 +88,7 @@ namespace WorldFestSolution.XamarinApp.Services
                             .Get<IAlertService>()
                             .Inform("Фестиваль сохранён");
                     }
-                    
+
                     // В противном случае вызов обратной связи с причиной ошибки.
                     else
                     {

@@ -60,28 +60,22 @@
                                     <Setter Property="Text">
                                         <Setter.Value>
                                             <MultiBinding StringFormat="{}Закончился в {0:dd-MM-yyyy hh:mm}">
-                                                <Binding  Path="Festival.ToDateTime" />
+                                                <Binding Path="Festival.ToDateTime" />
                                             </MultiBinding>
                                         </Setter.Value>
                                     </Setter>
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Label Text="{Binding Path=Festival.OrganizerFullName, StringFormat='{}Создан организатором {0}'}"
+                        <Label Text="{Binding Festival.OrganizerFullName, StringFormat='{}Создан организатором {0}'}"
                                FontSize="Medium"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Path=Festival.Rating, StringFormat='{}Рейтинг фестиваля: {0:F1}'}"
+                        <Label Text="{Binding Festival.Address, StringFormat='{}Проходит по адресу {0}'}"
                                FontSize="Medium"
-                               HorizontalTextAlignment="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Festival.Rating}"
-                                             Value="0">
-                                    <Setter Property="Text"
-                                            Value="Фестиваль пока не оценивали" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding CurrentRating}"
+                               FontSize="Medium"
+                               HorizontalTextAlignment="Center" />
                         <rating:RatingBar x:Name="FestivalRatingBar"
                                           SelectedStarCommand="{Binding RateFestivalCommand}"
                                           EmptyStarImage="empty_star"

@@ -246,8 +246,8 @@
     <Content Include="Global.asax" />
     <Content Include="Models\Entities\BaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BaseModel.Context.cs</LastGenOutput>
       <DependentUpon>BaseModel.edmx</DependentUpon>
+      <LastGenOutput>BaseModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\Entities\BaseModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -282,6 +282,7 @@
     <Content Include="Models\Entities\BaseModel.edmx.diagram">
       <DependentUpon>BaseModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

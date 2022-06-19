@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using WorldFestSolution.XamarinApp.Models.Serialized;
 using WorldFestSolution.XamarinApp.Views;
 using Xamarin.Forms;
@@ -119,6 +121,14 @@ namespace WorldFestSolution.XamarinApp.ViewModels
             {
                 Festival = festivalFromDatabase;
                 double rating = festivalFromDatabase.Rating;
+                if (rating > 0)
+                {
+                    CurrentRating = $"Рейтинг: {rating:F2}";
+                }
+                else
+                {
+                    CurrentRating = "Фестиваль пока не оценивали";
+                }
                 Festival.Rating = rating;
                 MessagingCenter.Instance.Send(this, "UpdateRatingBar", rating);
             }
@@ -289,5 +299,7 @@ namespace WorldFestSolution.XamarinApp.ViewModels
                 new AccountView(
                     new AccountViewModel(festivalFromDataStore.OrganizerId)));
         }
+
+        public string CurrentRating { get; set; }
     }
 }

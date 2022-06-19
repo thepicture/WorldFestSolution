@@ -95,5 +95,19 @@ namespace WorldFestSolution.XamarinApp.Models.Serialized
                 return string.IsNullOrWhiteSpace(Title);
             }
         }
+
+        [JsonIgnore]
+        public string AddressErrorText => "Введите адрес фестиваля";
+
+        [JsonIgnore]
+        public bool IsHasAddressError
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(Address);
+            }
+        }
+
+        public string Address { get; set; }
     }
 }

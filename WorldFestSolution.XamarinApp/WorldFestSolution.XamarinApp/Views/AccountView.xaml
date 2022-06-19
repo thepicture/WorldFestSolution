@@ -61,8 +61,7 @@
                                               StringFormat='{}Логин: {0}'}"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding CurrentUser.Type},
-                                              StringFormat='{}Роль: {0}'}"
+                        <Label Text="{Binding CurrentUser.Type, StringFormat='{}Роль: {0}'}"
                                HorizontalTextAlignment="Center" />
                         <Label Text="Минор"
                                HorizontalTextAlignment="Center">
@@ -75,17 +74,8 @@
                                 </DataTrigger>
                             </Label.Triggers>
                         </Label>
-                        <Label Text="{Binding CurrentUser.Rating, StringFormat='{}Рейтинг: {0:F2}'}"
-                               HorizontalTextAlignment="Center">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding CurrentUser.Rating}"
-                                             Value="0">
-                                    <Setter Property="Text"
-                                            Value="Пользователя пока не оценивали" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                        <Label Text="{Binding CurrentRating}"
+                               HorizontalTextAlignment="Center" />
                         <rating:RatingBar x:Name="AccountRatingBar"
                                           SelectedStarValue="{Binding CurrentUser.Rating}"
                                           SelectedStarCommand="{Binding RateUserCommand}"

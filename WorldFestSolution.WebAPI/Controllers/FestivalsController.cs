@@ -15,6 +15,7 @@ namespace WorldFestSolution.WebAPI.Controllers
 {
     public class FestivalsController : ApiController
     {
+        private const int CountOfStarsForDeletingFestival = 3;
         private readonly WorldFestBaseEntities db = new WorldFestBaseEntities();
 
         // GET: api/Festivals?isRelatedToMe=false
@@ -26,34 +27,36 @@ namespace WorldFestSolution.WebAPI.Controllers
             {
                 if (HttpContext.Current.User.IsInRole("Организатор"))
                 {
-                    return db.User
-                        .First(u => 
-                            u.Login.Equals(HttpContext.Current.User.Identity.Name,
-                                           StringComparison.OrdinalIgnoreCase))
+                    List<SerializedFestival> festivals = db.User
+                        .First(u => u.Login.Equals(HttpContext.Current.User.Identity.Name,
+                                                   StringComparison.OrdinalIgnoreCase))
                         .Festival
-                        .Where(f =>
-                        {
-                            return f.User.First().Login
-                                .Equals(HttpContext.Current.User.Identity.Name, StringComparison.OrdinalIgnoreCase);
-                        })
                         .ToList()
                         .ConvertAll(f => new SerializedFestival(f));
+                    return festivals;
                 }
                 else
                 {
-                    return db.User
-                     .First(u => u.Login == HttpContext.Current.User.Identity.Name)
-                     .Festival
-                     .ToList()
-                     .ConvertAll(f => new SerializedFestival(f));
+                    List<SerializedFestival> festivals = db.Festival
+                        .Where(f =>
+                            f.User.Any(u =>
+                                u.Login.Equals(HttpContext.Current.User.Identity.Name,
+                                               StringComparison.OrdinalIgnoreCase)))
+                        .ToList()
+                        .ConvertAll(f => new SerializedFestival(f));
+                    return festivals;
                 }
             }
-            return db.Festival
-                .ToList()
-                .ConvertAll(f =>
-                {
-                    return new SerializedFestival(f);
-                });
+            else
+            {
+                List<SerializedFestival> festivals = db.Festival
+                    .ToList()
+                    .ConvertAll(f =>
+                    {
+                        return new SerializedFestival(f);
+                    });
+                return festivals;
+            }
         }
 
         // GET: api/Festivals/popularity
@@ -195,7 +198,7 @@ namespace WorldFestSolution.WebAPI.Controllers
                 .First(u => u.Login == HttpContext.Current.User.Identity.Name)
                 .UserRating.Add(new UserRating
                 {
-                    CountOfStars = 3
+                    CountOfStars = CountOfStarsForDeletingFestival
                 });
             await db.SaveChangesAsync();
 
