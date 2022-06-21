@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using WorldFestSolution.WebAPI.Models.Entities;
@@ -32,8 +33,22 @@ namespace WorldFestSolution.WebAPI.Models.Serialized
             {
                 Rating = 0;
             }
-            User organizer = festival.User
-                .First(u => u.UserType.Title == "Организатор");
+
+            User organizer;
+            if (festival.User.Any(u => u.UserType.Title == "Организатор"))
+            {
+                organizer = festival.User
+                    .First(u => u.UserType.Title == "Организатор");
+            }
+            else
+            {
+                using (WorldFestBaseEntities entities = new WorldFestBaseEntities())
+                {
+                    organizer = entities.User
+                        .Include(u => u.UserRating)
+                        .First(u => u.UserType.Title == "Организатор");
+                }
+            }
             OrganizerId = organizer.Id;
             OrganizerFullName = $"{organizer.LastName} {organizer.FirstName}";
             if (organizer.UserRating.Count > 0)

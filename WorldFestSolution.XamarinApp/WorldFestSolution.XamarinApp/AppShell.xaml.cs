@@ -21,8 +21,22 @@ namespace WorldFestSolution.XamarinApp
             }
             else
             {
-                LoadLoginAndRegisterShell();
+                LoadTutorialPage();
             }
+        }
+
+        private void LoadTutorialPage()
+        {
+            TabBar.Items.Clear();
+            TabBar
+                .Items.Add(new ShellContent
+                {
+                    Route = nameof(TutorialView),
+                    Icon = "login_bar",
+                    Title = "Обучение",
+                    ContentTemplate = new DataTemplate(
+                        typeof(TutorialView))
+                });
         }
 
         public static void LoadLoginAndRegisterShell()

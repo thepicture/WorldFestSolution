@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:specialized="clr-namespace:WorldFestSolution.XamarinApp.Models.Specialized"
+             xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:viewmodels="clr-namespace:WorldFestSolution.XamarinApp.Models.ViewModels"
+             x:DataType="viewmodels:TutorialViewModel"
+             x:Class="WorldFestSolution.XamarinApp.Views.TutorialView"
+             Title="Обучение">
+    <ContentPage.BindingContext>
+        <viewmodels:TutorialViewModel />
+    </ContentPage.BindingContext>
+    <CarouselView>
+        <CarouselView.ItemsSource>
+            <x:Array Type="{x:Type specialized:ItemTutorial}">
+                <specialized:ItemTutorial Text="Добро пожаловать!"
+                                          ImagePath="icon_circle" />
+                <specialized:ItemTutorial Text="Зарегистрируйтесь и авторизуйтесь в системе"
+                                          ImagePath="loginView" />
+                <specialized:ItemTutorial Text="Если вы участник, то лучшие фестивали ждут вас"
+                                          ImagePath="festivalsView" />
+                <specialized:ItemTutorial Text="А если вы организатор, вам предоставляется удобная площадка для организации"
+                                          ImagePath="addFestivalView" />
+                <specialized:ItemTutorial Text="Оценивайте фестивали и пользователей для продвижения лучших участников и фестивалей"
+                                          ImagePath="rateFestivalView" />
+                <specialized:ItemTutorial Text="Стройте графики лучших фестивалей"
+                                          ImagePath="festivalChartView" />
+                <specialized:ItemTutorial Text="Приятного времяпрепровождения!"
+                                          ImagePath="icon_circle"
+                                          IsLast="True" />
+            </x:Array>
+        </CarouselView.ItemsSource>
+        <CarouselView.ItemTemplate>
+            <DataTemplate x:DataType="specialized:ItemTutorial">
+                <Grid RowDefinitions="auto,*,auto"
+                      Padding="10">
+                    <Label Text="{Binding Text}"
+                           TextColor="Black"
+                           FontSize="Title"
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="Center" />
+                    <Image Source="{Binding ImagePath}"
+                           Margin="40"
+                           Grid.Row="1" />
+                    <material:MaterialButton Command="{Binding GoToLoginViewCommand}"
+                                             Text="Хочу попробовать"
+                                             IsVisible="{Binding IsLast}"
+                                             Style="{StaticResource BaseButton}"
+                                             Grid.Row="2" />
+                </Grid>
+            </DataTemplate>
+        </CarouselView.ItemTemplate>
+    </CarouselView>
+</ContentPage>
